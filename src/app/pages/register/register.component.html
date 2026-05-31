@@ -1,0 +1,58 @@
+<div class="auth-container">
+  <!-- LEFT: REGISTER FORM -->
+  <div class="auth-form">
+    <!-- LOGO -->
+    <div class="logo">
+      <span>SMART ERP</span>
+    </div>
+
+    <h2>Create Account</h2>
+    <p class="subtitle">Create a new Smart ERP account to get started.</p>
+    <!-- EMAIL -->
+    <label>Email Address</label>
+    <input type="email" [(ngModel)]="email" placeholder="Enter email address" />
+
+    <!-- PASSWORD -->
+    <label>Password</label>
+    <input
+      type="password"
+      [(ngModel)]="password"
+      placeholder="Enter password"
+    />
+    <!-- TERMS -->
+    <div class="terms">
+      <label>
+        <input type="checkbox" />
+        I agree to the
+        <a href="#">Terms & Privacy</a>
+      </label>
+    </div>
+
+    <!-- REGISTER BUTTON -->
+    <button class="btn-primary" (click)="register()">Sign Up</button>
+
+    <!-- LOGIN LINK -->
+    <p class="link-text">
+      Already have an account?
+      <span (click)="goToLogin()">Sign In Instead</span>
+    </p>
+
+    <div class="social-login">
+      <button class="facebook">
+        <i class="fa-brands fa-facebook-f"></i>
+      </button>
+
+      <button class="google">
+        <i class="fa-brands fa-google"></i>
+      </button>
+
+      <button class="apple">
+        <i class="fa-brands fa-apple"></i>
+      </button>
+    </div>
+
+    <!-- FOOTER -->
+    <p class="copyright">© 2025 - SMART ERP</p>
+  </div>
+
+</div>

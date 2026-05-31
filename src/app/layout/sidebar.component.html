@@ -1,0 +1,15 @@
+<aside class="app-sidebar" [class.collapsed]="collapsed">
+
+
+  <nav class="sidebar-nav">
+    <ul>
+      <li><a routerLink="/dashboard" (click)="$any($event).stopPropagation(); navClick($event)"><i class="fa-solid fa-house icon"></i><span class="label">Dashboard</span></a></li>
+      <li>
+        <a class="has-children"><i class="fa-solid fa-user-lock icon"></i><span class="label">Authentication</span></a>
+        <ul class="submenu">
+          <li><a routerLink="/dashboard/users/create" (click)="$any($event).stopPropagation(); navClick($event)"><i class="fa-solid fa-user-plus icon"></i><span class="label">Create User</span></a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</aside>

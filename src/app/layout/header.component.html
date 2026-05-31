@@ -1,0 +1,16 @@
+<header class="app-header">
+  <div class="brand">
+    <button class="btn-toggle" (click)="$any($event).stopPropagation(); toggle.emit()" aria-label="Toggle sidebar">
+      <span class="hamburger"></span>
+    </button>
+    <a routerLink="/dashboard" class="logo">SmartERP</a>
+  </div>
+  <nav class="nav">
+    <a routerLink="/dashboard"><i class="fa-solid fa-chart-simple icon"></i><span class="label">Dashboard</span></a>
+    <button class="theme-btn" (click)="$any($event).stopPropagation(); onThemeToggle()" aria-label="Toggle theme">
+      <i class="fa-solid" [ngClass]="isDark ? 'fa-sun' : 'fa-moon'"></i>
+    </button>
+    <a routerLink="/login" class="logout"><i class="fa-solid fa-right-from-bracket icon"></i><span class="label">Logout</span></a>
+  </nav>
+</header>
+
