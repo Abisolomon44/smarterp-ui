@@ -1,8 +1,26 @@
-<app-header (toggle)="isCollapsed = !isCollapsed" (themeToggle)="toggleTheme()"></app-header>
-<div class="app-frame">
-  <app-sidebar [collapsed]="isCollapsed"></app-sidebar>
-  <main class="app-content" [class.sidebar-collapsed]="isCollapsed">
-    <router-outlet></router-outlet>
-  </main>
+<app-header
+  (toggle)="onToggle()"
+  (themeToggle)="toggleTheme()">
+</app-header>
+
+<app-sidebar
+  [collapsed]="isCollapsed"
+  [class.mobile-open]="sidebarOpen"
+  (close)="closeSidebarOverlay()">
+</app-sidebar>
+
+<div
+  class="sidebar-overlay"
+  *ngIf="sidebarOpen"
+  (click)="closeSidebarOverlay()">
 </div>
-<app-footer></app-footer>
+
+<main
+  class="app-content"
+  [class.collapsed]="isCollapsed">
+
+  <router-outlet></router-outlet>
+
+  <app-footer></app-footer>
+
+</main>
