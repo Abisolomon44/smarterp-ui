@@ -1,0 +1,158 @@
+<div class="plans-container">
+
+  <!-- LOADING STATE -->
+  <div class="state-wrap" *ngIf="isLoading">
+    <i class="fa-solid fa-circle-notch fa-spin"></i>
+    <p>Loading plans...</p>
+  </div>
+
+  <!-- ERROR STATE -->
+  <div class="state-wrap error" *ngIf="!isLoading && errorMessage">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <p>{{ errorMessage }}</p>
+    <button class="btn-primary" (click)="retry()">Try Again</button>
+  </div>
+
+  <ng-container *ngIf="!isLoading && !errorMessage">
+
+    <!-- HEADER -->
+  <div class="plans-header">
+
+  <div class="header-actions">
+
+    <button
+      class="nav-btn"
+      (click)="goBack()">
+      <i class="fa-solid fa-arrow-left"></i>
+      Back
+    </button>
+
+    <button
+      class="nav-btn login-btn"
+      (click)="goToLogin()">
+      <i class="fa-solid fa-right-to-bracket"></i>
+      Login
+    </button>
+
+  </div>
+
+  <h1>Choose Your ERP Plan</h1>
+
+  <p>
+    Start with a free trial and scale as your business grows.
+  </p>
+
+</div>
+    <!-- BILLING TOGGLE -->
+    <div class="billing-row">
+      <span [class.active-label]="!isYearly">Monthly</span>
+      <div
+        class="toggle"
+        [class.yearly]="isYearly"
+        [class.monthly]="!isYearly"
+        (click)="toggleBilling()">
+      </div>
+      <span [class.active-label]="isYearly">Yearly</span>
+      <span class="save-pill">Save 20%</span>
+    </div>
+
+    <!-- PLAN CARDS -->
+    <div class="plans-grid">
+
+      <div
+        class="plan-card"
+        *ngFor="let plan of plans"
+        [class.featured]="isFeatured(plan)"
+        [class.trial]="plan.isTrial">
+
+        <span class="best-badge" *ngIf="isFeatured(plan)">Best Value</span>
+        <span class="trial-badge" *ngIf="plan.isTrial">FREE TRIAL</span>
+
+        <div class="plan-name">{{ plan.name }}</div>
+        <div class="plan-desc">{{ plan.description }}</div>
+
+        <!-- Price -->
+        <div class="plan-price">
+          <ng-container *ngIf="!plan.isCustom">
+            <span class="currency">₹</span>
+            <span class="amount">{{ getPrice(plan) | number }}</span>
+            <span class="period" *ngIf="!plan.isTrial"> /mo</span>
+          </ng-container>
+          <span class="custom" *ngIf="plan.isCustom">Custom</span>
+        </div>
+
+        <div class="plan-duration">{{ plan.durationDays ? plan.durationDays + ' days' : 'Flexible term' }}</div>
+
+        <!-- Features -->
+        <ul class="plan-features">
+          <li>
+            <i class="fa-solid fa-check"></i>
+            {{ plan.maxUsers === -1 ? 'Unlimited' : plan.maxUsers }} users
+          </li>
+          <li>
+            <i class="fa-solid fa-check"></i>
+            {{ plan.maxBranches === -1 ? 'Unlimited' : plan.maxBranches }}
+            {{ plan.maxBranches === 1 ? 'branch' : 'branches' }}
+          </li>
+          <li>
+            <i class="fa-solid fa-check"></i>
+            {{ plan.storageLimitGB === -1 ? 'Unlimited storage' : plan.storageLimitGB + ' GB storage' }}
+          </li>
+          <li *ngFor="let feature of plan.features">
+            <i class="fa-solid fa-check"></i>
+            {{ feature }}
+          </li>
+        </ul>
+
+        <button
+          class="plan-btn"
+          [class.filled]="!plan.isTrial"
+          (click)="selectPlan(plan)">
+          {{ plan.isTrial ? 'Start Free Trial' : plan.isCustom ? 'Contact Sales' : 'Get Started' }}
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- FEATURE COMPARISON TABLE -->
+    <div class="compare-wrap" *ngIf="compareRows.length">
+
+      <h2>Compare detailed features</h2>
+
+      <div class="table-scroll">
+        <table class="cmp-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th
+                *ngFor="let plan of plans"
+                [class.featured-col]="isFeatured(plan)">
+                {{ plan.name }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let section of compareRows">
+              <tr class="sec-row">
+                <td [attr.colspan]="plans.length + 1">{{ section.label }}</td>
+              </tr>
+              <tr *ngFor="let row of section.rows">
+                <td>{{ row.label }}</td>
+                <td *ngFor="let val of row.values">
+                  <i class="fa-solid fa-check check-icon"  *ngIf="val === true"></i>
+                  <i class="fa-solid fa-xmark cross-icon"  *ngIf="val === false"></i>
+                  <span class="addon" *ngIf="val !== true && val !== false && val !== '—'">{{ val }}</span>
+                  <span class="dash"  *ngIf="val === '—'">—</span>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </ng-container>
+
+</div>

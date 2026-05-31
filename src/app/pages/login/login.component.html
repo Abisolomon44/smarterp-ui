@@ -1,63 +1,168 @@
-<div class="auth-container">
-  <div class="auth-form">
-    <h1>SMART ERP</h1>
+<div class="login-container">
 
-    <h2>Sign In</h2>
-    <p class="subtitle">Access your enterprise dashboard securely</p>
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
 
-    <!-- Email -->
-    <label>Email Address</label>
-    <input
-      type="email"
-      [(ngModel)]="email"
-      placeholder="name@company.com"
-    />
-
-    <!-- Password -->
-    <label>Password</label>
-    <input
-      type="password"
-      [(ngModel)]="password"
-      placeholder="Enter your password"
-    />
-
-    <div class="options">
-      <label>
-        <input type="checkbox" /> Remember me
-      </label>
-      <a>Forgot password?</a>
+    <div class="brand">
+      <div class="logo">
+        <i class="fa-solid fa-cubes"></i>
+      </div>
+      <div>
+        <h2>SMART ERP</h2>
+        <span>Enterprise Business Suite</span>
+      </div>
     </div>
 
-    <!-- Local Login -->
-    <button class="btn-primary" (click)="login()">
-      Sign In
-    </button>
+    <div class="hero-content">
+      <span class="badge">Cloud ERP Platform</span>
+      <h1>Manage Your Entire Business From One Platform</h1>
+      <p>
+        Streamline Sales, Purchase, Inventory,
+        Accounting, CRM and Reporting with a
+        secure cloud-based ERP solution.
+      </p>
+    </div>
 
-    <p class="link-text">
-      Don’t have an account?
-      <span (click)="goToRegister()">Create one</span>
-    </p>
+    <div class="features">
 
-    <div class="divider">OR</div>
-
-    <!-- ✅ CUSTOM GOOGLE BUTTON -->
-    <button class="gsi-material-button" (click)="googleLogin()">
-      <div class="gsi-material-button-content-wrapper">
-        <div class="gsi-material-button-icon">
-          <!-- Google logo SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-          </svg>
+      <div class="feature-card">
+        <i class="fa-solid fa-chart-line"></i>
+        <div>
+          <h4>Real-Time Analytics</h4>
+          <p>Live KPI monitoring and reports.</p>
         </div>
-        <span>Sign in with Google</span>
       </div>
-    </button>
 
-    <p class="copyright">
-      © 2025 SMART ERP. All rights reserved.
-    </p>
+      <div class="feature-card">
+        <i class="fa-solid fa-shield-halved"></i>
+        <div>
+          <h4>Enterprise Security</h4>
+          <p>Role-based access and JWT security.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <i class="fa-solid fa-boxes-stacked"></i>
+        <div>
+          <h4>Inventory Control</h4>
+          <p>Warehouse and stock tracking.</p>
+        </div>
+      </div>
+
+    </div>
+
+  
   </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+
+    <div class="login-card card">
+
+      <div class="login-header">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Sign in to access your ERP workspace.</p>
+      </div>
+
+      <form>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <div class="input-box">
+            <i class="fa-regular fa-envelope input-icon"></i>
+            <input
+              class="form-control"
+              type="email"
+              [(ngModel)]="email"
+              name="email"
+              placeholder="admin@company.com"
+              [class.input-error]="loginError">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <div class="label-row">
+            <label class="form-label">Password</label>
+            <a class="forgot-link" (click)="forgotPassword()">Forgot Password?</a>
+          </div>
+          <div class="input-box">
+            <i class="fa-solid fa-lock input-icon"></i>
+            <input
+              class="form-control"
+              [type]="showPassword ? 'text' : 'password'"
+              [(ngModel)]="password"
+              name="password"
+              placeholder="Enter Password"
+              [class.input-error]="loginError">
+            <i
+              class="fa-solid password-toggle"
+              [class.fa-eye]="!showPassword"
+              [class.fa-eye-slash]="showPassword"
+              (click)="togglePassword()">
+            </i>
+          </div>
+          <p class="error-msg" *ngIf="loginError">{{ loginError }}</p>
+        </div>
+
+        <!-- Remember me -->
+        <div class="remember-row">
+          <label class="form-check">
+            <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe">
+            <span>Remember me for 30 days</span>
+          </label>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="button"
+          class="btn-primary login-btn"
+          [disabled]="isLoading"
+          (click)="login()">
+          <span *ngIf="!isLoading">
+            Sign In <i class="fa-solid fa-arrow-right"></i>
+          </span>
+          <span *ngIf="isLoading" class="loading-spinner">
+            <i class="fa-solid fa-circle-notch fa-spin"></i> Signing in...
+          </span>
+        </button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>OR CONTINUE WITH</span>
+      </div>
+
+      <!-- Social -->
+      <div class="social-buttons">
+        <button class="btn-social" (click)="googleLogin()">
+          <i class="fa-brands fa-google"></i>
+          Google
+        </button>
+        <button class="btn-social" (click)="microsoftLogin()">
+          <i class="fa-solid fa-building"></i>
+          Microsoft SSO
+        </button>
+      </div>
+
+      <!-- Register link -->
+      <div class="register-section">
+        <p>Don't have an account?
+          <a class="register-link" (click)="goToplans()">Start Free Trial</a>
+        </p>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer-links">
+        <a (click)="openPrivacy()">Privacy Policy</a>
+        <a (click)="openTerms()">Terms of Service</a>
+        <a (click)="openSupport()">Support</a>
+      </div>
+
+    </div>
+
+  </div>
+
 </div>

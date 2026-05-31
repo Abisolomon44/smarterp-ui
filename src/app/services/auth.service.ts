@@ -3,35 +3,46 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../config';
 
-export interface AuthResponse {
-  token: string;
+export interface Plan {
+  id:             number;
+  name:           string;
+  description:    string;    // added
+  price:          number;
+  durationDays:   number;
+  maxUsers:       number;
+  maxBranches:    number;
+  storageLimitGB: number;
+  features:       string[];  // added — extra bullet points
+  isTrial:        boolean;
+  isCustom:       boolean;   // added — Enterprise / Contact Sales tier
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
 
   private apiUrl = `${environment.apiBaseUrl}/api/Auth`;
 
   constructor(private http: HttpClient) {}
 
-  register(data: any): Observable<void> {
-    return this.http.post<void>(
+  getPlans(): Observable<Plan[]> {
+    return this.http.get<Plan[]>(
+      `${this.apiUrl}/plans`
+    );
+  }
+
+  register(data: any) {
+    return this.http.post(
       `${this.apiUrl}/register`,
       data
     );
   }
 
-  login(data: any): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(
+  login(data: any) {
+    return this.http.post(
       `${this.apiUrl}/login`,
       data
-    );
-  }
-
-  googleLogin(idToken: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(
-      `${this.apiUrl}/google-login`,
-      { idToken }
     );
   }
 
@@ -46,4 +57,5 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
   }
+
 }
