@@ -1,1 +1,240 @@
-<p>dashborad works!</p>
+<!-- dashboard.component.html -->
+
+<!-- Page Header -->
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Operations Dashboard</h1>
+    <p class="page-subtitle">Real-time enterprise performance metrics and active workflows.</p>
+  </div>
+  <div class="page-actions">
+    <button class="btn btn-outline">
+      <i class="fa-regular fa-calendar"></i>
+      Last 30 Days
+    </button>
+    <button class="btn btn-primary">
+      <i class="fa-solid fa-download"></i>
+      Export Report
+    </button>
+  </div>
+</div>
+
+<!-- ── KPI Cards ─────────────────────────── -->
+<div class="kpi-grid">
+
+  <!-- Total Revenue -->
+  <div class="kpi-card erp-card">
+    <div class="kpi-top">
+      <div class="kpi-icon">
+        <i class="fa-solid fa-money-bill-trend-up"></i>
+      </div>
+      <span class="stat-badge positive">
+        <i class="fa-solid fa-arrow-up"></i>+12.5%
+      </span>
+    </div>
+    <div>
+      <div class="kpi-label">Total Revenue</div>
+      <div class="kpi-value">$1,284,000</div>
+      <div class="kpi-sub">Vs. $1,141,333 last month</div>
+    </div>
+  </div>
+
+  <!-- New Customers -->
+  <div class="kpi-card erp-card">
+    <div class="kpi-top">
+      <div class="kpi-icon">
+        <i class="fa-solid fa-user-plus"></i>
+      </div>
+      <span class="stat-badge positive">
+        <i class="fa-solid fa-arrow-up"></i>+4.2%
+      </span>
+    </div>
+    <div>
+      <div class="kpi-label">New Customers</div>
+      <div class="kpi-value">2,451</div>
+      <div class="kpi-sub">Average 82 per day</div>
+    </div>
+  </div>
+
+  <!-- Active Orders -->
+  <div class="kpi-card erp-card">
+    <div class="kpi-top">
+      <div class="kpi-icon">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </div>
+      <span class="stat-badge negative">
+        <i class="fa-solid fa-arrow-down"></i>-2.1%
+      </span>
+    </div>
+    <div>
+      <div class="kpi-label">Active Orders</div>
+      <div class="kpi-value">842</div>
+      <div class="kpi-sub">12 orders pending approval</div>
+    </div>
+  </div>
+
+  <!-- Inventory Levels -->
+  <div class="kpi-card erp-card">
+    <div class="kpi-top">
+      <div class="kpi-icon">
+        <i class="fa-solid fa-boxes-stacked"></i>
+      </div>
+      <span class="stat-badge neutral">Stable</span>
+    </div>
+    <div>
+      <div class="kpi-label">Inventory Levels</div>
+      <div class="kpi-value">94.2%</div>
+      <div class="kpi-sub">8 items reaching low threshold</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Main Grid ──────────────────────────── -->
+<div class="dashboard-main">
+
+  <!-- Revenue Chart -->
+  <div class="chart-card erp-card">
+    <div class="section-header">
+      <span class="section-title">Revenue Analytics</span>
+      <div class="chart-legend">
+        <span class="legend-dot forecast">Forecast</span>
+        <span class="legend-dot actual">Actual</span>
+      </div>
+    </div>
+    <div class="chart-area">
+      <!-- Wire up your chart lib here: ngx-charts / Chart.js / Recharts -->
+      <canvas id="revenueChart"></canvas>
+    </div>
+    <div class="chart-labels">
+      <span>JAN</span><span>FEB</span><span>MAR</span>
+      <span>APR</span><span>MAY</span><span>JUN</span><span>JUL</span>
+    </div>
+  </div>
+
+  <!-- System Activity Feed -->
+  <div class="activity-card erp-card">
+    <div class="section-header">
+      <span class="section-title">System Activity</span>
+      <button class="btn btn-ghost btn-icon">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </button>
+    </div>
+
+    <ul class="activity-list">
+
+      <li class="activity-item">
+        <div class="activity-icon success">
+          <i class="fa-solid fa-warehouse"></i>
+        </div>
+        <div class="activity-body">
+          <div class="activity-title">Inventory Audit Completed</div>
+          <div class="activity-desc">Warehouse Node-7 completed weekly cycle count.</div>
+          <div class="activity-time">2 hours ago</div>
+        </div>
+      </li>
+
+      <li class="activity-item">
+        <div class="activity-icon info">
+          <i class="fa-solid fa-user-plus"></i>
+        </div>
+        <div class="activity-body">
+          <div class="activity-title">New Customer Registered</div>
+          <div class="activity-desc">Client "TechNova solutions" added to CRM portal.</div>
+          <div class="activity-time">5 hours ago</div>
+        </div>
+      </li>
+
+      <li class="activity-item">
+        <div class="activity-icon danger">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div class="activity-body">
+          <div class="activity-title danger">Critical Stock Alert</div>
+          <div class="activity-desc">SKU-9902 (Copper Tubing) below safety threshold.</div>
+          <div class="activity-time">12 hours ago</div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+
+</div>
+
+<!-- ── Bottom Row ─────────────────────────── -->
+<div class="dashboard-bottom">
+
+  <!-- Transactions Table -->
+  <div class="transactions-card erp-card">
+    <div class="section-header">
+      <span class="section-title">Recent Transactions</span>
+      <a class="section-action">View All Ledger</a>
+    </div>
+
+    <table class="transactions-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Customer</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th style="text-align:right">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tx of transactions">
+          <td class="td-id">{{ tx.id }}</td>
+          <td>
+            <div class="td-customer">
+              <div class="avatar sm {{ tx.avatarClass }}">{{ tx.initials }}</div>
+              <span class="cust-name">{{ tx.customer }}</span>
+            </div>
+          </td>
+          <td>
+            <span class="pill {{ tx.status.toLowerCase() }}">{{ tx.status }}</span>
+          </td>
+          <td class="text-muted">{{ tx.date }}</td>
+          <td class="td-amount">{{ tx.amount }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Right panel -->
+  <div class="right-panel">
+
+    <!-- Operational Actions -->
+    <div class="actions-card erp-card">
+      <div class="section-title">Operational Actions</div>
+      <div class="actions-grid">
+        <button class="action-btn">
+          <i class="fa-solid fa-cart-plus"></i>New PO
+        </button>
+        <button class="action-btn">
+          <i class="fa-solid fa-user-plus"></i>Add Lead
+        </button>
+        <button class="action-btn">
+          <i class="fa-solid fa-clock-rotate-left"></i>Report
+        </button>
+        <button class="action-btn">
+          <i class="fa-solid fa-file-invoice"></i>Invoice
+        </button>
+      </div>
+    </div>
+
+    <!-- Maintenance Banner -->
+    <div class="maintenance-card erp-card" *ngIf="showMaintenance">
+      <div class="maintenance-title">
+        <i class="fa-solid fa-wrench"></i>
+        Maintenance Window
+      </div>
+      <p class="maintenance-desc">
+        Scheduled system update on Sunday, 02:00 AM UTC. Please finalize all pending batches.
+      </p>
+      <button class="btn-dismiss" (click)="showMaintenance = false">
+        Dismiss
+      </button>
+    </div>
+
+  </div>
+
+</div>

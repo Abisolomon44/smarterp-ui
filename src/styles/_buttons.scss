@@ -1,0 +1,18 @@
+@use './variables' as *;
+
+.btn-primary {
+  background: $primary;
+  color: $text-white;
+
+  border: none;
+  border-radius: $radius-md;
+
+  padding: 12px 20px;
+  cursor: pointer;
+
+  transition: $transition;
+
+  &:hover {
+    background: $primary-hover;
+  }
+}

@@ -1,15 +1,87 @@
 <aside class="app-sidebar" [class.collapsed]="collapsed">
 
-
   <nav class="sidebar-nav">
+
     <ul>
-      <li><a routerLink="/dashboard" (click)="$any($event).stopPropagation(); navClick($event)"><i class="fa-solid fa-house icon"></i><span class="label">Dashboard</span></a></li>
-      <li>
-        <a class="has-children"><i class="fa-solid fa-user-lock icon"></i><span class="label">Authentication</span></a>
-        <ul class="submenu">
-          <li><a routerLink="/dashboard/users/create" (click)="$any($event).stopPropagation(); navClick($event)"><i class="fa-solid fa-user-plus icon"></i><span class="label">Create User</span></a></li>
-        </ul>
+
+      <!-- Dashboard -->
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/dashboard"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="navClick($event)">
+
+          <i class="fa-solid fa-chart-line nav-icon"></i>
+          <span class="nav-label">Dashboard</span>
+
+        </a>
       </li>
+
+      <!-- Administration -->
+      <li>
+        <p class="nav-section-title">
+          Administration
+        </p>
+      </li>
+
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/dashboard/administration"
+          routerLinkActive="active"
+          (click)="navClick($event)">
+
+          <i class="fa-solid fa-user-shield nav-icon"></i>
+          <span class="nav-label">Administration</span>
+
+        </a>
+      </li>
+
+      <!-- System -->
+      <li>
+        <p class="nav-section-title">
+          System
+        </p>
+      </li>
+
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/dashboard/settings"
+          routerLinkActive="active"
+          (click)="navClick($event)">
+
+          <i class="fa-solid fa-gear nav-icon"></i>
+          <span class="nav-label">Settings</span>
+
+        </a>
+      </li>
+
     </ul>
+
   </nav>
+
+  <div class="sidebar-footer">
+
+    <div class="footer-avatar">
+      A
+    </div>
+
+    <div class="sidebar-footer-info">
+
+      <div class="footer-name">
+        Administrator
+      </div>
+
+      <div class="footer-status">
+        <span class="dot"></span>
+        SmartERP v1.0
+      </div>
+
+    </div>
+
+  </div>
+
 </aside>

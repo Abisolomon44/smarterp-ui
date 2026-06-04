@@ -1,0 +1,189 @@
+@use './variables' as *;
+
+/* ===========================
+   CARD
+=========================== */
+
+.card {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+
+  padding: $space-lg;
+
+  box-shadow: $shadow-sm;
+  transition: $transition;
+}
+
+.card:hover {
+  box-shadow: $shadow-md;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: $space-md;
+}
+
+.card-title {
+  font-size: $font-lg;
+  font-weight: $fw-semibold;
+  color: $text-primary;
+}
+
+.card-subtitle {
+  font-size: $font-sm;
+  color: $text-secondary;
+}
+
+.card-body {
+  width: 100%;
+}
+
+.card-footer {
+  margin-top: $space-lg;
+  padding-top: $space-md;
+
+  border-top: 1px solid $border;
+}
+
+/* ===========================
+   STAT CARD
+=========================== */
+
+.stat-card {
+  background: $surface;
+
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+
+  padding: $space-lg;
+
+  box-shadow: $shadow-sm;
+}
+
+.stat-label {
+  font-size: $font-sm;
+  color: $text-secondary;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: $fw-bold;
+  color: $text-primary;
+
+  margin-top: $space-sm;
+}
+
+.stat-change {
+  margin-top: $space-sm;
+  font-size: $font-sm;
+}
+
+.stat-up {
+  color: $success;
+}
+
+.stat-down {
+  color: $danger;
+}
+
+/* ===========================
+   INFO CARD
+=========================== */
+
+.info-card {
+  background: $surface;
+
+  border-left: 4px solid $primary;
+
+  padding: $space-lg;
+
+  border-radius: $radius-md;
+}
+
+/* ===========================
+   STATUS CARD
+=========================== */
+
+.success-card {
+  border-left: 4px solid $success;
+}
+
+.warning-card {
+  border-left: 4px solid $warning;
+}
+
+.danger-card {
+  border-left: 4px solid $danger;
+}
+
+/* ===========================
+   DASHBOARD GRID
+=========================== */
+
+.dashboard-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(250px, 1fr));
+
+  gap: $space-lg;
+}
+
+/* ===========================
+   ERP SUMMARY CARD
+=========================== */
+
+.summary-card {
+  background: $surface;
+
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.summary-icon {
+  width: 60px;
+  height: 60px;
+
+  border-radius: 12px;
+
+  background: rgba(79, 70, 229, 0.1);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: $primary;
+  font-size: 24px;
+}
+
+.summary-content h4 {
+  color: $text-secondary;
+  font-size: $font-sm;
+}
+
+.summary-content h2 {
+  color: $text-primary;
+  margin-top: 5px;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 768px) {
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+}

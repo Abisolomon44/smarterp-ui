@@ -1,58 +1,467 @@
-<div class="auth-container">
-  <!-- LEFT: REGISTER FORM -->
-  <div class="auth-form">
-    <!-- LOGO -->
-    <div class="logo">
-      <span>SMART ERP</span>
+<div class="reg-shell">
+  <!-- ════════════════════════════════
+       LEFT PANEL
+  ════════════════════════════════ -->
+  <div class="left-panel">
+    <div class="brand">
+      <div class="logo"><i class="fa-solid fa-cubes"></i></div>
+      <div>
+        <h2>Smart ERP</h2>
+        <span>Business Management Suite</span>
+      </div>
     </div>
 
-    <h2>Create Account</h2>
-    <p class="subtitle">Create a new Smart ERP account to get started.</p>
-    <!-- EMAIL -->
-    <label>Email Address</label>
-    <input type="email" [(ngModel)]="email" placeholder="Enter email address" />
-
-    <!-- PASSWORD -->
-    <label>Password</label>
-    <input
-      type="password"
-      [(ngModel)]="password"
-      placeholder="Enter password"
-    />
-    <!-- TERMS -->
-    <div class="terms">
-      <label>
-        <input type="checkbox" />
-        I agree to the
-        <a href="#">Terms & Privacy</a>
-      </label>
+    <div class="hero-content">
+      <span class="badge">NEW ACCOUNT</span>
+      <h1>Streamline your global operations with ease.</h1>
+      <p>
+        The next generation of enterprise resource planning. Centralise your
+        CRM, Accounting, Inventory and HR into a single, cohesive ecosystem.
+      </p>
     </div>
 
-    <!-- REGISTER BUTTON -->
-    <button class="btn-primary" (click)="register()">Sign Up</button>
-
-    <!-- LOGIN LINK -->
-    <p class="link-text">
-      Already have an account?
-      <span (click)="goToLogin()">Sign In Instead</span>
-    </p>
-
-    <div class="social-login">
-      <button class="facebook">
-        <i class="fa-brands fa-facebook-f"></i>
-      </button>
-
-      <button class="google">
-        <i class="fa-brands fa-google"></i>
-      </button>
-
-      <button class="apple">
-        <i class="fa-brands fa-apple"></i>
-      </button>
+    <div class="features">
+      <div class="feature-card">
+        <i class="fa-solid fa-shield-halved"></i>
+        <div>
+          <h4>Enterprise Grade Security</h4>
+          <p>End-to-end encryption for all your sensitive business data.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <i class="fa-solid fa-chart-line"></i>
+        <div>
+          <h4>Advanced Analytics</h4>
+          <p>Real-time insights and forecasting at your fingertips.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <i class="fa-solid fa-globe"></i>
+        <div>
+          <h4>Multi-Region Support</h4>
+          <p>Operate across countries with localised compliance built in.</p>
+        </div>
+      </div>
     </div>
 
-    <!-- FOOTER -->
-    <p class="copyright">© 2025 - SMART ERP</p>
+    <div class="erp-stats">
+      <div class="stat">
+        <h3>10k+</h3>
+        <span>Companies</span>
+      </div>
+      <div class="stat">
+        <h3>50+</h3>
+        <span>Countries</span>
+      </div>
+      <div class="stat">
+        <h3>99.9%</h3>
+        <span>Uptime</span>
+      </div>
+    </div>
   </div>
 
+  <!-- ════════════════════════════════
+       RIGHT PANEL
+  ════════════════════════════════ -->
+  <div class="right-panel">
+    <div class="reg-card">
+      <div class="page-header">
+        <button class="header-btn" (click)="goBack()">
+          <i class="fa-solid fa-arrow-left"></i>
+          Back
+        </button>
+
+
+        <button class="header-btn primary" (click)="goToLogin()">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          Login
+        </button>
+      </div>
+      <!-- Header -->
+      <div class="reg-header">
+        <h2>Create your organisation</h2>
+        <p class="subtitle">
+          Start your 14-day free trial. No credit card required.
+        </p>
+      </div>
+
+      <!-- Selected Plan readonly -->
+      <div class="plan-readonly-card" *ngIf="selectedPlan">
+        <div class="plan-readonly-info">
+          <span class="plan-readonly-name">{{ selectedPlan.name }}</span>
+          <span class="plan-readonly-cycle">{{
+            selectedPlan.billingCycle | titlecase
+          }}</span>
+        </div>
+        <div class="plan-readonly-price">
+          <span *ngIf="!selectedPlan.isCustom"
+            >₹{{ selectedPlan.billingPrice | number }}<small>/mo</small></span
+          >
+          <span *ngIf="selectedPlan.isCustom">Custom</span>
+        </div>
+        <a class="plan-change-link" (click)="goToPlans()">Change</a>
+      </div>
+
+      <!-- ── Tab Pills ── -->
+      <div class="tab-nav">
+        <button
+          class="tab-pill"
+          [class.active]="activeTab === 0"
+          (click)="goTab(0)"
+        >
+          <span class="tab-num">1</span> Organisation
+        </button>
+        <span class="tab-sep"></span>
+        <button
+          class="tab-pill"
+          [class.active]="activeTab === 1"
+          (click)="goTab(1)"
+        >
+          <span class="tab-num">2</span> Location
+        </button>
+        <span class="tab-sep"></span>
+        <button
+          class="tab-pill"
+          [class.active]="activeTab === 2"
+          (click)="goTab(2)"
+        >
+          <span class="tab-num">3</span> Security
+        </button>
+      </div>
+
+      <!-- ══════════════════════════════
+           TAB 1 — ORGANISATION
+      ══════════════════════════════ -->
+      <div class="tab-body" *ngIf="activeTab === 0">
+        <div class="form-group">
+          <label class="form-label">Company Name</label>
+          <div class="input-box">
+            <i class="fa-solid fa-building input-icon"></i>
+            <input
+              class="form-control"
+              [class.input-error]="hasFieldError('companyName')"
+              type="text"
+              [(ngModel)]="companyName"
+              placeholder="e.g. Acme Corp Industries"
+            />
+          </div>
+          <div class="error-msg" *ngIf="hasFieldError('companyName')">
+            {{ getFieldError("companyName") }}
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Admin Name</label>
+            <div class="input-box">
+              <i class="fa-solid fa-user input-icon"></i>
+              <input
+                class="form-control"
+                [class.input-error]="hasFieldError('userName')"
+                type="text"
+                [(ngModel)]="userName"
+                placeholder="John Doe"
+              />
+            </div>
+            <div class="error-msg" *ngIf="hasFieldError('userName')">
+              {{ getFieldError("userName") }}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <div class="input-box">
+              <i class="fa-solid fa-envelope input-icon"></i>
+              <input
+                class="form-control"
+                [class.input-error]="hasFieldError('email')"
+                type="email"
+                [(ngModel)]="email"
+                placeholder="john@acme.com"
+              />
+            </div>
+            <div class="error-msg" *ngIf="hasFieldError('email')">
+              {{ getFieldError("email") }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <div class="input-box">
+              <i class="fa-solid fa-phone input-icon"></i>
+              <input
+                class="form-control"
+                [class.input-error]="hasFieldError('phone')"
+                type="tel"
+                [(ngModel)]="phone"
+                placeholder="+1 (555) 000-0000"
+              />
+            </div>
+            <div class="error-msg" *ngIf="hasFieldError('phone')">
+              {{ getFieldError("phone") }}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Business Type</label>
+            <div class="input-box">
+              <i class="fa-solid fa-briefcase input-icon"></i>
+              <select
+                class="form-control form-select"
+                [class.input-error]="hasFieldError('businessTypeId')"
+                [(ngModel)]="businessTypeId"
+              >
+                <option [value]="0">Select type</option>
+                <option *ngFor="let b of businessTypes" [value]="b.id">
+                  {{ b.name }}
+                </option>
+              </select>
+            </div>
+            <div class="error-msg" *ngIf="hasFieldError('businessTypeId')">
+              {{ getFieldError("businessTypeId") }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Industry Type</label>
+          <div class="input-box">
+            <i class="fa-solid fa-industry input-icon"></i>
+            <select
+              class="form-control form-select"
+              [class.input-error]="hasFieldError('industryTypeId')"
+              [(ngModel)]="industryTypeId"
+            >
+              <option [value]="0">Select industry</option>
+              <option *ngFor="let i of industryTypes" [value]="i.id">
+                {{ i.name }}
+              </option>
+            </select>
+          </div>
+          <div class="error-msg" *ngIf="hasFieldError('industryTypeId')">
+            {{ getFieldError("industryTypeId") }}
+          </div>
+        </div>
+
+        <div class="tab-actions">
+          <span></span>
+          <button class="btn-primary tab-next" (click)="nextTab()">
+            Next &nbsp;<i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           TAB 2 — LOCATION
+      ══════════════════════════════ -->
+      <div class="tab-body" *ngIf="activeTab === 1">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Country</label>
+            <div class="input-box">
+              <i class="fa-solid fa-globe input-icon"></i>
+              <select
+                class="form-control form-select"
+                [class.input-error]="hasFieldError('countryId')"
+                [(ngModel)]="countryId"
+                (change)="onCountryChange()"
+              >
+                <option [value]="0">Select country</option>
+                <option *ngFor="let c of countries" [value]="c.id">
+                  {{ c.name }}
+                </option>
+              </select>
+            </div>
+            <div class="error-msg" *ngIf="hasFieldError('countryId')">
+              {{ getFieldError("countryId") }}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">State</label>
+            <div class="input-box">
+              <i class="fa-solid fa-map input-icon"></i>
+              <select
+                class="form-control form-select"
+                [(ngModel)]="stateId"
+                (change)="onStateChange()"
+                [disabled]="states.length === 0"
+              >
+                <option [value]="0">
+                  {{
+                    states.length === 0
+                      ? "Select country first"
+                      : "Select state"
+                  }}
+                </option>
+                <option *ngFor="let s of states" [value]="s.id">
+                  {{ s.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">City</label>
+            <div class="input-box">
+              <i class="fa-solid fa-city input-icon"></i>
+              <select
+                class="form-control form-select"
+                [(ngModel)]="cityId"
+                [disabled]="cities.length === 0"
+              >
+                <option [value]="0">
+                  {{
+                    cities.length === 0 ? "Select state first" : "Select city"
+                  }}
+                </option>
+                <option *ngFor="let c of cities" [value]="c.id">
+                  {{ c.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Language</label>
+            <div class="input-box">
+              <i class="fa-solid fa-language input-icon"></i>
+              <select class="form-control form-select" [(ngModel)]="languageId">
+                <option [value]="0">Select language</option>
+                <option *ngFor="let l of languages" [value]="l.id">
+                  {{ l.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Currency</label>
+          <div class="input-box">
+            <i class="fa-solid fa-coins input-icon"></i>
+            <select class="form-control form-select" [(ngModel)]="currencyId">
+              <option [value]="0">Select currency</option>
+              <option *ngFor="let c of currencies" [value]="c.id">
+                {{ c.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="tab-actions">
+          <button class="btn-outline" (click)="prevTab()">
+            <i class="fa-solid fa-arrow-left"></i>&nbsp; Back
+          </button>
+          <button class="btn-primary tab-next" (click)="nextTab()">
+            Next &nbsp;<i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           TAB 3 — SECURITY
+      ══════════════════════════════ -->
+      <div class="tab-body" *ngIf="activeTab === 2">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="input-box">
+              <i class="fa-solid fa-lock input-icon"></i>
+              <input
+                class="form-control"
+                [class.input-error]="hasFieldError('password')"
+                [type]="showPassword ? 'text' : 'password'"
+                [(ngModel)]="password"
+                placeholder="••••••••"
+              />
+              <span
+                class="password-toggle"
+                (click)="showPassword = !showPassword"
+              >
+                <i
+                  [class]="
+                    showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'
+                  "
+                ></i>
+              </span>
+            </div>
+            <div class="error-msg" *ngIf="hasFieldError('password')">
+              {{ getFieldError("password") }}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm Password</label>
+            <div class="input-box">
+              <i class="fa-solid fa-lock input-icon"></i>
+              <input
+                class="form-control"
+                [class.input-error]="hasFieldError('confirmPassword')"
+                [type]="showConfirm ? 'text' : 'password'"
+                [(ngModel)]="confirmPassword"
+                placeholder="••••••••"
+              />
+              <span
+                class="password-toggle"
+                (click)="showConfirm = !showConfirm"
+              >
+                <i
+                  [class]="
+                    showConfirm ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'
+                  "
+                ></i>
+              </span>
+            </div>
+            <div class="error-msg" *ngIf="hasFieldError('confirmPassword')">
+              {{ getFieldError("confirmPassword") }}
+            </div>
+          </div>
+        </div>
+
+        <div class="remember-row">
+          <label class="form-check">
+            <input type="checkbox" [(ngModel)]="agreedToTerms" />
+            I agree to the
+            <a class="register-link" href="#">Terms of Service</a
+            >&nbsp;and&nbsp;<a class="register-link" href="#">Privacy Policy</a
+            >.
+          </label>
+        </div>
+
+        <div class="tab-actions">
+          <button class="btn-outline" (click)="prevTab()">
+            <i class="fa-solid fa-arrow-left"></i>&nbsp; Back
+          </button>
+          <button
+            class="btn-primary"
+            [disabled]="isSubmitting"
+            (click)="register()"
+          >
+            <span *ngIf="!isSubmitting"
+              >Create Workspace &nbsp;<i class="fa-solid fa-arrow-right"></i
+            ></span>
+            <span *ngIf="isSubmitting" class="loading-spinner">
+              <i class="fa-solid fa-circle-notch fa-spin"></i> Creating…
+            </span>
+          </button>
+        </div>
+
+        <!-- Sign in -->
+        <div class="register-section">
+          Already have an account?
+          <a class="register-link" (click)="goToLogin()">Sign in here</a>
+        </div>
+
+        <!-- Trust badges -->
+        <div class="trust-badges">
+          <span><i class="fa-solid fa-shield-halved"></i> GDPR Compliant</span>
+          <span><i class="fa-solid fa-lock"></i> SSL Secured</span>
+          <span><i class="fa-solid fa-cloud"></i> 99.9% Uptime</span>
+        </div>
+      </div>
+    </div>
+    <!-- /reg-card -->
+  </div>
+  <!-- /right-panel -->
 </div>
+<!-- /reg-shell -->

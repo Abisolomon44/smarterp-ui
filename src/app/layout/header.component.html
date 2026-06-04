@@ -1,16 +1,36 @@
 <header class="app-header">
-  <div class="brand">
-    <button class="btn-toggle" (click)="$any($event).stopPropagation(); toggle.emit()" aria-label="Toggle sidebar">
-      <span class="hamburger"></span>
+  <div class="header-left">
+    <button class="btn-toggle" (click)="toggle.emit()">
+      <i class="fa-solid fa-bars"></i>
     </button>
-    <a routerLink="/dashboard" class="logo">SmartERP</a>
+
+    <div class="brand">
+      <div class="brand-icon">
+        <i class="fa-solid fa-cube"></i>
+      </div>
+
+      <div class="brand-info">
+        <h3>SmartERP</h3>
+        <span>Enterprise Suite</span>
+      </div>
+    </div>
   </div>
-  <nav class="nav">
-    <a routerLink="/dashboard"><i class="fa-solid fa-chart-simple icon"></i><span class="label">Dashboard</span></a>
-    <button class="theme-btn" (click)="$any($event).stopPropagation(); onThemeToggle()" aria-label="Toggle theme">
+
+  <div class="header-right">
+
+    <button class="icon-btn" (click)="onThemeToggle()">
       <i class="fa-solid" [ngClass]="isDark ? 'fa-sun' : 'fa-moon'"></i>
     </button>
-    <a routerLink="/login" class="logout"><i class="fa-solid fa-right-from-bracket icon"></i><span class="label">Logout</span></a>
-  </nav>
-</header>
 
+    <a routerLink="/dashboard" class="nav-btn">
+      <i class="fa-solid fa-chart-column"></i>
+      Dashboard
+    </a>
+
+    <a routerLink="/login" class="logout-btn">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      Logout
+    </a>
+
+  </div>
+</header>

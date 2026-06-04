@@ -1,73 +1,115 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-
-declare const google: any;
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
-  email = '';
-  password = '';
+  email      = '';
+  password   = '';
+  rememberMe = false;
+
+  showPassword = false;
+  isLoading    = false;
+  loginError   = '';
 
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.initGoogle();
+  /* ── Toggle password visibility ── */
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
   }
 
-  private initGoogle() {
-    if (typeof google === 'undefined') {
-      setTimeout(() => this.initGoogle(), 100);
+  /* ── Clear error on any field change ── */
+  clearError(): void {
+    this.loginError = '';
+  }
+
+  /* ── Main login ── */
+  login(): void {
+
+    this.loginError = '';
+
+    if (!this.email || !this.password) {
+      this.loginError = 'Please enter your email and password.';
       return;
     }
 
-    google.accounts.id.initialize({
-      client_id: '633452252184-7ucro3c6f6bci51hkq6eoa704s265976.apps.googleusercontent.com',
+    this.isLoading = true;
 
-      // 🔥 FINAL FIX FOR localhost (FedCM issue)
-      use_fedcm_for_prompt: false,
-
-      callback: (response: any) => {
-        this.authService.googleLogin(response.credential).subscribe({
-          next: (res: any) => {
-            this.authService.saveToken(res.token);
-            this.router.navigate(['/dashboard']);
-          },
-          error: () => alert('Google login failed')
-        });
-      }
-    });
-  }
-
-  googleLogin() {
-    google.accounts.id.prompt(); // ✅ Correct way
-  }
-
-  login() {
     this.authService.login({
-      email: this.email,
+      email:    this.email,
       password: this.password
     }).subscribe({
+
       next: (res: any) => {
+
         this.authService.saveToken(res.token);
+
+        const storage = this.rememberMe ? localStorage : sessionStorage;
+        storage.setItem('userId',    res.userId);
+        storage.setItem('companyId', res.companyId);
+
         this.router.navigate(['/dashboard']);
       },
-      error: () => alert('Invalid email or password')
+
+      error: (err: any) => {
+        this.isLoading  = false;
+        this.loginError =
+          err?.error?.message ?? 'Invalid email or password. Please try again.';
+      }
+
     });
+
   }
 
-  goToRegister() {
+  /* ── Google OAuth (wire up real flow here) ── */
+  googleLogin(): void {
+    console.log('Google Login triggered');
+    // TODO: this.authService.googleLogin()
+  }
+
+  /* ── Microsoft SSO (wire up real flow here) ── */
+  microsoftLogin(): void {
+    console.log('Microsoft SSO triggered');
+    // TODO: this.authService.microsoftLogin()
+  }
+
+  /* ── Navigation helpers ── */
+  goToRegister(): void {
     this.router.navigate(['/register']);
   }
+  goToplans(): void {
+    this.router.navigate(['/plans']);
+  }
+
+
+
+  forgotPassword(): void {
+    this.router.navigate(['/forgot-password']);
+  }
+
+  openPrivacy(): void {
+    window.open('/privacy', '_blank');
+  }
+
+  openTerms(): void {
+    window.open('/terms', '_blank');
+  }
+
+  openSupport(): void {
+    window.open('/support', '_blank');
+  }
+
 }
