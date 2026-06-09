@@ -1,9 +1,16 @@
 <aside class="app-sidebar" [class.collapsed]="collapsed">
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <i class="fa-solid fa-layer-group"></i>
+    </div>
 
+    <div class="smart-brand-name">
+      SmartERP Cloud
+      <span>Enterprise Edition</span>
+    </div>
+  </div>
   <nav class="sidebar-nav">
-
     <ul>
-
       <!-- Dashboard -->
       <li class="nav-item">
         <a
@@ -11,19 +18,16 @@
           routerLink="/dashboard"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
-          (click)="navClick($event)">
-
+          (click)="navClick($event)"
+        >
           <i class="fa-solid fa-chart-line nav-icon"></i>
           <span class="nav-label">Dashboard</span>
-
         </a>
       </li>
 
       <!-- Administration -->
       <li>
-        <p class="nav-section-title">
-          Administration
-        </p>
+        <p class="nav-section-title">Administration</p>
       </li>
 
       <li class="nav-item">
@@ -31,19 +35,16 @@
           class="nav-link"
           routerLink="/dashboard/administration"
           routerLinkActive="active"
-          (click)="navClick($event)">
-
+          (click)="navClick($event)"
+        >
           <i class="fa-solid fa-user-shield nav-icon"></i>
           <span class="nav-label">Administration</span>
-
         </a>
       </li>
 
       <!-- System -->
       <li>
-        <p class="nav-section-title">
-          System
-        </p>
+        <p class="nav-section-title">System</p>
       </li>
 
       <li class="nav-item">
@@ -51,37 +52,25 @@
           class="nav-link"
           routerLink="/dashboard/settings"
           routerLinkActive="active"
-          (click)="navClick($event)">
-
+          (click)="navClick($event)"
+        >
           <i class="fa-solid fa-gear nav-icon"></i>
           <span class="nav-label">Settings</span>
-
         </a>
       </li>
-
     </ul>
-
   </nav>
 
   <div class="sidebar-footer">
-
-    <div class="footer-avatar">
-      A
-    </div>
+    <div class="footer-avatar">A</div>
 
     <div class="sidebar-footer-info">
-
-      <div class="footer-name">
-        Administrator
-      </div>
+      <div class="footer-name">Administrator</div>
 
       <div class="footer-status">
         <span class="dot"></span>
         SmartERP v1.0
       </div>
-
     </div>
-
   </div>
-
 </aside>

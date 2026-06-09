@@ -37,13 +37,21 @@ export class DefaultLayoutComponent
   isCollapsed = false;
   sidebarOpen = false;
 
+  // Breadcrumb Page Name
+  currentPage = 'Dashboard';
+
   private routerSub?: Subscription;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
 
     this.loadTheme();
+
+    // Initial breadcrumb load
+    this.updateCurrentPage();
 
     this.routerSub = this.router.events
       .pipe(
@@ -51,6 +59,10 @@ export class DefaultLayoutComponent
       )
       .subscribe(() => {
 
+        // Update breadcrumb
+        this.updateCurrentPage();
+
+        // Close mobile sidebar after navigation
         if (window.innerWidth <= 920) {
           this.closeSidebarOverlay();
         }
@@ -59,14 +71,50 @@ export class DefaultLayoutComponent
 
   }
 
+  private updateCurrentPage(): void {
+
+    const segments = this.router.url
+      .split('/')
+      .filter(segment => segment);
+
+    this.currentPage =
+      segments.length > 1
+        ? this.formatPageName(
+            segments[segments.length - 1]
+          )
+        : 'Dashboard';
+
+  }
+
+  private formatPageName(
+    text: string
+  ): string {
+
+    return text
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, char =>
+        char.toUpperCase()
+      );
+
+  }
+
   private loadTheme(): void {
 
-    const theme = localStorage.getItem('theme');
+    const theme =
+      localStorage.getItem('theme');
 
     if (theme === 'dark') {
-      document.body.classList.add('dark-mode');
+
+      document.body.classList.add(
+        'dark-mode'
+      );
+
     } else {
-      document.body.classList.remove('dark-mode');
+
+      document.body.classList.remove(
+        'dark-mode'
+      );
+
     }
 
   }
@@ -74,7 +122,9 @@ export class DefaultLayoutComponent
   toggleTheme(): void {
 
     const darkMode =
-      document.body.classList.toggle('dark-mode');
+      document.body.classList.toggle(
+        'dark-mode'
+      );
 
     localStorage.setItem(
       'theme',
@@ -85,11 +135,13 @@ export class DefaultLayoutComponent
 
   onToggle(): void {
 
-    const isMobile = window.innerWidth <= 920;
+    const isMobile =
+      window.innerWidth <= 920;
 
     if (isMobile) {
 
-      this.sidebarOpen = !this.sidebarOpen;
+      this.sidebarOpen =
+        !this.sidebarOpen;
 
       console.log(
         'Sidebar Mobile:',
@@ -98,7 +150,8 @@ export class DefaultLayoutComponent
 
     } else {
 
-      this.isCollapsed = !this.isCollapsed;
+      this.isCollapsed =
+        !this.isCollapsed;
 
       console.log(
         'Sidebar Collapsed:',

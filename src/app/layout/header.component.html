@@ -1,36 +1,38 @@
+<!-- header.component.html -->
 <header class="app-header">
   <div class="header-left">
-    <button class="btn-toggle" (click)="toggle.emit()">
+    <button class="btn-toggle" (click)="toggle.emit()" aria-label="Toggle sidebar">
       <i class="fa-solid fa-bars"></i>
     </button>
-
-    <div class="brand">
-      <div class="brand-icon">
-        <i class="fa-solid fa-cube"></i>
-      </div>
-
-      <div class="brand-info">
-        <h3>SmartERP</h3>
-        <span>Enterprise Suite</span>
-      </div>
+    <span class="brand-name">MyERP</span>
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" placeholder="Search administrative tasks..." class="search-input" aria-label="Search" />
     </div>
   </div>
-
   <div class="header-right">
-
-    <button class="icon-btn" (click)="onThemeToggle()">
+    <button class="icon-btn" aria-label="Notifications">
+      <i class="fa-solid fa-bell"></i>
+      <span class="notif-badge" aria-label="3 notifications"></span>
+    </button>
+    <button class="icon-btn" aria-label="App grid">
+      <i class="fa-solid fa-border-all"></i>
+    </button>
+    <button class="icon-btn" (click)="onThemeToggle()" aria-label="Toggle theme">
       <i class="fa-solid" [ngClass]="isDark ? 'fa-sun' : 'fa-moon'"></i>
     </button>
-
-    <a routerLink="/dashboard" class="nav-btn">
-      <i class="fa-solid fa-chart-column"></i>
-      Dashboard
-    </a>
-
-    <a routerLink="/login" class="logout-btn">
+    <div class="h-divider"></div>
+    <div class="user-block">
+      <div class="user-info">
+        <p class="user-name">Admin User</p>
+        <span class="user-role">Super Administrator</span>
+      </div>
+      <div class="user-avatar" aria-hidden="true">AU</div>
+    </div>
+    <div class="h-divider"></div>
+    <button class="logout-btn" (click)="onLogout()" aria-label="Logout">
       <i class="fa-solid fa-right-from-bracket"></i>
-      Logout
-    </a>
-
+      <span>Logout</span>
+    </button>
   </div>
 </header>
