@@ -1,64 +1,324 @@
 <div class="workspace-page">
 
+  <!-- Header -->
   <div class="page-header">
-    <h1>Administration Workspace</h1>
-    <p>
-      Manage users, roles and security settings.
-    </p>
+
+    <div class="page-left">
+
+      <button
+        class="back-btn"
+        (click)="goBack()">
+
+        <lucide-icon
+          [img]="icons.back"
+          [size]="18">
+        </lucide-icon>
+
+      </button>
+
+      <div>
+
+        <div class="header-title">
+
+          <lucide-icon
+            [img]="icons.dashboard"
+            [size]="28">
+          </lucide-icon>
+
+          <h1>
+            Administration Workspace
+          </h1>
+
+        </div>
+
+        <p>
+          Manage users, roles, modules and security settings.
+        </p>
+
+      </div>
+
+    </div>
+
   </div>
 
-  <div class="workspace-grid">
+  <!-- KPI Dashboard -->
 
-    <a
-      class="workspace-card"
-      routerLink="/dashboard/administration/users/create">
+  <div class="kpi-grid">
 
-      <div class="card-icon users">
-        <i class="fa-solid fa-users"></i>
-      </div>
+    <div class="kpi-card">
+      <span>Roles</span>
+      <h2>{{ dashboard?.roles || 0 }}</h2>
+    </div>
 
-      <div class="card-content">
-        <h3>Users</h3>
-        <p>Manage system users and access.</p>
-      </div>
+    <div class="kpi-card">
+      <span>User Roles</span>
+      <h2>{{ dashboard?.userRoles || 0 }}</h2>
+    </div>
 
-      <i class="fa-solid fa-arrow-right card-arrow"></i>
+    <div class="kpi-card">
+      <span>Workspaces</span>
+      <h2>{{ dashboard?.workspaces || 0 }}</h2>
+    </div>
 
-    </a>
+    <div class="kpi-card">
+      <span>Domains</span>
+      <h2>{{ dashboard?.domains || 0 }}</h2>
+    </div>
 
-    <a
-      class="workspace-card"
-      routerLink="/dashboard/administration/roles">
+    <div class="kpi-card">
+      <span>Modules</span>
+      <h2>{{ dashboard?.modules || 0 }}</h2>
+    </div>
 
-      <div class="card-icon roles">
-        <i class="fa-solid fa-user-shield"></i>
-      </div>
+    <div class="kpi-card">
+      <span>Sub Modules</span>
+      <h2>{{ dashboard?.subModules || 0 }}</h2>
+    </div>
 
-      <div class="card-content">
-        <h3>Roles</h3>
-        <p>Manage user roles and hierarchy.</p>
-      </div>
+  </div>
 
-      <i class="fa-solid fa-arrow-right card-arrow"></i>
+  <!-- Security & Access -->
 
-    </a>
+  <div class="workspace-section">
+<div class="section-header">
 
-    <a
-      class="workspace-card"
-      routerLink="/dashboard/administration/permissions">
+  <div class="section-title">
 
-      <div class="card-icon permissions">
-        <i class="fa-solid fa-lock"></i>
-      </div>
+    <lucide-icon
+      [img]="icons.security"
+      [size]="18">
+    </lucide-icon>
 
-      <div class="card-content">
-        <h3>Permissions</h3>
-        <p>Control module and page access.</p>
-      </div>
+    <h2>
+      Security & Access
+    </h2>
 
-      <i class="fa-solid fa-arrow-right card-arrow"></i>
+  </div>
 
-    </a>
+</div>
+
+    <div class="workspace-grid">
+
+      <a
+        *ngFor="let card of securityCards"
+        class="workspace-card"
+        [routerLink]="card.route">
+
+        <div
+          class="card-icon"
+          [ngClass]="card.iconClass">
+
+          <lucide-icon
+            [img]="card.icon"
+            [size]="22">
+          </lucide-icon>
+
+        </div>
+
+        <div class="card-content">
+
+          <h3>{{ card.title }}</h3>
+
+          <p>{{ card.description }}</p>
+
+        </div>
+
+        <div class="card-arrow">
+
+          <lucide-icon
+            [img]="icons.chevronRight"
+            [size]="18">
+          </lucide-icon>
+
+        </div>
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- Organization -->
+
+  <div class="workspace-section">
+<div class="section-header">
+
+  <div class="section-title">
+
+    <lucide-icon
+      [img]="icons.organization"
+      [size]="18">
+    </lucide-icon>
+
+    <h2>
+      Organization
+    </h2>
+
+  </div>
+
+</div>
+
+    <div class="workspace-grid">
+
+      <a
+        *ngFor="let card of organizationCards"
+        class="workspace-card"
+        [routerLink]="card.route">
+
+        <div
+          class="card-icon"
+          [ngClass]="card.iconClass">
+
+          <lucide-icon
+            [img]="card.icon"
+            [size]="22">
+          </lucide-icon>
+
+        </div>
+
+        <div class="card-content">
+
+          <h3>{{ card.title }}</h3>
+
+          <p>{{ card.description }}</p>
+
+        </div>
+
+        <div class="card-arrow">
+
+          <lucide-icon
+            [img]="icons.chevronRight"
+            [size]="18">
+          </lucide-icon>
+
+        </div>
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- Navigation -->
+
+  <div class="workspace-section">
+<div class="section-header">
+
+  <div class="section-title">
+
+    <lucide-icon
+      [img]="icons.navigation"
+      [size]="18">
+    </lucide-icon>
+
+    <h2>
+      Navigation
+    </h2>
+
+  </div>
+
+</div>
+
+    <div class="workspace-grid">
+
+      <a
+        *ngFor="let card of navigationCards"
+        class="workspace-card"
+        [routerLink]="card.route">
+
+        <div
+          class="card-icon"
+          [ngClass]="card.iconClass">
+
+          <lucide-icon
+            [img]="card.icon"
+            [size]="22">
+          </lucide-icon>
+
+        </div>
+
+        <div class="card-content">
+
+          <h3>{{ card.title }}</h3>
+
+          <p>{{ card.description }}</p>
+
+        </div>
+
+        <div class="card-arrow">
+
+          <lucide-icon
+            [img]="icons.chevronRight"
+            [size]="18">
+          </lucide-icon>
+
+        </div>
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- Configuration -->
+
+  <div class="workspace-section">
+
+<div class="section-header">
+
+  <div class="section-title">
+
+    <lucide-icon
+      [img]="icons.configuration"
+      [size]="18">
+    </lucide-icon>
+
+    <h2>
+      Configuration
+    </h2>
+
+  </div>
+
+</div>
+
+    <div class="workspace-grid">
+
+      <a
+        *ngFor="let card of configurationCards"
+        class="workspace-card"
+        [routerLink]="card.route">
+
+        <div
+          class="card-icon"
+          [ngClass]="card.iconClass">
+
+          <lucide-icon
+            [img]="card.icon"
+            [size]="22">
+          </lucide-icon>
+
+        </div>
+
+        <div class="card-content">
+
+          <h3>{{ card.title }}</h3>
+
+          <p>{{ card.description }}</p>
+
+        </div>
+
+        <div class="card-arrow">
+
+          <lucide-icon
+            [img]="icons.chevronRight"
+            [size]="18">
+          </lucide-icon>
+
+        </div>
+
+      </a>
+
+    </div>
 
   </div>
 
