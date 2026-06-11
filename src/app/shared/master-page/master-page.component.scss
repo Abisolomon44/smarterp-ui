@@ -1,0 +1,1363 @@
+/* ===================================================
+   MASTER PAGE
+=================================================== */
+
+.master-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ===================================================
+   HEADER
+=================================================== */
+
+.module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.module-info {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.module-icon {
+  width: 64px;
+  height: 64px;
+
+  border-radius: 18px;
+
+  background: #eef2ff;
+  color: #4f46e5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.breadcrumb {
+  display: flex;
+  gap: 8px;
+
+  font-size: 13px;
+  color: #94a3b8;
+
+  margin-bottom: 6px;
+}
+
+.module-info h1 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.module-info p {
+  margin: 6px 0;
+  color: #64748b;
+}
+
+.module-info small {
+  color: #94a3b8;
+}
+
+/* ===================================================
+   KPI CARDS
+=================================================== */
+
+.stats-grid {
+  display: grid;
+  gap: 20px;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.stat-card {
+  background: white;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 18px;
+
+  padding: 24px;
+
+  transition: .25s;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 10px 25px rgba(0,0,0,.06);
+}
+
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-icon {
+  width: 46px;
+  height: 46px;
+
+  border-radius: 12px;
+
+  background: #eef2ff;
+  color: #4f46e5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-card h2 {
+  margin: 18px 0 8px;
+  font-size: 38px;
+  font-weight: 700;
+}
+
+.stat-card small {
+  color: #64748b;
+}
+
+/* ===================================================
+   TOOLBAR
+=================================================== */
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.search-box {
+  width: 380px;
+  height: 46px;
+
+  padding: 0 14px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+
+  background: white;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ===================================================
+   BUTTONS
+=================================================== */
+
+.btn-primary {
+  height: 44px;
+
+  border: none;
+
+  padding: 0 18px;
+
+  border-radius: 10px;
+
+  background: #4f46e5;
+  color: white;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary:hover {
+  background: #4338ca;
+}
+
+.btn-outline {
+  height: 44px;
+
+  border: 1px solid #e2e8f0;
+
+  background: white;
+
+  border-radius: 10px;
+
+  padding: 0 16px;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-outline:hover {
+  background: #f8fafc;
+}
+
+.btn-danger {
+  height: 44px;
+
+  border: 1px solid #ef4444;
+
+  background: white;
+
+  color: #ef4444;
+
+  border-radius: 10px;
+
+  padding: 0 16px;
+}
+
+/* ===================================================
+   TABLE
+=================================================== */
+
+.table-card {
+  background: white;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 18px;
+
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #f8fafc;
+}
+
+th {
+  padding: 16px;
+
+  text-align: left;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #64748b;
+
+  border-bottom: 1px solid #e2e8f0;
+}
+
+td {
+  padding: 16px;
+
+  border-bottom: 1px solid #f1f5f9;
+}
+
+tbody tr {
+  transition: .2s;
+}
+
+tbody tr:hover {
+  background: #fafafa;
+}
+
+/* ===================================================
+   USER CELL
+=================================================== */
+
+.user-cell {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  background: #eef2ff;
+  color: #4f46e5;
+
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.name {
+  font-weight: 600;
+}
+
+.email {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* ===================================================
+   STATUS
+=================================================== */
+
+.status {
+  padding: 6px 12px;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status.active {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.status.inactive {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* ===================================================
+   ACTION BUTTONS
+=================================================== */
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 8px;
+
+  background: white;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background: #f8fafc;
+}
+
+.icon-btn.danger {
+  color: #ef4444;
+}
+
+/* ===================================================
+   ENTRY PAGE
+=================================================== */
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.entry-left {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.back-btn {
+  width: 48px;
+  height: 48px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+
+  background: white;
+
+  cursor: pointer;
+}
+
+.entry-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* ===================================================
+   TABS
+=================================================== */
+
+.tabs {
+  display: flex;
+  gap: 28px;
+
+  border-bottom: 1px solid #e2e8f0;
+
+  margin-bottom: 20px;
+}
+
+.tab {
+  border: none;
+  background: transparent;
+
+  padding: 14px 0;
+
+  cursor: pointer;
+
+  color: #64748b;
+}
+
+.tab.active {
+  color: #4f46e5;
+
+  border-bottom: 2px solid #4f46e5;
+}
+
+/* ===================================================
+   ENTRY FORM
+=================================================== */
+
+.entry-grid {
+  display: grid;
+  gap: 20px;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+}
+
+.form-card {
+  background: white;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 18px;
+
+  padding: 24px;
+}
+
+.form-card h3 {
+  margin-bottom: 20px;
+}
+
+.form-grid {
+  display: grid;
+  gap: 18px;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  height: 42px;
+
+  border: 1px solid #dbe2ea;
+
+  border-radius: 10px;
+
+  padding: 0 12px;
+}
+
+.form-field textarea {
+  min-height: 100px;
+  padding-top: 10px;
+}
+
+/* ===================================================
+   RESPONSIVE
+=================================================== */
+
+@media(max-width:1024px){
+
+  .entry-grid{
+    grid-template-columns:1fr;
+  }
+
+  .toolbar{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .search-box{
+    width:100%;
+  }
+
+}
+
+@media(max-width:768px){
+
+  .stats-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+/* ===================================================
+   EXPORT DROPDOWN
+=================================================== */
+
+.export-dropdown {
+  position: relative;
+}
+
+.export-menu {
+  position: absolute;
+  top: 48px;
+  right: 0;
+
+  min-width: 180px;
+
+  background: white;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  display: none;
+
+  z-index: 1000;
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.08);
+}
+
+.export-dropdown:hover .export-menu {
+  display: block;
+}
+
+.export-menu button {
+  width: 100%;
+
+  border: none;
+
+  background: white;
+
+  text-align: left;
+
+  padding: 12px 16px;
+
+  cursor: pointer;
+}
+
+.export-menu button:hover {
+  background: #f8fafc;
+}
+
+/* ===================================================
+   CHECKBOX
+=================================================== */
+
+input[type="checkbox"] {
+
+  width: 18px;
+  height: 18px;
+
+  cursor: pointer;
+
+  accent-color: #4f46e5;
+}
+
+/* ===================================================
+   TABLE SCROLL
+=================================================== */
+
+.table-card {
+  overflow-x: auto;
+}
+
+table {
+  min-width: 1000px;
+}
+
+/* ===================================================
+   STICKY HEADER
+=================================================== */
+
+thead th {
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 5;
+
+  background: #f8fafc;
+}
+
+/* ===================================================
+   TABLE ACTIONS
+=================================================== */
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn svg {
+  pointer-events: none;
+}
+
+/* ===================================================
+   PAGINATION
+=================================================== */
+
+.pagination {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-top: 20px;
+}
+
+.pagination-info {
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+.pagination-buttons {
+
+  display: flex;
+
+  gap: 8px;
+}
+
+/* ===================================================
+   ENTRY PAGE
+=================================================== */
+
+.entry-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 20px;
+}
+
+.entry-title h2 {
+
+  margin: 6px 0;
+
+  font-size: 28px;
+}
+
+.entry-title p {
+
+  color: #64748b;
+}
+
+/* ===================================================
+   FORM SECTIONS
+=================================================== */
+
+.section-title {
+
+  font-size: 16px;
+
+  font-weight: 600;
+
+  margin-bottom: 16px;
+
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.form-field label {
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: #475569;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+
+  border-color: #4f46e5;
+
+  box-shadow:
+    0 0 0 3px rgba(79,70,229,.1);
+
+  outline: none;
+}
+
+/* ===================================================
+   TOGGLE
+=================================================== */
+
+.toggle-container {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+/* ===================================================
+   FORM ACTIONS
+=================================================== */
+
+.form-actions {
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  margin-top: 24px;
+
+  padding-top: 24px;
+
+  border-top: 1px solid #e2e8f0;
+}
+
+/* ===================================================
+   SAVE BAR
+=================================================== */
+
+.save-bar {
+
+  position: sticky;
+
+  bottom: 0;
+
+  background: white;
+
+  border-top: 1px solid #e2e8f0;
+
+  padding: 16px;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  z-index: 10;
+}
+
+/* ===================================================
+   LOADING
+=================================================== */
+
+.loading-container {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  min-height: 250px;
+}
+
+.spinner {
+
+  width: 42px;
+  height: 42px;
+
+  border: 4px solid #e2e8f0;
+
+  border-top-color: #4f46e5;
+
+  border-radius: 50%;
+
+  animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+/* ===================================================
+   EMPTY STATE
+=================================================== */
+
+.empty-state {
+
+  text-align: center;
+
+  padding: 60px 20px;
+
+  color: #94a3b8;
+}
+
+.empty-state h3 {
+
+  margin-top: 12px;
+}
+
+/* ===================================================
+   MOBILE
+=================================================== */
+
+@media(max-width:768px){
+
+  .module-header,
+  .toolbar,
+  .entry-header {
+
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .toolbar-actions {
+
+    flex-wrap: wrap;
+  }
+
+  .search-box {
+
+    width: 100%;
+  }
+
+  .module-info {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+}
+
+.page-actions {
+
+  display: flex;
+
+  justify-content: flex-end;
+
+}
+
+.table-toolbar {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 16px 20px;
+
+  border-bottom: 1px solid #e2e8f0;
+
+}
+
+.search-box {
+
+  width: 320px;
+
+  height: 42px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 10px;
+
+  padding: 0 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+}
+
+.search-box input {
+
+  width: 100%;
+
+  border: none;
+
+  outline: none;
+
+}
+
+.toolbar-actions {
+
+  display: flex;
+
+  gap: 10px;
+
+}
+
+.table-wrapper {
+
+  max-height: 550px;
+
+  overflow-y: auto;
+
+  overflow-x: auto;
+
+}
+
+thead th {
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 10;
+
+  background: #f8fafc;
+
+}
+
+.pagination-bar {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 16px 20px;
+
+  border-top: 1px solid #e2e8f0;
+
+  background: white;
+
+}
+
+.page-size {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+}
+
+.page-size select {
+
+  height: 36px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 8px;
+
+  padding: 0 10px;
+
+}
+
+.pagination-actions {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+}
+
+/* ==========================================
+   ENTRY HEADER
+========================================== */
+
+.entry-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  margin-bottom: 20px;
+
+}
+
+.entry-header h2 {
+
+  margin: 8px 0 0;
+
+  font-size: 28px;
+
+  font-weight: 600;
+
+}
+
+.breadcrumb {
+
+  display: flex;
+
+  gap: 8px;
+
+  font-size: 13px;
+
+  color: #64748b;
+
+}
+
+/* ==========================================
+   TABS
+========================================== */
+
+.tabs {
+
+  display: flex;
+
+  gap: 4px;
+
+  border-bottom: 1px solid #e2e8f0;
+
+  margin-bottom: 24px;
+
+}
+
+.tab {
+
+  border: none;
+
+  background: transparent;
+
+  padding: 14px 20px;
+
+  cursor: pointer;
+
+  color: #64748b;
+
+  font-weight: 500;
+
+  border-bottom: 3px solid transparent;
+
+  transition: all .2s;
+
+}
+
+.tab:hover {
+
+  color: #4f46e5;
+
+}
+
+.tab.active {
+
+  color: #4f46e5;
+
+  border-bottom-color: #4f46e5;
+
+}
+
+/* ==========================================
+   FORM CARD
+========================================== */
+
+.form-card {
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 16px;
+
+  padding: 24px;
+
+  box-shadow:
+    0 1px 3px rgba(0,0,0,.04);
+
+}
+
+.form-card h3 {
+
+  margin: 0 0 20px;
+
+  font-size: 18px;
+
+  font-weight: 600;
+
+}
+
+/* ==========================================
+   FORM GRID
+========================================== */
+
+.form-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 20px;
+
+}
+
+.form-field {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+}
+
+.form-field label {
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  color: #334155;
+
+}
+
+/* ==========================================
+   INPUTS
+========================================== */
+
+.form-field input,
+
+.form-field select,
+
+.form-field textarea {
+
+  width: 100%;
+
+  height: 42px;
+
+  padding: 0 12px;
+
+  border: 1px solid #dbe2ea;
+
+  border-radius: 10px;
+
+  background: #fff;
+
+  font-size: 14px;
+
+  transition: .2s;
+
+}
+
+.form-field textarea {
+
+  height: 100px;
+
+  padding-top: 10px;
+
+}
+
+.form-field input:focus,
+
+.form-field select:focus,
+
+.form-field textarea:focus {
+
+  outline: none;
+
+  border-color: #4f46e5;
+
+  box-shadow:
+    0 0 0 3px rgba(79,70,229,.10);
+
+}
+
+/* ==========================================
+   TOGGLE
+========================================== */
+
+.toggle-field {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 12px;
+
+}
+
+.toggle-field input {
+
+  width: 18px;
+
+  height: 18px;
+
+}
+
+/* ==========================================
+   ACTIONS
+========================================== */
+
+.form-actions {
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  margin-bottom: 20px;
+
+}
+
+.btn-primary {
+
+  height: 42px;
+
+  padding: 0 18px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #4f46e5;
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  cursor: pointer;
+
+}
+
+.btn-primary:hover {
+
+  background: #4338ca;
+
+}
+
+.btn-outline {
+
+  height: 42px;
+
+  padding: 0 18px;
+
+  border: 1px solid #dbe2ea;
+
+  border-radius: 10px;
+
+  background: white;
+
+  cursor: pointer;
+
+}
+
+.btn-outline:hover {
+
+  background: #f8fafc;
+
+}
+
+/* ==========================================
+   AUDIT
+========================================== */
+
+.audit-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 20px;
+
+}
+
+.audit-grid label {
+
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 13px;
+
+  color: #64748b;
+
+}
+
+.audit-grid p {
+
+  margin: 0;
+
+  font-weight: 600;
+
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 768px) {
+
+  .form-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+  .audit-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+  .entry-header {
+
+    flex-direction: column;
+
+    gap: 16px;
+
+  }
+
+  .form-actions {
+
+    width: 100%;
+
+    justify-content: stretch;
+
+  }
+
+}

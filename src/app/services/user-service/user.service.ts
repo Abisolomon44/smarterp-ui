@@ -1,48 +1,80 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 import { environment } from '../../../config';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private apiUrl = `${environment.apiBaseUrl}/api/Auth`;
+  private apiUrl =
+    `${environment.apiBaseUrl}/api/Auth`;
 
   constructor(
     private http: HttpClient
   ) { }
 
-  saveUser(data: any): Observable<any> {
+  // ==========================
+  // SAVE USER
+  // ==========================
 
-    return this.http.post(
+  saveUser(
+    data: any
+  ): Observable<number> {
+
+    return this.http.post<number>(
       `${this.apiUrl}/user/save`,
       data
     );
+
   }
 
-  getUserById(id: number): Observable<any> {
+  // ==========================
+  // GET USER BY ID
+  // ==========================
 
-    return this.http.get(
+  getUserById(
+    id: number
+  ): Observable<any> {
+
+    return this.http.get<any>(
       `${this.apiUrl}/user/${id}`
     );
+
   }
 
-  getUsers(companyId: number): Observable<any> {
+  // ==========================
+  // GET USERS BY COMPANY
+  // ==========================
 
-    return this.http.get(
-      `${this.apiUrl}/user/list/${companyId}`
+  getUsers(
+    companyId: number
+  ): Observable<any[]> {
+
+    return this.http.get<any[]>(
+      `${this.apiUrl}/users/${companyId}`
     );
+
   }
 
-  deleteUser(id: number): Observable<any> {
+  // ==========================
+  // DELETE USER
+  // ==========================
 
-    return this.http.post(
+  deleteUser(
+    id: number
+  ): Observable<number> {
+
+    return this.http.post<number>(
       `${this.apiUrl}/user/save`,
       {
-        id: id,
+        id,
         isDelete: true
       }
     );
+
   }
+
 }

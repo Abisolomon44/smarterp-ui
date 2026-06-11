@@ -1,0 +1,420 @@
+<div class="master-page">
+  <!-- ========================= -->
+  <!-- LIST PAGE -->
+  <!-- ========================= -->
+
+  <ng-container *ngIf="!showEntry">
+    <!-- Header -->
+
+    <div class="module-header">
+      <div class="module-info">
+        <div class="module-icon">
+          <lucide-icon [img]="config.icon" [size]="28"> </lucide-icon>
+        </div>
+
+        <div>
+          <div class="breadcrumb">
+            <span>Administration</span>
+
+            <span>/</span>
+
+            <span>{{ config.title }}</span>
+          </div>
+
+          <h1>
+            {{ config.title }}
+          </h1>
+
+          <p>
+            {{ config.description }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+
+    <div class="stats-grid" *ngIf="config.stats?.length">
+      <div class="stat-card" *ngFor="let stat of config.stats">
+        <div class="stat-header">
+          <span>
+            {{ stat.label }}
+          </span>
+
+          <div class="stat-icon">
+            <lucide-icon [img]="stat.icon" [size]="18"> </lucide-icon>
+          </div>
+        </div>
+
+        <h2>
+          {{ stat.value }}
+        </h2>
+
+        <small>
+          {{ stat.description }}
+        </small>
+      </div>
+    </div>
+
+    <!-- Create Button -->
+
+    <div class="page-actions">
+      <button class="btn-primary" (click)="create()">
+        <lucide-icon [img]="icons.plus" [size]="16"> </lucide-icon>
+
+        Create User
+      </button>
+    </div>
+
+    <div class="table-card" *ngIf="!showEntry">
+      <!-- Toolbar -->
+
+      <div class="table-toolbar">
+        <div class="search-box">
+          <lucide-icon [img]="icons.search" [size]="18"> </lucide-icon>
+
+          <input
+            type="text"
+            [(ngModel)]="searchText"
+            placeholder="Search users..."
+          />
+        </div>
+
+        <div class="toolbar-actions">
+          <button class="btn-outline">
+            <lucide-icon [img]="icons.export" [size]="16"> </lucide-icon>
+
+            Export
+          </button>
+
+          <button class="btn-outline" (click)="refresh()">
+            <lucide-icon [img]="icons.refresh" [size]="16"> </lucide-icon>
+
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- Scrollable Table -->
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th width="50">
+                <input
+                  type="checkbox"
+                  [checked]="allSelected"
+                  (change)="toggleSelectAll()"
+                />
+              </th>
+
+              <th width="60">#</th>
+
+              <th *ngFor="let col of config.columns">
+                {{ col.header }}
+              </th>
+
+              <th width="120">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngIf="filteredData.length === 0">
+              <td colspan="100%" class="empty-grid">No records found</td>
+            </tr>
+
+            <tr *ngFor="let row of paginatedData; let i = index">
+              <!-- Select -->
+
+              <td>
+                <input
+                  type="checkbox"
+                  [(ngModel)]="row.selected"
+                  (change)="toggleRowSelection()"
+                />
+              </td>
+
+              <!-- Serial -->
+
+              <td>
+                {{ (currentPage - 1) * pageSize + i + 1 }}
+              </td>
+
+              <!-- Columns -->
+
+              <td *ngFor="let col of config.columns">
+                <!-- Display Name -->
+
+                <ng-container
+                  *ngIf="col.field === 'displayName'; else normalField"
+                >
+                  <div class="user-cell">
+                    <div class="avatar">
+                      {{ row.displayName?.substring(0, 2)?.toUpperCase() }}
+                    </div>
+
+                    <div>
+                      <div class="name">
+                        {{ row.displayName }}
+                      </div>
+
+                      <div class="email">
+                        {{ row.email }}
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <!-- Status -->
+
+                <ng-container *ngIf="col.field === 'isActive'">
+                  <span class="status active" *ngIf="row.isActive">
+                    Active
+                  </span>
+
+                  <span class="status inactive" *ngIf="!row.isActive">
+                    Inactive
+                  </span>
+                </ng-container>
+
+                <!-- Default -->
+
+                <ng-template #normalField>
+                  <span *ngIf="col.field !== 'isActive'">
+                    {{ row[col.field] }}
+                  </span>
+                </ng-template>
+              </td>
+
+              <!-- Actions -->
+
+              <td>
+                <div class="action-buttons">
+                  <button class="icon-btn" (click)="edit(row)">
+                    <lucide-icon [img]="icons.edit" [size]="16"> </lucide-icon>
+                  </button>
+
+                  <button class="icon-btn danger" (click)="delete(row)">
+                    <lucide-icon [img]="icons.delete" [size]="16">
+                    </lucide-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+
+      <div class="pagination-bar">
+        <div class="page-size">
+          <span> Rows Per Page </span>
+
+          <select [(ngModel)]="pageSize" (change)="changePageSize()">
+            <option *ngFor="let size of pageSizes" [value]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+
+        <div class="pagination-info">
+          Showing
+
+          {{ (currentPage - 1) * pageSize + 1 }}
+
+          -
+
+          {{
+            currentPage * pageSize > filteredData.length
+              ? filteredData.length
+              : currentPage * pageSize
+          }}
+
+          of
+
+          {{ filteredData.length }}
+        </div>
+
+        <div class="pagination-actions">
+          <button
+            class="btn-outline"
+            [disabled]="currentPage === 1"
+            (click)="previousPage()"
+          >
+            Previous
+          </button>
+
+          <span>
+            Page
+            {{ currentPage }}
+            /
+            {{ totalPages }}
+          </span>
+
+          <button
+            class="btn-outline"
+            [disabled]="currentPage === totalPages"
+            (click)="nextPage()"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+<ng-container *ngIf="showEntry">
+
+  <!-- Header -->
+
+  <div class="entry-header">
+
+    <div>
+
+      <div class="breadcrumb">
+
+        <span>Administration</span>
+
+        <span>/</span>
+
+        <span>{{ config.title }}</span>
+
+        <span>/</span>
+
+        <span>
+
+          {{ selectedId ? 'Edit' : 'Create' }}
+
+        </span>
+
+      </div>
+
+      <h2>
+
+        {{ selectedId ? 'Edit' : 'Create' }}
+
+        {{ config.title }}
+
+      </h2>
+
+    </div>
+
+    <div class="form-actions">
+
+      <button
+        class="btn-outline"
+        (click)="cancel()">
+
+        Cancel
+
+      </button>
+
+      <button
+        class="btn-primary"
+        (click)="save()">
+
+        <lucide-icon
+          [img]="icons.save"
+          [size]="16">
+        </lucide-icon>
+
+        Save
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- Tabs -->
+
+  <div class="tabs">
+
+    <button
+      *ngFor="let tab of config.tabs"
+      class="tab"
+      [class.active]="activeTab === tab.name"
+      (click)="setTab(tab.name)">
+
+      {{ tab.name }}
+
+    </button>
+
+  </div>
+
+  <!-- Form -->
+
+<div class="form-card">
+
+  <div class="form-grid">
+
+    <div
+      class="form-field"
+      *ngFor="let field of currentTabFields">
+
+      <label>
+
+        {{ field.label }}
+
+      </label>
+
+      <!-- TEXT -->
+
+      <input
+        *ngIf="field.type === 'text'"
+        type="text"
+        [(ngModel)]="userModel[field.name]" />
+
+      <!-- PASSWORD -->
+
+      <input
+        *ngIf="field.type === 'password'"
+        type="password"
+        [(ngModel)]="userModel[field.name]" />
+
+      <!-- DROPDOWN -->
+
+      <select
+        *ngIf="field.type === 'dropdown'"
+        [(ngModel)]="userModel[field.name]">
+
+        <option value="">
+          Select
+        </option>
+
+        <option value="1">
+          Option 1
+        </option>
+
+      </select>
+
+      <!-- TOGGLE -->
+
+      <div
+        *ngIf="field.type === 'toggle'"
+        class="toggle-field">
+
+        <input
+          type="checkbox"
+          [(ngModel)]="userModel[field.name]" />
+
+        <span>
+
+          {{ field.label }}
+
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+</ng-container>
+</div>

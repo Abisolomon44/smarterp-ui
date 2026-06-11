@@ -1,13 +1,22 @@
 <!-- header.component.html -->
 <header class="app-header">
   <div class="header-left">
-    <button class="btn-toggle" (click)="toggle.emit()" aria-label="Toggle sidebar">
+    <button
+      class="btn-toggle"
+      (click)="toggle.emit()"
+      aria-label="Toggle sidebar"
+    >
       <i class="fa-solid fa-bars"></i>
     </button>
     <span class="brand-name">MyERP</span>
     <div class="search-box">
       <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" placeholder="Search administrative tasks..." class="search-input" aria-label="Search" />
+      <input
+        type="text"
+        placeholder="Search administrative tasks..."
+        class="search-input"
+        aria-label="Search"
+      />
     </div>
   </div>
   <div class="header-right">
@@ -18,7 +27,11 @@
     <button class="icon-btn" aria-label="App grid">
       <i class="fa-solid fa-border-all"></i>
     </button>
-    <button class="icon-btn" (click)="onThemeToggle()" aria-label="Toggle theme">
+    <button
+      class="icon-btn"
+      (click)="onThemeToggle()"
+      aria-label="Toggle theme"
+    >
       <i class="fa-solid" [ngClass]="isDark ? 'fa-sun' : 'fa-moon'"></i>
     </button>
     <div class="h-divider"></div>

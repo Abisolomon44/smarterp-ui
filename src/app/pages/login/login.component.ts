@@ -35,44 +35,93 @@ export class LoginComponent {
   clearError(): void {
     this.loginError = '';
   }
+/* ── Main Login ── */
+login(): void {
 
-  /* ── Main login ── */
-  login(): void {
+  this.loginError = '';
 
-    this.loginError = '';
+  if (!this.email || !this.password) {
 
-    if (!this.email || !this.password) {
-      this.loginError = 'Please enter your email and password.';
-      return;
-    }
+    this.loginError =
+      'Please enter your email and password.';
 
-    this.isLoading = true;
-
-    this.authService.login({
-      email:    this.email,
-      password: this.password
-    }).subscribe({
-
-      next: (res: any) => {
-
-        this.authService.saveToken(res.token);
-
-        const storage = this.rememberMe ? localStorage : sessionStorage;
-        storage.setItem('userId',    res.userId);
-        storage.setItem('companyId', res.companyId);
-
-        this.router.navigate(['/dashboard']);
-      },
-
-      error: (err: any) => {
-        this.isLoading  = false;
-        this.loginError =
-          err?.error?.message ?? 'Invalid email or password. Please try again.';
-      }
-
-    });
+    return;
 
   }
+
+  this.isLoading = true;
+
+  this.authService.login({
+
+    email: this.email,
+    password: this.password
+
+  }).subscribe({
+
+    next: (res: any) => {
+
+      localStorage.setItem(
+        'token',
+        res.token
+      );
+
+      localStorage.setItem(
+        'userId',
+        res.userId.toString()
+      );
+
+      localStorage.setItem(
+        'companyId',
+        res.companyId.toString()
+      );
+
+      localStorage.setItem(
+        'userName',
+        res.userName
+      );
+
+      if (this.rememberMe) {
+
+        localStorage.setItem(
+          'rememberMe',
+          'true'
+        );
+
+      } else {
+
+        sessionStorage.setItem(
+          'userId',
+          res.userId.toString()
+        );
+
+        sessionStorage.setItem(
+          'companyId',
+          res.companyId.toString()
+        );
+
+      }
+
+      this.isLoading = false;
+
+      this.router.navigate([
+        '/dashboard'
+      ]);
+
+    },
+
+    error: (err: any) => {
+
+      this.isLoading = false;
+
+      this.loginError =
+        err?.error?.message ||
+        'Invalid email or password. Please try again.';
+
+    }
+
+  });
+
+}
 
   /* ── Google OAuth (wire up real flow here) ── */
   googleLogin(): void {

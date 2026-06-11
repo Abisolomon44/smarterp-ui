@@ -25,7 +25,7 @@ body {
   /* ── Sidebar ────────────────────────────────────────────────── */
  --sidebar-bg: #08142B;
   --sidebar:            #0F172A;          /* alias used in some components */
-  --sidebar-width:      260px;
+  --sidebar-width:      200px;
   --sidebar-collapsed:  80px;
 
   /* ── Surface ────────────────────────────────────────────────── */
@@ -243,7 +243,7 @@ ul, ol {
   height: 40px;
 
   border-radius: 10px;
-  border: none;
+  border: 4px solid var(--border);
   background: transparent;
 
   transition: .2s;
@@ -1394,7 +1394,7 @@ ul, ol {
 .kpi-card {
   /* base styles from .erp-card */
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 4px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   padding: 20px;

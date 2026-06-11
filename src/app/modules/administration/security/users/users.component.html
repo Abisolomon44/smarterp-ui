@@ -1,1 +1,23 @@
-<p>users works!</p>
+<app-master-page
+
+  [config]="config"
+
+  [data]="users"
+
+  [userModel]="userModel"
+
+  [showEntry]="showEntry"
+
+  (createClick)="createUser()"
+
+  (editClick)="editUser($event)"
+
+  (deleteClick)="deleteUser($event)"
+
+  (saveClick)="saveUser()"
+
+  (cancelClick)="cancel()"
+
+  (refreshClick)="loadUsers()">
+
+</app-master-page>
