@@ -264,157 +264,108 @@
       </div>
     </div>
   </ng-container>
-<ng-container *ngIf="showEntry">
+  <ng-container *ngIf="showEntry">
+    <!-- Header -->
 
-  <!-- Header -->
+    <div class="entry-header">
+      <div>
+        <div class="breadcrumb">
+          <span>Administration</span>
 
-  <div class="entry-header">
+          <span>/</span>
 
-    <div>
+          <span>{{ config.title }}</span>
 
-      <div class="breadcrumb">
+          <span>/</span>
 
-        <span>Administration</span>
+          <span>
+            {{ selectedId ? "Edit" : "Create" }}
+          </span>
+        </div>
 
-        <span>/</span>
+        <h2>
+          {{ selectedId ? "Edit" : "Create" }}
 
-        <span>{{ config.title }}</span>
-
-        <span>/</span>
-
-        <span>
-
-          {{ selectedId ? 'Edit' : 'Create' }}
-
-        </span>
-
+          {{ config.title }}
+        </h2>
       </div>
 
-      <h2>
+      <div class="form-actions">
+        <button class="btn-outline" (click)="cancel()">Cancel</button>
 
-        {{ selectedId ? 'Edit' : 'Create' }}
+        <button class="btn-primary" (click)="save()">
+          <lucide-icon [img]="icons.save" [size]="16"> </lucide-icon>
 
-        {{ config.title }}
-
-      </h2>
-
-    </div>
-
-    <div class="form-actions">
-
-      <button
-        class="btn-outline"
-        (click)="cancel()">
-
-        Cancel
-
-      </button>
-
-      <button
-        class="btn-primary"
-        (click)="save()">
-
-        <lucide-icon
-          [img]="icons.save"
-          [size]="16">
-        </lucide-icon>
-
-        Save
-
-      </button>
-
-    </div>
-
-  </div>
-
-  <!-- Tabs -->
-
-  <div class="tabs">
-
-    <button
-      *ngFor="let tab of config.tabs"
-      class="tab"
-      [class.active]="activeTab === tab.name"
-      (click)="setTab(tab.name)">
-
-      {{ tab.name }}
-
-    </button>
-
-  </div>
-
-  <!-- Form -->
-
-<div class="form-card">
-
-  <div class="form-grid">
-
-    <div
-      class="form-field"
-      *ngFor="let field of currentTabFields">
-
-      <label>
-
-        {{ field.label }}
-
-      </label>
-
-      <!-- TEXT -->
-
-      <input
-        *ngIf="field.type === 'text'"
-        type="text"
-        [(ngModel)]="userModel[field.name]" />
-
-      <!-- PASSWORD -->
-
-      <input
-        *ngIf="field.type === 'password'"
-        type="password"
-        [(ngModel)]="userModel[field.name]" />
-
-      <!-- DROPDOWN -->
-
-      <select
-        *ngIf="field.type === 'dropdown'"
-        [(ngModel)]="userModel[field.name]">
-
-        <option value="">
-          Select
-        </option>
-
-        <option value="1">
-          Option 1
-        </option>
-
-      </select>
-
-      <!-- TOGGLE -->
-
-      <div
-        *ngIf="field.type === 'toggle'"
-        class="toggle-field">
-
-        <input
-          type="checkbox"
-          [(ngModel)]="userModel[field.name]" />
-
-        <span>
-
-          {{ field.label }}
-
-        </span>
-
+          Save
+        </button>
       </div>
-
     </div>
 
-  </div>
+    <!-- Tabs -->
 
-</div>
+    <div class="tabs">
+      <button
+        *ngFor="let tab of config.tabs"
+        class="tab"
+        [class.active]="activeTab === tab.name"
+        (click)="setTab(tab.name)"
+      >
+        {{ tab.name }}
+      </button>
+    </div>
 
+    <!-- Form -->
 
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="form-field" *ngFor="let field of currentTabFields">
+          <label class="form-label">
+            {{ field.label }}
 
+            <span *ngIf="field.required" class="required"> * </span>
+          </label>
 
-</ng-container>
+          <input
+            *ngIf="field.type === 'text'"
+            type="text"
+            [(ngModel)]="userModel[field.name]"
+            [attr.maxlength]="field.maxLength"
+            (keypress)="allowKeyPress($event, field.keyType)"
+            [class.input-error]="validationErrors[field.name]"
+          />
+          <div class="field-error" *ngIf="validationErrors[field.name]">
+            {{ validationErrors[field.name] }}
+          </div>
+          <!-- PASSWORD -->
+
+          <input
+            *ngIf="field.type === 'password'"
+            type="password"
+            [(ngModel)]="userModel[field.name]"
+          />
+
+          <!-- DROPDOWN -->
+
+          <select
+            *ngIf="field.type === 'dropdown'"
+            [(ngModel)]="userModel[field.name]"
+          >
+            <option value="">Select</option>
+
+            <option value="1">Option 1</option>
+          </select>
+
+          <!-- TOGGLE -->
+
+          <div *ngIf="field.type === 'toggle'" class="toggle-field">
+            <input type="checkbox" [(ngModel)]="userModel[field.name]" />
+
+            <span>
+              {{ field.label }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </div>

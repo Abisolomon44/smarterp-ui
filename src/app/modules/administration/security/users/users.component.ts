@@ -1,40 +1,20 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {
-  MasterPageComponent
-} from '../../../../shared/master-page/master-page.component';
+import { MasterPageComponent } from '../../../../shared/master-page/master-page.component';
 
-import {
-  UserService
-} from '../../../../services/user-service/user.service';
+import { UserService } from '../../../../services/user-service/user.service';
 
-import {
-  ICONS
-} from '../../../../shared/icon.constants';
+import { ICONS } from '../../../../shared/icon.constants';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [
-    MasterPageComponent
-  ],
+  imports: [MasterPageComponent],
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  styleUrls: ['./users.component.scss'],
 })
-export class UsersComponent
-
-
-
-implements OnInit {
-
-
-  
-  constructor(
-    private userService: UserService
-  ) {}
+export class UsersComponent implements OnInit {
+  constructor(private userService: UserService) {}
 
   users: any[] = [];
 
@@ -43,7 +23,6 @@ implements OnInit {
   showEntry = false;
 
   userModel: any = {
-
     id: 0,
 
     companyId: 5,
@@ -64,229 +43,184 @@ implements OnInit {
 
     timeZoneId: 1,
 
-    isDelete: false
-
+    isDelete: false,
   };
 
+  config: any = {
+    title: 'Users',
 
-  
-config: any = {
+    description: 'Manage system users and access',
 
-  title: 'Users',
+    icon: ICONS.users,
 
-  description: 'Manage system users and access',
+    createLabel: 'Create User',
 
-  icon: ICONS.users,
+    stats: [],
 
-  createLabel: 'Create User',
+    columns: [
+      {
+        field: 'displayName',
+        header: 'User Name',
+      },
 
-  stats: [],
+      {
+        field: 'email',
+        header: 'Email',
+      },
 
-  columns: [
+      {
+        field: 'phone',
+        header: 'Phone',
+      },
 
-    {
-      field: 'displayName',
-      header: 'User Name'
-    },
+      {
+        field: 'isActive',
+        header: 'Status',
+      },
+    ],
 
-    {
-      field: 'email',
-      header: 'Email'
-    },
+    tabs: [
+      {
+        name: 'General',
+        fields: ['firstName', 'lastName', 'displayName', 'email', 'phone'],
+      },
 
-    {
-      field: 'phone',
-      header: 'Phone'
-    },
+      {
+        name: 'Security',
+        fields: ['password', 'isActive'],
+      },
 
-    {
-      field: 'isActive',
-      header: 'Status'
-    }
+      {
+        name: 'Preferences',
+        fields: ['languageId', 'timeZoneId'],
+      },
+    ],
 
-  ],
+    fields: [
+      {
+        name: 'firstName',
+        label: 'First Name',
+        type: 'text',
+        required: true,
+        keyType: 'alphabet',
+      },
 
-  tabs: [
+      {
+        name: 'lastName',
+        label: 'Last Name',
+        type: 'text',
+        required: true,
+        keyType: 'alphabet',
+      },
 
-    {
-      name: 'General',
-      fields: [
-        'firstName',
-        'lastName',
-        'displayName',
-        'email',
-        'phone'
-      ]
-    },
+      {
+        name: 'displayName',
+        label: 'Display Name',
+        type: 'text',
+        required: true,
+        keyType: 'alphabet',
+      },
 
-    {
-      name: 'Security',
-      fields: [
-        'password',
-        'isActive'
-      ]
-    },
+      {
+        name: 'email',
+        label: 'Email',
+        type: 'text',
+        required: true,
+      },
 
-    {
-      name: 'Preferences',
-      fields: [
-        'languageId',
-        'timeZoneId'
-      ]
-    }
+      {
+        name: 'phone',
+        label: 'Phone Number',
+        type: 'text',
+        required: true,
+        keyType: 'number',
+        minLength: 10,
+        maxLength: 10,
+      },
 
-  ],
+      {
+        name: 'password',
+        label: 'Password',
+        type: 'password',
+        required: true,
+      },
 
-  fields: [
+      {
+        name: 'languageId',
+        label: 'Language',
+        type: 'dropdown',
+      },
 
-    {
-      name: 'firstName',
-      label: 'First Name',
-      type: 'text'
-    },
+      {
+        name: 'timeZoneId',
+        label: 'Time Zone',
+        type: 'dropdown',
+      },
 
-    {
-      name: 'lastName',
-      label: 'Last Name',
-      type: 'text'
-    },
-
-    {
-      name: 'displayName',
-      label: 'Display Name',
-      type: 'text'
-    },
-
-    {
-      name: 'email',
-      label: 'Email',
-      type: 'text'
-    },
-
-    {
-      name: 'phone',
-      label: 'Phone',
-      type: 'text'
-    },
-
-    {
-      name: 'password',
-      label: 'Password',
-      type: 'password'
-    },
-
-    {
-      name: 'languageId',
-      label: 'Language',
-      type: 'dropdown'
-    },
-
-    {
-      name: 'timeZoneId',
-      label: 'Time Zone',
-      type: 'dropdown'
-    },
-
-    {
-      name: 'isActive',
-      label: 'Active',
-      type: 'toggle'
-    }
-
-  ]
-
-};
+      {
+        name: 'isActive',
+        label: 'Active',
+        type: 'toggle',
+      },
+    ],
+  };
 
   ngOnInit(): void {
-
     this.loadUsers();
-
   }
 
-loadUsers(): void {
+  loadUsers(): void {
+    const companyId = Number(localStorage.getItem('companyId')) || 5;
 
-  const companyId =
-    Number(localStorage.getItem('companyId')) || 5;
+    this.loading = true;
 
-  this.loading = true;
-
-  this.userService
-    .getUsers(companyId)
-    .subscribe({
-
+    this.userService.getUsers(companyId).subscribe({
       next: (users: any[]) => {
-
-        this.users =
-          users.filter(
-            x => x.isActive === true
-          );
+        this.users = users.filter((x) => x.isActive === true);
 
         this.updateStats(users);
 
         this.loading = false;
-
       },
 
       error: (error: any) => {
-
         console.error(error);
 
         this.loading = false;
-
-      }
-
+      },
     });
+  }
 
-}
-
-  updateStats(
-    users: any[]
-  ): void {
-
+  updateStats(users: any[]): void {
     this.config.stats = [
-
       {
         label: 'Total Users',
         value: users.length,
         icon: ICONS.users,
-        description: 'All users'
+        description: 'All users',
       },
 
       {
         label: 'Active Users',
-        value: users.filter(
-          x => x.isActive
-        ).length,
+        value: users.filter((x) => x.isActive).length,
         icon: ICONS.activeUsers,
-        description: 'Enabled users'
+        description: 'Enabled users',
       },
 
       {
         label: 'Inactive Users',
-        value: users.filter(
-          x => !x.isActive
-        ).length,
+        value: users.filter((x) => !x.isActive).length,
         icon: ICONS.inactiveUsers,
-        description: 'Disabled users'
-      }
-
+        description: 'Disabled users',
+      },
     ];
-
   }
 
-
   createUser(): void {
-
     this.userModel = {
-
       id: 0,
 
-      companyId:
-        Number(
-          localStorage.getItem(
-            'companyId'
-          )
-        ) || 5,
+      companyId: Number(localStorage.getItem('companyId')) || 5,
 
       firstName: '',
 
@@ -304,103 +238,49 @@ loadUsers(): void {
 
       timeZoneId: 1,
 
-      isDelete: false
-
+      isDelete: false,
     };
 
     this.showEntry = true;
-
   }
 
-  editUser(
-    user: any
-  ): void {
+  editUser(user: any): void {
+    this.userService.getUserById(user.id).subscribe({
+      next: (response: any) => {
+        this.userModel = response;
 
-    this.userService
-      .getUserById(
-        user.id
-      )
-      .subscribe({
-
-        next: (
-          response: any
-        ) => {
-
-          this.userModel =
-            response;
-
-          this.showEntry =
-            true;
-
-        }
-
-      });
-
+        this.showEntry = true;
+      },
+    });
   }
 
   saveUser(): void {
+    this.userService.saveUser(this.userModel).subscribe({
+      next: () => {
+        this.showEntry = false;
 
-    this.userService
-      .saveUser(
-        this.userModel
-      )
-      .subscribe({
+        this.loadUsers();
+      },
 
-        next: () => {
-
-          this.showEntry =
-            false;
-
-          this.loadUsers();
-
-        },
-
-        error: (
-          error: any
-        ) => {
-
-          console.error(
-            error
-          );
-
-        }
-
-      });
-
+      error: (error: any) => {
+        console.error(error);
+      },
+    });
   }
 
-  deleteUser(
-    user: any
-  ): void {
-
-    if (
-      !confirm(
-        'Delete User ?'
-      )
-    ) {
+  deleteUser(user: any): void {
+    if (!confirm('Delete User ?')) {
       return;
     }
 
-    this.userService
-      .deleteUser(
-        user.id
-      )
-      .subscribe({
-
-        next: () => {
-
-          this.loadUsers();
-
-        }
-
-      });
-
+    this.userService.deleteUser(user.id).subscribe({
+      next: () => {
+        this.loadUsers();
+      },
+    });
   }
 
   cancel(): void {
-
     this.showEntry = false;
-
   }
-
 }
