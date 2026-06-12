@@ -519,58 +519,6 @@ tbody tr:hover {
 
 }
 
-/* ===================================================
-   EXPORT DROPDOWN
-=================================================== */
-
-.export-dropdown {
-  position: relative;
-}
-
-.export-menu {
-  position: absolute;
-  top: 48px;
-  right: 0;
-
-  min-width: 180px;
-
-  background: white;
-
-  border: 1px solid #e2e8f0;
-
-  border-radius: 12px;
-
-  overflow: hidden;
-
-  display: none;
-
-  z-index: 1000;
-
-  box-shadow:
-    0 12px 30px rgba(0,0,0,.08);
-}
-
-.export-dropdown:hover .export-menu {
-  display: block;
-}
-
-.export-menu button {
-  width: 100%;
-
-  border: none;
-
-  background: white;
-
-  text-align: left;
-
-  padding: 12px 16px;
-
-  cursor: pointer;
-}
-
-.export-menu button:hover {
-  background: #f8fafc;
-}
 
 /* ===================================================
    CHECKBOX
@@ -1011,4 +959,58 @@ thead th {
   margin-top: 4px;
   font-size: 12px;
   color: var(--danger);
+}
+
+
+.export-menu {
+
+  position: relative;
+
+}
+
+.export-dropdown {
+
+  position: absolute;
+
+  top: 48px;
+
+  right: 0;
+
+  min-width: 180px;
+
+  background: white;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  z-index: 1000;
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.08);
+
+}
+
+.export-dropdown button {
+
+  width: 100%;
+
+  border: none;
+
+  background: white;
+
+  text-align: left;
+
+  padding: 12px 16px;
+
+  cursor: pointer;
+
+}
+
+.export-dropdown button:hover {
+
+  background: #f8fafc;
+
 }

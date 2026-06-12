@@ -63,4 +63,12 @@ export class MasterService {
       `${this.apiUrl}/industry-types`
     );
   }
+
+  getTimeZones(countryId: number) {
+
+  return this.http.get<MasterDto[]>(
+    `${this.apiUrl}/time-zones?id=${countryId}`
+  );
+
+}
 }

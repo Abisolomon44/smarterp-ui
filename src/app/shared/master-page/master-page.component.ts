@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
 
 import { ICONS } from '../icon.constants';
+import { ExportService } from '../services/export.service';
 
 @Component({
   selector: 'app-master-page',
@@ -53,6 +54,8 @@ export class MasterPageComponent {
 
   @Output() cancelClick = new EventEmitter<void>();
 
+  constructor(private exportService: ExportService) {}
+
   // ==========================================
   // VARIABLES
   // ==========================================
@@ -60,6 +63,7 @@ export class MasterPageComponent {
   searchText = '';
 
   selectedId = 0;
+  showExportMenu = false;
 
   activeTab = 'General';
 
@@ -98,7 +102,17 @@ export class MasterPageComponent {
 
     return this.filteredData.slice(start, start + this.pageSize);
   }
+  exportExcel(): void {
+    this.exportService.exportExcel(this.filteredData, this.config.title);
+  }
 
+  exportCsv(): void {
+    this.exportService.exportCsv(this.filteredData, this.config.title);
+  }
+
+  exportPdf(): void {
+    this.exportService.exportPdf(this.filteredData, this.config.title);
+  }
   get totalPages(): number {
     return Math.ceil(this.filteredData.length / this.pageSize);
   }
@@ -248,21 +262,35 @@ export class MasterPageComponent {
   validateForm(): boolean {
     this.validationErrors = {};
 
-    let valid = true;
+    let firstInvalidField = '';
 
     this.config.fields.forEach((field: any) => {
-      const message = this.validateField(field);
+      const error = this.validateField(field);
 
-      if (message) {
-        this.validationErrors[field.name] = message;
+      if (error) {
+        this.validationErrors[field.name] = error;
 
-        valid = false;
+        if (!firstInvalidField) {
+          firstInvalidField = field.name;
+        }
       }
     });
 
-    return valid;
-  }
+    if (firstInvalidField) {
+      this.navigateToFieldTab(firstInvalidField);
 
+      return false;
+    }
+
+    return true;
+  }
+  navigateToFieldTab(fieldName: string): void {
+    const tab = this.config.tabs.find((t: any) => t.fields.includes(fieldName));
+
+    if (tab) {
+      this.activeTab = tab.name;
+    }
+  }
   allowKeyPress(event: KeyboardEvent, keyType: string): void {
     const key = event.key;
 
@@ -289,4 +317,25 @@ export class MasterPageComponent {
         break;
     }
   }
+
+  copyData(): void {
+
+  const text =
+    JSON.stringify(
+      this.filteredData,
+      null,
+      2
+    );
+
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+
+      console.log(
+        'Data copied'
+      );
+
+    });
+
+}
 }

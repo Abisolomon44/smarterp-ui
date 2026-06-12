@@ -5,7 +5,8 @@ import { MasterPageComponent } from '../../../../shared/master-page/master-page.
 import { UserService } from '../../../../services/user-service/user.service';
 
 import { ICONS } from '../../../../shared/icon.constants';
-
+import { MasterService } from '../../../../services/master-service/master.service';
+import { AlertService } from '../../../../services/alert.service';
 @Component({
   selector: 'app-users',
   standalone: true,
@@ -14,12 +15,17 @@ import { ICONS } from '../../../../shared/icon.constants';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private masterService: MasterService,
+    private alert: AlertService,
+  ) {}
 
   users: any[] = [];
 
   loading = false;
-
+  languages: any[] = [];
+  timeZones: any[] = [];
   showEntry = false;
 
   userModel: any = {
@@ -149,14 +155,17 @@ export class UsersComponent implements OnInit {
         name: 'languageId',
         label: 'Language',
         type: 'dropdown',
+        required: true,
+        options: [],
       },
 
       {
         name: 'timeZoneId',
         label: 'Time Zone',
         type: 'dropdown',
+        required: true,
+        options: [],
       },
-
       {
         name: 'isActive',
         label: 'Active',
@@ -167,6 +176,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUsers();
+    this.loadLookups();
   }
 
   loadUsers(): void {
@@ -190,7 +200,48 @@ export class UsersComponent implements OnInit {
       },
     });
   }
+  loadLookups(): void {
+    this.masterService.getLanguages().subscribe({
+      next: (response) => {
+        this.languages = response;
 
+        this.bindLanguageOptions();
+      },
+    });
+    this.masterService.getTimeZones(1).subscribe({
+      next: (response) => {
+        console.log('TimeZone API Response', response);
+
+        this.timeZones = response;
+
+        this.bindTimeZoneOptions();
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
+  bindTimeZoneOptions(): void {
+    const field = this.config.fields.find((x: any) => x.name === 'timeZoneId');
+
+    if (field) {
+      field.options = this.timeZones.map((x: any) => ({
+        value: x.id,
+        label: x.name,
+      }));
+    }
+  }
+  bindLanguageOptions(): void {
+    const field = this.config.fields.find((x: any) => x.name === 'languageId');
+
+    if (field) {
+      field.options = this.languages.map((x: any) => ({
+        value: x.id,
+        label: x.name,
+      }));
+    }
+  }
   updateStats(users: any[]): void {
     this.config.stats = [
       {
@@ -255,8 +306,16 @@ export class UsersComponent implements OnInit {
   }
 
   saveUser(): void {
+    const isUpdate = this.userModel.id > 0;
+
     this.userService.saveUser(this.userModel).subscribe({
       next: () => {
+        this.alert.success(
+          isUpdate
+            ? 'User updated successfully.'
+            : 'User created successfully.',
+        );
+
         this.showEntry = false;
 
         this.loadUsers();
@@ -264,17 +323,22 @@ export class UsersComponent implements OnInit {
 
       error: (error: any) => {
         console.error(error);
+
+        this.alert.error('Unable to save user.');
       },
     });
   }
+  async deleteUser(user: any): Promise<void> {
+    const confirmed = await this.alert.confirm('Delete selected user?');
 
-  deleteUser(user: any): void {
-    if (!confirm('Delete User ?')) {
+    if (!confirmed) {
       return;
     }
 
     this.userService.deleteUser(user.id).subscribe({
       next: () => {
+        this.alert.success('User deleted successfully.');
+
         this.loadUsers();
       },
     });
