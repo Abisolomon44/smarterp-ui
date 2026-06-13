@@ -62,7 +62,7 @@
       <button class="btn-primary" (click)="create()">
         <lucide-icon [img]="icons.plus" [size]="16"> </lucide-icon>
 
-        Create User
+        Create {{ config.title }}
       </button>
     </div>
 
@@ -353,13 +353,29 @@
           </div>
           <!-- PASSWORD -->
 
-          <input
-            *ngIf="field.type === 'password'"
-            type="password"
-            [(ngModel)]="userModel[field.name]"
-          />
+          <div class="password-field" *ngIf="field.type === 'password'">
+            <input
+              [type]="passwordVisibility[field.name] ? 'text' : 'password'"
+              [(ngModel)]="userModel[field.name]"
+              autocomplete="new-password"
+            />
 
-          <!-- DROPDOWN -->
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="
+                passwordVisibility[field.name] = !passwordVisibility[field.name]
+              "
+            >
+              <lucide-icon
+                [img]="
+                  passwordVisibility[field.name] ? icons.eyeOff : icons.eye
+                "
+                [size]="18"
+              >
+              </lucide-icon>
+            </button>
+          </div>
           <!-- DROPDOWN -->
 
           <select

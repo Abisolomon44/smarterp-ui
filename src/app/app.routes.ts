@@ -24,6 +24,7 @@ import { ModulesComponent } from '../app/modules/administration/application/modu
 import { SubModulesComponent } from '../app/modules/administration/application/sub-modules/sub-modules.component';
 import { RolePermissionsComponent } from '../app/modules/administration/security/role-permissions/role-permissions.component';
 import { UserRolesComponent } from '../app/modules/administration/security/user-roles/user-roles.component';
+import { ModuleProfilesComponent } from './modules/administration/application/module-profiles/module-profiles.component';
 
 export const routes: Routes = [
 
@@ -117,6 +118,11 @@ export const routes: Routes = [
             component: SubModulesComponent
           },
 
+             // Sub Modules
+          {
+            path: 'module-profiles',
+            component: ModuleProfilesComponent
+          },
           // Permissions
           {
             path: 'permissions',

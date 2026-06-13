@@ -1,1 +1,23 @@
-<p>domains works!</p>
+<app-master-page
+
+  [config]="config"
+
+  [data]="domains"
+
+  [userModel]="domainModel"
+
+  [showEntry]="showEntry"
+
+  (createClick)="createDomain()"
+
+  (editClick)="editDomain($event)"
+
+  (deleteClick)="deleteDomain($event)"
+
+  (saveClick)="saveDomain()"
+
+  (cancelClick)="cancel()"
+
+  (refreshClick)="loadDomains()">
+
+</app-master-page>

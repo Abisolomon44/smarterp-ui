@@ -165,12 +165,8 @@ export class UsersComponent implements OnInit {
         type: 'dropdown',
         required: true,
         options: [],
-      },
-      {
-        name: 'isActive',
-        label: 'Active',
-        type: 'toggle',
-      },
+      }
+     
     ],
   };
 

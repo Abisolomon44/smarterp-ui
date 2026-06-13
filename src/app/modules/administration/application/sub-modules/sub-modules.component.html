@@ -1,1 +1,23 @@
-<p>sub-modules works!</p>
+<app-master-page
+
+  [config]="config"
+
+  [data]="subModules"
+
+  [userModel]="subModuleModel"
+
+  [showEntry]="showEntry"
+
+  (createClick)="createSubModule()"
+
+  (editClick)="editSubModule($event)"
+
+  (deleteClick)="deleteSubModule($event)"
+
+  (saveClick)="saveSubModule()"
+
+  (cancelClick)="cancel()"
+
+  (refreshClick)="loadSubModules()">
+
+</app-master-page>

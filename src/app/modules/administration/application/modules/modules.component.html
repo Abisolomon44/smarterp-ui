@@ -1,1 +1,23 @@
-<p>modules works!</p>
+<app-master-page
+
+  [config]="config"
+
+  [data]="modules"
+
+  [userModel]="moduleModel"
+
+  [showEntry]="showEntry"
+
+  (createClick)="createModule()"
+
+  (editClick)="editModule($event)"
+
+  (deleteClick)="deleteModule($event)"
+
+  (saveClick)="saveModule()"
+
+  (cancelClick)="cancel()"
+
+  (refreshClick)="loadModules()">
+
+</app-master-page>

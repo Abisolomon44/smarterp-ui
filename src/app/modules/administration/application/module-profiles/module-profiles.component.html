@@ -1,1 +1,23 @@
-<p>module-profiles works!</p>
+<app-master-page
+
+  [config]="config"
+
+  [data]="moduleProfiles"
+
+  [userModel]="moduleProfileModel"
+
+  [showEntry]="showEntry"
+
+  (createClick)="createModuleProfile()"
+
+  (editClick)="editModuleProfile($event)"
+
+  (deleteClick)="deleteModuleProfile($event)"
+
+  (saveClick)="saveModuleProfile()"
+
+  (cancelClick)="cancel()"
+
+  (refreshClick)="loadModuleProfiles()">
+
+</app-master-page>

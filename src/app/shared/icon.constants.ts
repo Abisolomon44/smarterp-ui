@@ -84,7 +84,7 @@ import {
   /* Sales */
   ShoppingCart,
   Receipt,
-
+Copy,
   /* Purchase */
   Truck,
 
@@ -124,14 +124,22 @@ import {
 
 } from 'lucide-angular';
 
+import {
+  Eye,
+  EyeOff,
+} from 'lucide-angular';
 export const ICONS = {
 
+
+   // Password
+  eye: Eye,
+  eyeOff: EyeOff,
   /* Dashboard */
   dashboard: LayoutDashboard,
   analytics: BarChart3,
   reports: PieChart,
   trends: TrendingUp,
-
+ copy: Copy,
   /* Users */
   users: Users,
   user: User,

@@ -17,13 +17,18 @@ import { ExportService } from '../services/export.service';
   styleUrls: ['./master-page.component.scss'],
 })
 export class MasterPageComponent {
+  hasTabErrors(arg0: any): any {
+    throw new Error('Method not implemented.');
+  }
   // ==========================================
   // ICONS
   // ==========================================
 
   icons = ICONS;
   validationErrors: Record<string, string> = {};
+  showPassword = false;
 
+  passwordVisibility: Record<string, boolean> = {};
   // ==========================================
   // INPUTS
   // ==========================================
@@ -319,23 +324,10 @@ export class MasterPageComponent {
   }
 
   copyData(): void {
+    const text = JSON.stringify(this.filteredData, null, 2);
 
-  const text =
-    JSON.stringify(
-      this.filteredData,
-      null,
-      2
-    );
-
-  navigator.clipboard
-    .writeText(text)
-    .then(() => {
-
-      console.log(
-        'Data copied'
-      );
-
+    navigator.clipboard.writeText(text).then(() => {
+      console.log('Data copied');
     });
-
-}
+  }
 }

@@ -1,1 +1,23 @@
-<p>workspaces works!</p>
+<app-master-page
+
+  [config]="config"
+
+  [data]="workspaces"
+
+  [userModel]="workspaceModel"
+
+  [showEntry]="showEntry"
+
+  (createClick)="createWorkspace()"
+
+  (editClick)="editWorkspace($event)"
+
+  (deleteClick)="deleteWorkspace($event)"
+
+  (saveClick)="saveWorkspace()"
+
+  (cancelClick)="cancel()"
+
+  (refreshClick)="loadWorkspaces()">
+
+</app-master-page>
