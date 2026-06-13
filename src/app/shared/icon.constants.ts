@@ -1,5 +1,4 @@
 import {
-
   /* Dashboard */
   LayoutDashboard,
   BarChart3,
@@ -14,6 +13,7 @@ import {
   UserX,
   UserCog,
   ContactRound,
+  CircleUserRound,
 
   /* Security */
   Shield,
@@ -35,6 +35,10 @@ import {
   Menu,
   PanelLeft,
   Route,
+  ArrowLeft,
+  ChevronRight,
+  ChevronLeft,
+  ChevronDown,
 
   /* Modules */
   Boxes,
@@ -57,12 +61,11 @@ import {
   Filter,
   Download,
   Upload,
+  Copy,
 
-  /* Common */
-  ArrowLeft,
-  ChevronRight,
-  ChevronLeft,
-  ChevronDown,
+  /* Password */
+  Eye,
+  EyeOff,
 
   /* Status */
   CheckCircle2,
@@ -73,9 +76,6 @@ import {
   History,
   FileText,
 
-  /* Profile */
-  CircleUserRound,
-
   /* ERP Core */
   Database,
   Server,
@@ -84,7 +84,7 @@ import {
   /* Sales */
   ShoppingCart,
   Receipt,
-Copy,
+
   /* Purchase */
   Truck,
 
@@ -120,35 +120,44 @@ Copy,
   BadgePercent,
 
   /* Monitoring */
-  MonitorCog
-
+  MonitorCog,
 } from 'lucide-angular';
 
-import {
-  Eye,
-  EyeOff,
-} from 'lucide-angular';
 export const ICONS = {
+  /* ======================
+     PASSWORD
+  ====================== */
 
-
-   // Password
   eye: Eye,
   eyeOff: EyeOff,
-  /* Dashboard */
+
+  /* ======================
+     DASHBOARD
+  ====================== */
+
   dashboard: LayoutDashboard,
   analytics: BarChart3,
   reports: PieChart,
   trends: TrendingUp,
- copy: Copy,
-  /* Users */
+  chevronRight: ChevronRight,
+  /* ======================
+     USERS
+  ====================== */
+
   users: Users,
   user: User,
   createUser: UserPlus,
   activeUsers: UserCheck,
   inactiveUsers: UserX,
+  employee: User,
+  employees: Users,
   profile: CircleUserRound,
+  customer: ContactRound,
 
-  /* Security */
+  /* ======================
+     SECURITY
+  ====================== */
+
   roles: Shield,
   security: Shield,
   roleProfiles: ShieldCheck,
@@ -156,53 +165,65 @@ export const ICONS = {
   rolePermissions: KeyRound,
   securityAlert: ShieldAlert,
 
-  /* Organization */
+  /* ======================
+     ORGANIZATION
+  ====================== */
+
   organization: Building2,
   company: Building,
 
-  workspaces: Briefcase,
   workspace: Briefcase,
+  workspaces: Briefcase,
 
-  domains: Globe,
   domain: Globe,
+  domains: Globe,
 
   roleDomains: Network,
   userWorkspaces: FolderKanban,
 
-  /* Modules */
-  modules: Boxes,
+  /* ======================
+     MODULES
+  ====================== */
+
   module: Box,
+  modules: Boxes,
 
-  subModules: LayoutGrid,
   subModule: LayoutGrid,
+  subModules: LayoutGrid,
 
+  moduleProfile: Grid3X3,
   moduleProfiles: Grid3X3,
 
-  /* Navigation */
+  /* ======================
+     NAVIGATION
+  ====================== */
+
   navigation: Compass,
   sidebar: PanelLeft,
   menu: Menu,
   routes: Route,
 
-  /* Settings */
-  configuration: Settings,
+  back: ArrowLeft,
+  next: ChevronRight,
+  previous: ChevronLeft,
+  expand: ChevronDown,
+
+  /* ======================
+     SETTINGS
+  ====================== */
+
   settings: Settings,
+  configuration: Settings,
   advancedSettings: Settings2,
   preferences: SlidersHorizontal,
 
-  /* Audit */
-  audit: History,
-  logs: FileText,
+  /* ======================
+     ACTIONS
+  ====================== */
 
-  /* ERP Core */
-  database: Database,
-  server: Server,
-  layers: Layers3,
-
-  /* Actions */
-  create: Plus,
-  add: Plus,
   plus: Plus,
+  add: Plus,
+  create: Plus,
 
   edit: Pencil,
   update: Pencil,
@@ -225,51 +246,61 @@ export const ICONS = {
   import: Upload,
   upload: Upload,
 
-  /* Navigation Buttons */
-  back: ArrowLeft,
+  copy: Copy,
 
-  next: ChevronRight,
-  chevronRight: ChevronRight,
+  /* ======================
+     STATUS
+  ====================== */
 
-  previous: ChevronLeft,
-
-  expand: ChevronDown,
-
-  /* Status */
   success: CheckCircle2,
   error: XCircle,
   warning: AlertTriangle,
 
-  /* =====================
+  /* ======================
+     AUDIT
+  ====================== */
+
+  audit: History,
+  logs: FileText,
+
+  /* ======================
+     ERP CORE
+  ====================== */
+
+  database: Database,
+  server: Server,
+  layers: Layers3,
+
+  /* ======================
      SALES
-  ===================== */
+  ====================== */
 
   sales: ShoppingCart,
   quotation: FileText,
   salesOrder: ClipboardList,
   invoice: Receipt,
-  customer: ContactRound,
+  customers: ContactRound,
 
-  /* =====================
+  /* ======================
      PURCHASE
-  ===================== */
+  ====================== */
 
   purchase: ShoppingCart,
   purchaseOrder: ClipboardList,
   supplier: Truck,
 
-  /* =====================
+  /* ======================
      INVENTORY
-  ===================== */
+  ====================== */
 
   inventory: Warehouse,
   warehouse: Warehouse,
   product: Package,
   stock: ScanBarcode,
 
-  /* =====================
+  /* ======================
      FINANCE
-  ===================== */
+  ====================== */
 
   finance: DollarSign,
   accounts: Calculator,
@@ -277,57 +308,54 @@ export const ICONS = {
   bank: Banknote,
   cashFlow: CircleDollarSign,
 
-  /* =====================
+  /* ======================
      HRMS
-  ===================== */
+  ====================== */
 
   hr: UserCog,
-  employees: Users,
-  employee: User,
   attendance: Clock,
   leave: Calendar,
   payroll: DollarSign,
 
-  /* =====================
+  /* ======================
      CRM
-  ===================== */
+  ====================== */
 
   crm: ContactRound,
   lead: UserPlus,
-  customers: ContactRound,
 
-  /* =====================
+  /* ======================
      MANUFACTURING
-  ===================== */
+  ====================== */
 
   manufacturing: Factory,
   production: Factory,
   bom: Layers3,
 
-  /* =====================
+  /* ======================
      PROJECTS
-  ===================== */
+  ====================== */
 
   projects: BriefcaseBusiness,
   tasks: ClipboardList,
 
-  /* =====================
+  /* ======================
      COMMUNICATION
-  ===================== */
+  ====================== */
 
   notifications: Bell,
   mail: Mail,
 
-  /* =====================
+  /* ======================
      PRICING
-  ===================== */
+  ====================== */
 
   tags: Tag,
   discount: BadgePercent,
 
-  /* =====================
+  /* ======================
      MONITORING
-  ===================== */
+  ====================== */
 
-  monitoring: MonitorCog
+  monitoring: MonitorCog,
 };

@@ -698,29 +698,6 @@ tbody tr {
   align-items: center;
 }
 
-.back-btn {
-  width: 34px;
-  height: 34px;
-  border: 1px solid $border;
-  border-radius: $btn-radius;
-  background: $white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: $muted;
-  transition: background 0.15s, border-color 0.15s;
-
-  svg { width: 15px; height: 15px; }
-
-  &:hover {
-    background: $bg-surface;
-    border-color: darken($border, 6%);
-    color: $text;
-  }
-
-  &:focus-visible { outline: 2px solid $primary; outline-offset: 2px; }
-}
 
 .entry-title h2 {
   font-size: 16px;
@@ -1146,3 +1123,88 @@ input[type="checkbox"] {
     color: $primary;
   }
 }
+
+.module-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  padding: 24px 32px;
+
+  background: #fff;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+
+  margin-bottom: 24px;
+}
+
+.module-info {
+  display: flex;
+  flex-direction: column;
+}
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-width: 80px;
+  height: 42px;
+  padding: 0 16px;
+  border: 1px solid #dbe3ef;
+  border-radius: 5px;
+  background: #fff;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.back-btn:hover {
+  background: #ffffff;
+  border-color: #4338CA;
+  color: #4338CA;
+}
+
+.back-btn span {
+  line-height: 1;
+}
+
+.back-btn lucide-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.breadcrumb {
+  display: flex;
+  gap: 8px;
+
+  margin-bottom: 6px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  color: #94a3b8;
+}
+
+.module-info h1 {
+  margin: 0;
+
+  font-size: 34px;
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+.module-info p {
+  margin: 6px 0 0;
+
+  color: #64748b;
+}
+

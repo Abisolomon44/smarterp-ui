@@ -18,109 +18,57 @@ export interface Plan {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
+  private apiUrl = `${environment.apiBaseUrl}/api/Auth`;
 
-  private apiUrl =
-    `${environment.apiBaseUrl}/api/Auth`;
-
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   getPlans(): Observable<Plan[]> {
-
-    return this.http.get<Plan[]>(
-      `${this.apiUrl}/plans`
-    );
-
+    return this.http.get<Plan[]>(`${this.apiUrl}/plans`);
   }
 
   register(data: any) {
-
-    return this.http.post(
-      `${this.apiUrl}/register`,
-      data
-    );
-
+    return this.http.post(`${this.apiUrl}/register`, data);
   }
 
   login(data: any) {
+    return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
+      tap((response) => {
+        localStorage.setItem('token', response.token);
 
-    return this.http.post<any>(
-      `${this.apiUrl}/login`,
-      data
-    ).pipe(
+        localStorage.setItem('userId', response.userId.toString());
 
-      tap(response => {
+        localStorage.setItem('companyId', response.companyId.toString());
 
-        localStorage.setItem(
-          'token',
-          response.token
-        );
-
-        localStorage.setItem(
-          'userId',
-          response.userId.toString()
-        );
-
-        localStorage.setItem(
-          'companyId',
-          response.companyId.toString()
-        );
-
-        localStorage.setItem(
-          'userName',
-          response.userName
-        );
-
-      })
-
+        localStorage.setItem('userName', response.userName);
+      }),
     );
-
   }
 
   getToken(): string | null {
-
-    return localStorage.getItem(
-      'token'
-    );
-
+    return localStorage.getItem('token');
   }
 
   isLoggedIn(): boolean {
-
-    return !!localStorage.getItem(
-      'token'
-    );
-
+    return !!localStorage.getItem('token');
   }
 
   logout(): void {
+    localStorage.removeItem('token');
 
-    localStorage.removeItem(
-      'token'
-    );
+    localStorage.removeItem('userId');
 
-    localStorage.removeItem(
-      'userId'
-    );
+    localStorage.removeItem('companyId');
 
-    localStorage.removeItem(
-      'companyId'
-    );
+    localStorage.removeItem('userName');
 
-    localStorage.removeItem(
-      'userName'
-    );
-
-    localStorage.removeItem(
-      'selectedPlan'
-    );
+    localStorage.removeItem('selectedPlan');
 
     sessionStorage.clear();
-
   }
-
+  getUserCompany(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/user-company/${userId}`);
+  }
 }

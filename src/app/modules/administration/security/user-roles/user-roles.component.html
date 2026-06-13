@@ -1,1 +1,12 @@
-<p>user-roles works!</p>
+<app-master-page
+  [config]="config"
+  [data]="userRoles"
+  [userModel]="userRoleModel"
+  [loading]="loading"
+  [showEntry]="showEntry"
+  (createClick)="createUserRole()"
+  (editClick)="editUserRole($event)"
+  (deleteClick)="deleteUserRole($event)"
+  (saveClick)="saveUserRole()"
+  (cancelClick)="cancel()">
+</app-master-page>

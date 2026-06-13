@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-
+import { Location } from '@angular/common';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule } from '@angular/forms';
@@ -59,7 +59,10 @@ export class MasterPageComponent {
 
   @Output() cancelClick = new EventEmitter<void>();
 
-  constructor(private exportService: ExportService) {}
+  constructor(
+    private exportService: ExportService,
+    private location: Location,
+  ) {}
 
   // ==========================================
   // VARIABLES
@@ -98,6 +101,9 @@ export class MasterPageComponent {
     );
   }
 
+  goBack(): void {
+    this.location.back();
+  }
   // ==========================================
   // PAGINATION
   // ==========================================

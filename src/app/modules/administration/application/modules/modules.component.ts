@@ -4,6 +4,8 @@ import { MasterPageComponent } from '../../../../shared/master-page/master-page.
 
 import { AdministrationService } from '../../../../services/administration-service/administration.service';
 
+import { AuthService } from '../../../../services/auth.service';
+
 import { AlertService } from '../../../../services/alert.service';
 
 import { ICONS } from '../../../../shared/icon.constants';
@@ -15,19 +17,31 @@ import { ICONS } from '../../../../shared/icon.constants';
   templateUrl: './modules.component.html',
   styleUrls: ['./modules.component.scss']
 })
-export class ModulesComponent implements OnInit {
+export class ModulesComponent
+  implements OnInit {
 
   constructor(
-    private administrationService: AdministrationService,
-    private alert: AlertService
+    private administrationService:
+      AdministrationService,
+    private authService:
+      AuthService,
+    private alert:
+      AlertService
   ) { }
+
+  companyId = Number(
+    localStorage.getItem('companyId')
+  );
 
   modules: any[] = [];
 
   showEntry = false;
 
+  loading = false;
+
   moduleModel: any = {
     id: 0,
+    companyId: this.companyId,
     name: '',
     code: '',
     icon: '',
@@ -38,26 +52,48 @@ export class ModulesComponent implements OnInit {
   };
 
   config: any = {
+
     title: 'Modules',
-    description: 'Manage application modules',
+
+    description:
+      'Manage application modules',
+
     icon: ICONS.module,
-    createLabel: 'Create Module',
+
+    createLabel:
+      'Create Module',
 
     stats: [],
 
     columns: [
-      { field: 'name', header: 'Module Name' },
-      { field: 'code', header: 'Code' },
-      { field: 'routeUrl', header: 'Route' },
-      { field: 'sortOrder', header: 'Order' }
+      {
+        field: 'companyName',
+        header: 'Company'
+      },
+      {
+        field: 'name',
+        header: 'Module Name'
+      },
+      {
+        field: 'code',
+        header: 'Code'
+      },
+      {
+        field: 'routeUrl',
+        header: 'Route'
+      },
+      {
+        field: 'sortOrder',
+        header: 'Order'
+      }
     ],
 
     tabs: [
       {
         name: 'General',
         fields: [
-          'name',
-          'code'
+          'companyId',
+          'name'
         ]
       },
       {
@@ -73,14 +109,15 @@ export class ModulesComponent implements OnInit {
 
     fields: [
       {
-        name: 'name',
-        label: 'Module Name',
-        type: 'text',
-        required: true
+        name: 'companyId',
+        label: 'Company',
+        type: 'dropdown',
+        required: true,
+        options: []
       },
       {
-        name: 'code',
-        label: 'Module Code',
+        name: 'name',
+        label: 'Module Name',
         type: 'text',
         required: true
       },
@@ -109,26 +146,76 @@ export class ModulesComponent implements OnInit {
   };
 
   ngOnInit(): void {
+
+    this.loadCompany();
+
     this.loadModules();
   }
 
-  loadModules(): void {
+  loadCompany(): void {
 
-    this.administrationService
-      .getModules()
+    const userId =
+      Number(localStorage.getItem('userId'));
+
+    this.authService
+      .getUserCompany(userId)
       .subscribe({
-        next: (response) => {
+        next: (response: any) => {
 
-          this.modules = response;
+          const companyField =
+            this.config.fields.find(
+              (x: any) =>
+                x.name === 'companyId'
+            );
 
-          this.bindParentModules(response);
+          if (companyField) {
 
-          this.updateStats(response);
+            companyField.options = [
+              {
+                value: response.companyId,
+                label: response.companyName
+              }
+            ];
+          }
+
+          this.moduleModel.companyId =
+            response.companyId;
         }
       });
   }
 
-  bindParentModules(data: any[]): void {
+  loadModules(): void {
+
+    this.loading = true;
+
+    this.administrationService
+      .getModules()
+      .subscribe({
+        next: (response: any) => {
+
+          this.modules =
+            response.data ?? response;
+
+          this.bindParentModules(
+            this.modules
+          );
+
+          this.updateStats(
+            this.modules
+          );
+
+          this.loading = false;
+        },
+        error: () => {
+
+          this.loading = false;
+        }
+      });
+  }
+
+  bindParentModules(
+    data: any[]
+  ): void {
 
     const field =
       this.config.fields.find(
@@ -146,14 +233,17 @@ export class ModulesComponent implements OnInit {
     }
   }
 
-  updateStats(data: any[]): void {
+  updateStats(
+    data: any[]
+  ): void {
 
     this.config.stats = [
       {
         label: 'Total Modules',
         value: data.length,
         icon: ICONS.module,
-        description: 'Available modules'
+        description:
+          'Available modules'
       }
     ];
   }
@@ -162,6 +252,7 @@ export class ModulesComponent implements OnInit {
 
     this.moduleModel = {
       id: 0,
+      companyId: this.companyId,
       name: '',
       code: '',
       icon: '',
@@ -174,14 +265,17 @@ export class ModulesComponent implements OnInit {
     this.showEntry = true;
   }
 
-  editModule(module: any): void {
+  editModule(
+    module: any
+  ): void {
 
     this.administrationService
       .getModuleById(module.id)
       .subscribe({
-        next: (response) => {
+        next: (response: any) => {
 
-          this.moduleModel = response;
+          this.moduleModel =
+            response.data ?? response;
 
           this.showEntry = true;
         }
@@ -190,23 +284,37 @@ export class ModulesComponent implements OnInit {
 
   saveModule(): void {
 
+    this.moduleModel.companyId =
+      this.companyId;
+
     this.administrationService
-      .saveModule(this.moduleModel)
+      .saveModule(
+        this.moduleModel
+      )
       .subscribe({
-        next: () => {
+        next: (response: any) => {
 
           this.alert.success(
-            'Module saved successfully.'
+            response.message
           );
 
           this.showEntry = false;
 
           this.loadModules();
+        },
+        error: (error) => {
+
+          this.alert.error(
+            error?.error?.message ??
+            'Unable to save module.'
+          );
         }
       });
   }
 
-  async deleteModule(module: any): Promise<void> {
+  async deleteModule(
+    module: any
+  ): Promise<void> {
 
     const confirmed =
       await this.alert.confirm(
@@ -217,24 +325,35 @@ export class ModulesComponent implements OnInit {
       return;
     }
 
+    const model = {
+      ...module,
+      companyId: this.companyId,
+      isDelete: true
+    };
+
     this.administrationService
-      .saveModule({
-        ...module,
-        isDelete: true
-      })
+      .saveModule(model)
       .subscribe({
-        next: () => {
+        next: (response: any) => {
 
           this.alert.success(
-            'Module deleted successfully.'
+            response.message
           );
 
           this.loadModules();
+        },
+        error: (error) => {
+
+          this.alert.error(
+            error?.error?.message ??
+            'Unable to delete module.'
+          );
         }
       });
   }
 
   cancel(): void {
+
     this.showEntry = false;
   }
 }

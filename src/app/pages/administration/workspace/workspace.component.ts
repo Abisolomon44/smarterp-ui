@@ -43,6 +43,13 @@ export class WorkspaceComponent implements OnInit {
       iconClass: 'users',
       route: '/dashboard/administration/users'
     },
+        {
+      title: 'Users Roles',
+      description: 'Manage system users and access',
+      icon: ICONS.users,
+      iconClass: 'users',
+      route: '/dashboard/administration/users'
+    },
     {
       title: 'Roles',
       description: 'Manage user roles and hierarchy',
@@ -128,6 +135,13 @@ export class WorkspaceComponent implements OnInit {
     icon: ICONS.roles,
     iconClass: 'roles',
     route: '/dashboard/administration/roles'
+  },
+    {
+    title: ' User Roles',
+    description: 'Manage User Roles',
+    icon: ICONS.roles,
+    iconClass: 'roles',
+    route: '/dashboard/administration/user-roles'
   },
   {
     title: 'Permissions',

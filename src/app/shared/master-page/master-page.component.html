@@ -5,31 +5,23 @@
 
   <ng-container *ngIf="!showEntry">
     <!-- Header -->
-
     <div class="module-header">
       <div class="module-info">
-        <div class="module-icon">
-          <lucide-icon [img]="config.icon" [size]="28"> </lucide-icon>
+        <div class="breadcrumb">
+          <span>Administration</span>
+          <span>/</span>
+          <span>{{ config.title }}</span>
         </div>
 
-        <div>
-          <div class="breadcrumb">
-            <span>Administration</span>
+        <h1>{{ config.title }}</h1>
 
-            <span>/</span>
-
-            <span>{{ config.title }}</span>
-          </div>
-
-          <h1>
-            {{ config.title }}
-          </h1>
-
-          <p>
-            {{ config.description }}
-          </p>
-        </div>
+        <p>{{ config.description }}</p>
       </div>
+
+      <button class="back-btn" (click)="goBack()">
+        <lucide-icon [img]="icons.back" [size]="16"> </lucide-icon>
+
+      </button>
     </div>
 
     <!-- KPI Cards -->
