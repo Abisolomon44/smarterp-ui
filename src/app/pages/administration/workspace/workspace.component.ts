@@ -5,17 +5,20 @@ import {
 
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
+import {
+  getIconByName
+} from '../../../shared/icon.constants';
 import {
   LucideAngularModule
 } from 'lucide-angular';
+
+import { Router } from '@angular/router';
 
 import { ICONS }
 from '../../../shared/icon.constants';
 
 import { AdministrationService }
 from '../../../services/administration-service/administration.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-workspace',
@@ -28,83 +31,34 @@ import { Router } from '@angular/router';
   templateUrl: './workspace.component.html',
   styleUrls: ['./workspace.component.scss']
 })
-
-export class WorkspaceComponent implements OnInit {
+export class WorkspaceComponent
+  implements OnInit {
 
   readonly icons = ICONS;
 
   dashboard: any;
 
-  cards = [
-    {
-      title: 'Users',
-      description: 'Manage system users and access',
-      icon: ICONS.users,
-      iconClass: 'users',
-      route: '/dashboard/administration/users'
-    },
-        {
-      title: 'Users Roles',
-      description: 'Manage system users and access',
-      icon: ICONS.users,
-      iconClass: 'users',
-      route: '/dashboard/administration/users'
-    },
-    {
-      title: 'Roles',
-      description: 'Manage user roles and hierarchy',
-      icon: ICONS.roles,
-      iconClass: 'roles',
-      route: '/dashboard/administration/roles'
-    },
-    {
-      title: 'Permissions',
-      description: 'Manage role permissions',
-      icon: ICONS.permissions,
-      iconClass: 'permissions',
-      route: '/dashboard/administration/permissions'
-    },
-    {
-      title: 'Workspaces',
-      description: 'Manage ERP workspaces',
-      icon: ICONS.workspaces,
-      iconClass: 'workspace',
-      route: '/dashboard/administration/workspaces'
-    },
-    {
-      title: 'Domains',
-      description: 'Manage business domains',
-      icon: ICONS.domains,
-      iconClass: 'domain',
-      route: '/dashboard/administration/domains'
-    },
-    {
-      title: 'Modules',
-      description: 'Manage application modules',
-      icon: ICONS.modules,
-      iconClass: 'module',
-      route: '/dashboard/administration/modules'
-    },
-    {
-      title: 'Sub Modules',
-      description: 'Manage application sub modules',
-      icon: ICONS.subModules,
-      iconClass: 'submodule',
-      route: '/dashboard/administration/sub-modules'
-    }
-  ];
+  domainGroups: any[] = [];
 
   constructor(
-    private administrationService: AdministrationService,
-    private router: Router
+    private administrationService:
+      AdministrationService,
+    private router:
+      Router
   ) { }
 
   ngOnInit(): void {
+
     this.loadDashboard();
+
+    this.loadWorkspaceMenus();
   }
 
   goBack(): void {
-    this.router.navigate(['/dashboard']);
+
+    this.router.navigate([
+      '/dashboard'
+    ]);
   }
 
   loadDashboard(): void {
@@ -113,86 +67,106 @@ export class WorkspaceComponent implements OnInit {
       .getAdminDashboard()
       .subscribe({
         next: (response) => {
-          this.dashboard = response;
+
+          this.dashboard =
+            response;
         },
         error: (error) => {
-          console.error(error);
+
+          console.error(
+            error
+          );
         }
       });
   }
 
-  securityCards = [
-  {
-    title: 'Users',
-    description: 'Manage system users',
-    icon: ICONS.users,
-    iconClass: 'users',
-    route: '/dashboard/administration/users'
-  },
-  {
-    title: 'Roles',
-    description: 'Manage roles',
-    icon: ICONS.roles,
-    iconClass: 'roles',
-    route: '/dashboard/administration/roles'
-  },
-    {
-    title: ' User Roles',
-    description: 'Manage User Roles',
-    icon: ICONS.roles,
-    iconClass: 'roles',
-    route: '/dashboard/administration/user-roles'
-  },
-  {
-    title: 'Permissions',
-    description: 'Manage permissions',
-    icon: ICONS.permissions,
-    iconClass: 'permissions',
-    route: '/dashboard/administration/permissions'
-  }
-];
+  loadWorkspaceMenus(): void {
 
-organizationCards = [
-  {
-    title: 'Workspaces',
-    description: 'Manage ERP workspaces',
-    icon: ICONS.workspaces,
-    iconClass: 'workspace',
-    route: '/dashboard/administration/workspaces'
-  },
-  {
-    title: 'Domains',
-    description: 'Manage domains',
-    icon: ICONS.domains,
-    iconClass: 'domain',
-    route: '/dashboard/administration/domains'
-  }
-];
+    const userId =
+      Number(
+        localStorage.getItem(
+          'userId'
+        )
+      );
 
-navigationCards = [
-  {
-    title: 'Modules',
-    description: 'Manage modules',
-    icon: ICONS.modules,
-    iconClass: 'module',
-    route: '/dashboard/administration/modules'
-  },
-  {
-    title: 'Sub Modules',
-    description: 'Manage sub modules',
-    icon: ICONS.subModules,
-    iconClass: 'submodule',
-    route: '/dashboard/administration/sub-modules'
-  }
-];
+    this.administrationService
+      .getSidebar(userId)
+      .subscribe({
+        next: (response: any) => {
 
-configurationCards = [
-  {
-    title: 'Module Profiles',
-    description: 'Manage module profiles',
-    icon: ICONS.modules,
-    iconClass: 'module',
-    route: '/dashboard/administration/module-profiles'
+          const menus =
+            response.data ??
+            response;
+
+          this.buildDomainGroups(
+            menus
+          );
+        },
+        error: (error) => {
+
+          console.error(
+            error
+          );
+        }
+      });
   }
-];
+
+buildDomainGroups(
+  menus: any[]
+): void {
+
+  const domains =
+    [...new Set(
+      menus.map(
+        (x: any) => x.domainName
+      )
+    )];
+
+  this.domainGroups =
+    domains.map(
+      (domain: string) => {
+
+        const domainMenus =
+          menus.filter(
+            (x: any) =>
+              x.domainName === domain
+          );
+
+        return {
+
+          domainName:
+            domain,
+
+          domainIcon:
+            getIconByName(
+              domainMenus[0]
+                ?.domainIcon
+            ),
+
+          cards:
+            domainMenus.map(
+              (x: any) => ({
+
+                title:
+                  x.moduleName,
+
+                description:
+                  `Manage ${x.moduleName}`,
+
+                route:
+                  x.routeUrl,
+
+                icon:
+                  getIconByName(
+                    x.moduleIcon
+                  ),
+
+                iconClass:
+                  'module'
+              })
+            )
+        };
+      }
+    );
+}
 }

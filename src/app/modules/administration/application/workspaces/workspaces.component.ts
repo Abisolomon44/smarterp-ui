@@ -4,6 +4,8 @@ import { MasterPageComponent } from '../../../../shared/master-page/master-page.
 
 import { AdministrationService } from '../../../../services/administration-service/administration.service';
 
+import { AuthService } from '../../../../services/auth.service';
+
 import { AlertService } from '../../../../services/alert.service';
 
 import { ICONS } from '../../../../shared/icon.constants';
@@ -15,12 +17,21 @@ import { ICONS } from '../../../../shared/icon.constants';
   templateUrl: './workspaces.component.html',
   styleUrls: ['./workspaces.component.scss']
 })
-export class WorkspacesComponent implements OnInit {
+export class WorkspacesComponent
+  implements OnInit {
 
   constructor(
-    private administrationService: AdministrationService,
-    private alert: AlertService
+    private administrationService:
+      AdministrationService,
+    private authService:
+      AuthService,
+    private alert:
+      AlertService
   ) { }
+
+  companyId = Number(
+    localStorage.getItem('companyId')
+  );
 
   workspaces: any[] = [];
 
@@ -30,6 +41,7 @@ export class WorkspacesComponent implements OnInit {
 
   workspaceModel: any = {
     id: 0,
+    companyId: this.companyId,
     name: '',
     code: '',
     icon: '',
@@ -40,17 +52,24 @@ export class WorkspacesComponent implements OnInit {
   };
 
   config: any = {
+
     title: 'Workspaces',
 
-    description: 'Manage application workspaces',
+    description:
+      'Manage application workspaces',
 
     icon: ICONS.workspace,
 
-    createLabel: 'Create Workspace',
+    createLabel:
+      'Create Workspace',
 
     stats: [],
 
     columns: [
+      {
+        field: 'companyName',
+        header: 'Company'
+      },
       {
         field: 'name',
         header: 'Workspace Name'
@@ -77,8 +96,8 @@ export class WorkspacesComponent implements OnInit {
       {
         name: 'General',
         fields: [
-          'name',
-          'code'
+          'companyId',
+          'name'
         ]
       },
       {
@@ -99,37 +118,39 @@ export class WorkspacesComponent implements OnInit {
 
     fields: [
       {
+        name: 'companyId',
+        label: 'Company',
+        type: 'dropdown',
+        required: true,
+        options: []
+      },
+      {
         name: 'name',
         label: 'Workspace Name',
         type: 'text',
         required: true
       },
-
       {
         name: 'code',
         label: 'Workspace Code',
         type: 'text',
-        required: true
+        readonly: true
       },
-
       {
         name: 'icon',
         label: 'Icon',
         type: 'text'
       },
-
       {
         name: 'routeUrl',
         label: 'Route URL',
         type: 'text'
       },
-
       {
         name: 'sortOrder',
         label: 'Sort Order',
-        type: 'number'
+        type: 'text',
       },
-
       {
         name: 'isDefault',
         label: 'Default Workspace',
@@ -139,7 +160,49 @@ export class WorkspacesComponent implements OnInit {
   };
 
   ngOnInit(): void {
+
+    this.loadCompany();
+
     this.loadWorkspaces();
+  }
+
+  loadCompany(): void {
+
+    const userId =
+      Number(
+        localStorage.getItem(
+          'userId'
+        )
+      );
+
+    this.authService
+      .getUserCompany(userId)
+      .subscribe({
+        next: (response: any) => {
+
+          const companyField =
+            this.config.fields.find(
+              (x: any) =>
+                x.name === 'companyId'
+            );
+
+          if (companyField) {
+
+            companyField.options = [
+              {
+                value: response.companyId,
+                label: response.companyName
+              }
+            ];
+          }
+
+          this.companyId =
+            response.companyId;
+
+          this.workspaceModel.companyId =
+            response.companyId;
+        }
+      });
   }
 
   loadWorkspaces(): void {
@@ -149,11 +212,14 @@ export class WorkspacesComponent implements OnInit {
     this.administrationService
       .getWorkspaces()
       .subscribe({
-        next: (response: any[]) => {
+        next: (response: any) => {
 
-          this.workspaces = response;
+          this.workspaces =
+            response.data ?? response;
 
-          this.updateStats(response);
+          this.updateStats(
+            this.workspaces
+          );
 
           this.loading = false;
         },
@@ -166,14 +232,17 @@ export class WorkspacesComponent implements OnInit {
       });
   }
 
-  updateStats(data: any[]): void {
+  updateStats(
+    data: any[]
+  ): void {
 
     this.config.stats = [
       {
         label: 'Total Workspaces',
         value: data.length,
         icon: ICONS.workspace,
-        description: 'Available workspaces'
+        description:
+          'Available workspaces'
       },
       {
         label: 'Default Workspaces',
@@ -181,7 +250,8 @@ export class WorkspacesComponent implements OnInit {
           x => x.isDefault
         ).length,
         icon: ICONS.activeUsers,
-        description: 'Default workspace'
+        description:
+          'Default workspace'
       }
     ];
   }
@@ -190,6 +260,7 @@ export class WorkspacesComponent implements OnInit {
 
     this.workspaceModel = {
       id: 0,
+      companyId: this.companyId,
       name: '',
       code: '',
       icon: '',
@@ -202,14 +273,19 @@ export class WorkspacesComponent implements OnInit {
     this.showEntry = true;
   }
 
-  editWorkspace(workspace: any): void {
+  editWorkspace(
+    workspace: any
+  ): void {
 
     this.administrationService
-      .getWorkspaceById(workspace.id)
+      .getWorkspaceById(
+        workspace.id
+      )
       .subscribe({
-        next: (response) => {
+        next: (response: any) => {
 
-          this.workspaceModel = response;
+          this.workspaceModel =
+            response.data ?? response;
 
           this.showEntry = true;
         }
@@ -218,18 +294,18 @@ export class WorkspacesComponent implements OnInit {
 
   saveWorkspace(): void {
 
-    const isUpdate =
-      this.workspaceModel.id > 0;
+    this.workspaceModel.companyId =
+      this.companyId;
 
     this.administrationService
-      .saveWorkspace(this.workspaceModel)
+      .saveWorkspace(
+        this.workspaceModel
+      )
       .subscribe({
-        next: () => {
+        next: (response: any) => {
 
           this.alert.success(
-            isUpdate
-              ? 'Workspace updated successfully.'
-              : 'Workspace created successfully.'
+            response.message
           );
 
           this.showEntry = false;
@@ -238,9 +314,8 @@ export class WorkspacesComponent implements OnInit {
         },
         error: (error) => {
 
-          console.error(error);
-
           this.alert.error(
+            error?.error?.message ??
             'Unable to save workspace.'
           );
         }
@@ -262,24 +337,33 @@ export class WorkspacesComponent implements OnInit {
 
     const model = {
       ...workspace,
+      companyId: this.companyId,
       isDelete: true
     };
 
     this.administrationService
       .saveWorkspace(model)
       .subscribe({
-        next: () => {
+        next: (response: any) => {
 
           this.alert.success(
-            'Workspace deleted successfully.'
+            response.message
           );
 
           this.loadWorkspaces();
+        },
+        error: (error) => {
+
+          this.alert.error(
+            error?.error?.message ??
+            'Unable to delete workspace.'
+          );
         }
       });
   }
 
   cancel(): void {
+
     this.showEntry = false;
   }
 }

@@ -20,7 +20,6 @@
 
       <button class="back-btn" (click)="goBack()">
         <lucide-icon [img]="icons.back" [size]="16"> </lucide-icon>
-
       </button>
     </div>
 
@@ -384,6 +383,22 @@
               {{ option.label }}
             </option>
           </select>
+
+          <!-- NUMBER FIELD -->
+
+          <input
+            *ngIf="field.type === 'number'"
+            type="number"
+            [(ngModel)]="userModel[field.name]"
+            [min]="field.min"
+            [max]="field.max"
+            [class.input-error]="validationErrors[field.name]"
+          />
+
+          <div class="field-error" *ngIf="validationErrors[field.name]">
+            {{ validationErrors[field.name] }}
+          </div>
+
           <!-- TOGGLE -->
 
           <div *ngIf="field.type === 'toggle'" class="toggle-field">

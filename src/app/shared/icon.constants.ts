@@ -359,3 +359,49 @@ export const ICONS = {
 
   monitoring: MonitorCog,
 };
+
+
+export function getIconByName(
+  iconName: string
+): any {
+
+  const iconMap: any = {
+
+    // Security
+    roles: ICONS.roles,
+    users: ICONS.users,
+    userRoles: ICONS.users,
+    permissions: ICONS.permissions,
+    roleProfiles: ICONS.roleProfiles,
+
+    // Organization
+    workspace: ICONS.workspace,
+    workspaces: ICONS.workspaces,
+    domain: ICONS.domain,
+    domains: ICONS.domains,
+
+    // Modules
+    module: ICONS.module,
+    modules: ICONS.modules,
+    subModule: ICONS.subModule,
+    subModules: ICONS.subModules,
+    moduleProfiles: ICONS.moduleProfiles,
+
+    // Finance
+    finance: ICONS.finance,
+    accounts: ICONS.accounts,
+    ledger: ICONS.bank,
+    vouchers: ICONS.invoice,
+
+    // Dashboard
+    dashboard: ICONS.dashboard,
+
+    // Settings
+    settings: ICONS.settings
+  };
+
+  return (
+    iconMap[iconName] ??
+    ICONS.module
+  );
+}

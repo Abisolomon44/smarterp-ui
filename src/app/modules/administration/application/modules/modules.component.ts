@@ -3,9 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MasterPageComponent } from '../../../../shared/master-page/master-page.component';
 
 import { AdministrationService } from '../../../../services/administration-service/administration.service';
-
 import { AuthService } from '../../../../services/auth.service';
-
 import { AlertService } from '../../../../services/alert.service';
 
 import { ICONS } from '../../../../shared/icon.constants';
@@ -21,12 +19,9 @@ export class ModulesComponent
   implements OnInit {
 
   constructor(
-    private administrationService:
-      AdministrationService,
-    private authService:
-      AuthService,
-    private alert:
-      AlertService
+    private administrationService: AdministrationService,
+    private authService: AuthService,
+    private alert: AlertService
   ) { }
 
   companyId = Number(
@@ -35,13 +30,19 @@ export class ModulesComponent
 
   modules: any[] = [];
 
-  showEntry = false;
+  workspaces: any[] = [];
+
+  domains: any[] = [];
 
   loading = false;
+
+  showEntry = false;
 
   moduleModel: any = {
     id: 0,
     companyId: this.companyId,
+    workspaceId: null,
+    domainId: null,
     name: '',
     code: '',
     icon: '',
@@ -71,6 +72,14 @@ export class ModulesComponent
         header: 'Company'
       },
       {
+        field: 'workspaceName',
+        header: 'Workspace'
+      },
+      {
+        field: 'domainName',
+        header: 'Domain'
+      },
+      {
         field: 'name',
         header: 'Module Name'
       },
@@ -93,6 +102,8 @@ export class ModulesComponent
         name: 'General',
         fields: [
           'companyId',
+          'workspaceId',
+          'domainId',
           'name'
         ]
       },
@@ -116,10 +127,30 @@ export class ModulesComponent
         options: []
       },
       {
+        name: 'workspaceId',
+        label: 'Workspace',
+        type: 'dropdown',
+        required: true,
+        options: []
+      },
+      {
+        name: 'domainId',
+        label: 'Domain',
+        type: 'dropdown',
+        required: true,
+        options: []
+      },
+      {
         name: 'name',
         label: 'Module Name',
         type: 'text',
         required: true
+      },
+      {
+        name: 'code',
+        label: 'Module Code',
+        type: 'text',
+        readonly: true
       },
       {
         name: 'icon',
@@ -148,6 +179,10 @@ export class ModulesComponent
   ngOnInit(): void {
 
     this.loadCompany();
+
+    this.loadWorkspaces();
+
+    this.loadDomains();
 
     this.loadModules();
   }
@@ -184,6 +219,66 @@ export class ModulesComponent
       });
   }
 
+  loadWorkspaces(): void {
+
+    this.administrationService
+      .getWorkspaces()
+      .subscribe({
+        next: (response: any) => {
+
+          this.workspaces =
+            response.data ?? response;
+
+          const field =
+            this.config.fields.find(
+              (x: any) =>
+                x.name === 'workspaceId'
+            );
+
+          if (field) {
+
+            field.options =
+              this.workspaces.map(
+                (x: any) => ({
+                  value: x.id,
+                  label: x.name
+                })
+              );
+          }
+        }
+      });
+  }
+
+  loadDomains(): void {
+
+    this.administrationService
+      .getDomains()
+      .subscribe({
+        next: (response: any) => {
+
+          this.domains =
+            response.data ?? response;
+
+          const field =
+            this.config.fields.find(
+              (x: any) =>
+                x.name === 'domainId'
+            );
+
+          if (field) {
+
+            field.options =
+              this.domains.map(
+                (x: any) => ({
+                  value: x.id,
+                  label: x.name
+                })
+              );
+          }
+        }
+      });
+  }
+
   loadModules(): void {
 
     this.loading = true;
@@ -206,7 +301,9 @@ export class ModulesComponent
 
           this.loading = false;
         },
-        error: () => {
+        error: (error) => {
+
+          console.error(error);
 
           this.loading = false;
         }
@@ -253,6 +350,8 @@ export class ModulesComponent
     this.moduleModel = {
       id: 0,
       companyId: this.companyId,
+      workspaceId: null,
+      domainId: null,
       name: '',
       code: '',
       icon: '',

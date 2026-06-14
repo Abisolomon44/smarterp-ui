@@ -4,6 +4,8 @@ import { MasterPageComponent } from '../../../../shared/master-page/master-page.
 
 import { AdministrationService } from '../../../../services/administration-service/administration.service';
 
+import { AuthService } from '../../../../services/auth.service';
+
 import { AlertService } from '../../../../services/alert.service';
 
 import { ICONS } from '../../../../shared/icon.constants';
@@ -19,37 +21,51 @@ export class DomainsComponent implements OnInit {
 
   constructor(
     private administrationService: AdministrationService,
+    private authService: AuthService,
     private alert: AlertService
   ) { }
 
-  domains: any[] = [];
+  companyId = Number(
+    localStorage.getItem('companyId')
+  );
 
-  showEntry = false;
+  domains: any[] = [];
 
   loading = false;
 
+  showEntry = false;
+
   domainModel: any = {
     id: 0,
-    workspaceId: 0,
+    companyId: this.companyId,
+    workspaceId: null,
     name: '',
     code: '',
     icon: '',
+    routeUrl: '',
     sortOrder: 1,
     isDelete: false
   };
 
   config: any = {
+
     title: 'Domains',
 
-    description: 'Manage business domains',
+    description:
+      'Manage business domains',
 
     icon: ICONS.domain,
 
-    createLabel: 'Create Domain',
+    createLabel:
+      'Create Domain',
 
     stats: [],
 
     columns: [
+      {
+        field: 'companyName',
+        header: 'Company'
+      },
       {
         field: 'workspaceName',
         header: 'Workspace'
@@ -72,15 +88,16 @@ export class DomainsComponent implements OnInit {
       {
         name: 'General',
         fields: [
+          'companyId',
           'workspaceId',
-          'name',
-          'code'
+          'name'
         ]
       },
       {
         name: 'Settings',
         fields: [
           'icon',
+          'routeUrl',
           'sortOrder'
         ]
       }
@@ -88,33 +105,41 @@ export class DomainsComponent implements OnInit {
 
     fields: [
       {
+        name: 'companyId',
+        label: 'Company',
+        type: 'dropdown',
+        required: true,
+        options: []
+      },
+      {
         name: 'workspaceId',
         label: 'Workspace',
         type: 'dropdown',
         required: true,
         options: []
       },
-
       {
         name: 'name',
         label: 'Domain Name',
         type: 'text',
         required: true
       },
-
       {
         name: 'code',
         label: 'Domain Code',
         type: 'text',
-        required: true
+        readonly: true
       },
-
       {
         name: 'icon',
         label: 'Icon',
         type: 'text'
       },
-
+      {
+        name: 'routeUrl',
+        label: 'Route URL',
+        type: 'text'
+      },
       {
         name: 'sortOrder',
         label: 'Sort Order',
@@ -124,8 +149,54 @@ export class DomainsComponent implements OnInit {
   };
 
   ngOnInit(): void {
+
+    this.loadCompany();
+
     this.loadDomains();
+
     this.loadWorkspaces();
+  }
+
+  loadCompany(): void {
+
+    const userId =
+      Number(
+        localStorage.getItem(
+          'userId'
+        )
+      );
+
+    this.authService
+      .getUserCompany(userId)
+      .subscribe({
+        next: (response: any) => {
+
+          const data =
+            response.data ?? response;
+
+          const companyField =
+            this.config.fields.find(
+              (x: any) =>
+                x.name === 'companyId'
+            );
+
+          if (companyField) {
+
+            companyField.options = [
+              {
+                value: data.companyId,
+                label: data.companyName
+              }
+            ];
+          }
+
+          this.companyId =
+            data.companyId;
+
+          this.domainModel.companyId =
+            data.companyId;
+        }
+      });
   }
 
   loadDomains(): void {
@@ -135,11 +206,14 @@ export class DomainsComponent implements OnInit {
     this.administrationService
       .getDomains()
       .subscribe({
-        next: (response: any[]) => {
+        next: (response: any) => {
 
-          this.domains = response;
+          this.domains =
+            response.data ?? response;
 
-          this.updateStats(response);
+          this.updateStats(
+            this.domains
+          );
 
           this.loading = false;
         },
@@ -157,7 +231,10 @@ export class DomainsComponent implements OnInit {
     this.administrationService
       .getWorkspaces()
       .subscribe({
-        next: (response: any[]) => {
+        next: (response: any) => {
+
+          const workspaces =
+            response.data ?? response;
 
           const field =
             this.config.fields.find(
@@ -168,7 +245,7 @@ export class DomainsComponent implements OnInit {
           if (field) {
 
             field.options =
-              response.map(
+              workspaces.map(
                 (x: any) => ({
                   value: x.id,
                   label: x.name
@@ -179,14 +256,17 @@ export class DomainsComponent implements OnInit {
       });
   }
 
-  updateStats(data: any[]): void {
+  updateStats(
+    data: any[]
+  ): void {
 
     this.config.stats = [
       {
         label: 'Total Domains',
         value: data.length,
         icon: ICONS.domain,
-        description: 'Available domains'
+        description:
+          'Available domains'
       }
     ];
   }
@@ -195,10 +275,12 @@ export class DomainsComponent implements OnInit {
 
     this.domainModel = {
       id: 0,
-      workspaceId: 0,
+      companyId: this.companyId,
+      workspaceId: null,
       name: '',
       code: '',
       icon: '',
+      routeUrl: '',
       sortOrder: 1,
       isDelete: false
     };
@@ -206,14 +288,19 @@ export class DomainsComponent implements OnInit {
     this.showEntry = true;
   }
 
-  editDomain(domain: any): void {
+  editDomain(
+    domain: any
+  ): void {
 
     this.administrationService
-      .getDomainById(domain.id)
+      .getDomainById(
+        domain.id
+      )
       .subscribe({
-        next: (response) => {
+        next: (response: any) => {
 
-          this.domainModel = response;
+          this.domainModel =
+            response.data ?? response;
 
           this.showEntry = true;
         }
@@ -222,18 +309,18 @@ export class DomainsComponent implements OnInit {
 
   saveDomain(): void {
 
-    const isUpdate =
-      this.domainModel.id > 0;
+    this.domainModel.companyId =
+      this.companyId;
 
     this.administrationService
-      .saveDomain(this.domainModel)
+      .saveDomain(
+        this.domainModel
+      )
       .subscribe({
-        next: () => {
+        next: (response: any) => {
 
           this.alert.success(
-            isUpdate
-              ? 'Domain updated successfully.'
-              : 'Domain created successfully.'
+            response.message
           );
 
           this.showEntry = false;
@@ -242,9 +329,8 @@ export class DomainsComponent implements OnInit {
         },
         error: (error) => {
 
-          console.error(error);
-
           this.alert.error(
+            error?.error?.message ??
             'Unable to save domain.'
           );
         }
@@ -266,24 +352,33 @@ export class DomainsComponent implements OnInit {
 
     const model = {
       ...domain,
+      companyId: this.companyId,
       isDelete: true
     };
 
     this.administrationService
       .saveDomain(model)
       .subscribe({
-        next: () => {
+        next: (response: any) => {
 
           this.alert.success(
-            'Domain deleted successfully.'
+            response.message
           );
 
           this.loadDomains();
+        },
+        error: (error) => {
+
+          this.alert.error(
+            error?.error?.message ??
+            'Unable to delete domain.'
+          );
         }
       });
   }
 
   cancel(): void {
+
     this.showEntry = false;
   }
 }

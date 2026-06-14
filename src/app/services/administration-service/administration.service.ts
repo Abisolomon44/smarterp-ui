@@ -5,44 +5,30 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../config';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdministrationService {
+  private apiUrl = `${environment.apiBaseUrl}/api/Administration`;
 
-  private apiUrl =
-    `${environment.apiBaseUrl}/api/Administration`;
-
-  constructor(
-    private http: HttpClient
-  ) { }
-
+  constructor(private http: HttpClient) {}
 
   getAdminDashboard(): Observable<any> {
-  return this.http.get<any>(
-    `${this.apiUrl}/admindashboard`
-  );
-}
+    return this.http.get<any>(`${this.apiUrl}/admindashboard`);
+  }
   // =====================================================
   // ROLE
   // =====================================================
 
   saveRole(model: any): Observable<any> {
-    return this.http.post(
-      `${this.apiUrl}/role`,
-      model
-    );
+    return this.http.post(`${this.apiUrl}/role`, model);
   }
 
   getRoles(): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.apiUrl}/roles`
-    );
+    return this.http.get<any[]>(`${this.apiUrl}/roles`);
   }
 
   getRoleById(id: number): Observable<any> {
-    return this.http.get(
-      `${this.apiUrl}/role/${id}`
-    );
+    return this.http.get(`${this.apiUrl}/role/${id}`);
   }
 
   // =====================================================
@@ -50,22 +36,15 @@ export class AdministrationService {
   // =====================================================
 
   saveUserRole(model: any): Observable<any> {
-    return this.http.post(
-      `${this.apiUrl}/user-role`,
-      model
-    );
+    return this.http.post(`${this.apiUrl}/user-role`, model);
   }
 
   getUserRoles(): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.apiUrl}/user-roles`
-    );
+    return this.http.get<any[]>(`${this.apiUrl}/user-roles`);
   }
 
   getUserRoleById(id: number): Observable<any> {
-    return this.http.get(
-      `${this.apiUrl}/user-role/${id}`
-    );
+    return this.http.get(`${this.apiUrl}/user-role/${id}`);
   }
 
   // =====================================================
@@ -73,22 +52,15 @@ export class AdministrationService {
   // =====================================================
 
   saveRoleProfile(model: any): Observable<any> {
-    return this.http.post(
-      `${this.apiUrl}/role-profile`,
-      model
-    );
+    return this.http.post(`${this.apiUrl}/role-profile`, model);
   }
 
   getRoleProfiles(): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.apiUrl}/role-profiles`
-    );
+    return this.http.get<any[]>(`${this.apiUrl}/role-profiles`);
   }
 
   getRoleProfileById(id: number): Observable<any> {
-    return this.http.get(
-      `${this.apiUrl}/role-profile/${id}`
-    );
+    return this.http.get(`${this.apiUrl}/role-profile/${id}`);
   }
 
   // =====================================================
@@ -96,22 +68,15 @@ export class AdministrationService {
   // =====================================================
 
   saveModule(model: any): Observable<any> {
-    return this.http.post(
-      `${this.apiUrl}/module`,
-      model
-    );
+    return this.http.post(`${this.apiUrl}/module`, model);
   }
 
   getModules(): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.apiUrl}/modules`
-    );
+    return this.http.get<any[]>(`${this.apiUrl}/modules`);
   }
 
   getModuleById(id: number): Observable<any> {
-    return this.http.get(
-      `${this.apiUrl}/module/${id}`
-    );
+    return this.http.get(`${this.apiUrl}/module/${id}`);
   }
 
   // =====================================================
@@ -119,22 +84,15 @@ export class AdministrationService {
   // =====================================================
 
   saveSubModule(model: any): Observable<any> {
-    return this.http.post(
-      `${this.apiUrl}/sub-module`,
-      model
-    );
+    return this.http.post(`${this.apiUrl}/sub-module`, model);
   }
 
   getSubModules(): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.apiUrl}/sub-modules`
-    );
+    return this.http.get<any[]>(`${this.apiUrl}/sub-modules`);
   }
 
   getSubModuleById(id: number): Observable<any> {
-    return this.http.get(
-      `${this.apiUrl}/sub-module/${id}`
-    );
+    return this.http.get(`${this.apiUrl}/sub-module/${id}`);
   }
 
   // =====================================================
@@ -142,22 +100,15 @@ export class AdministrationService {
   // =====================================================
 
   saveModuleProfile(model: any): Observable<any> {
-    return this.http.post(
-      `${this.apiUrl}/module-profile`,
-      model
-    );
+    return this.http.post(`${this.apiUrl}/module-profile`, model);
   }
 
   getModuleProfiles(): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.apiUrl}/module-profiles`
-    );
+    return this.http.get<any[]>(`${this.apiUrl}/module-profiles`);
   }
 
   getModuleProfileById(id: number): Observable<any> {
-    return this.http.get(
-      `${this.apiUrl}/module-profile/${id}`
-    );
+    return this.http.get(`${this.apiUrl}/module-profile/${id}`);
   }
 
   // =====================================================
@@ -165,22 +116,15 @@ export class AdministrationService {
   // =====================================================
 
   saveWorkspace(model: any): Observable<any> {
-    return this.http.post(
-      `${this.apiUrl}/workspace`,
-      model
-    );
+    return this.http.post(`${this.apiUrl}/workspace`, model);
   }
 
   getWorkspaces(): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.apiUrl}/workspaces`
-    );
+    return this.http.get<any[]>(`${this.apiUrl}/workspaces`);
   }
 
   getWorkspaceById(id: number): Observable<any> {
-    return this.http.get(
-      `${this.apiUrl}/workspace/${id}`
-    );
+    return this.http.get(`${this.apiUrl}/workspace/${id}`);
   }
 
   // =====================================================
@@ -188,22 +132,15 @@ export class AdministrationService {
   // =====================================================
 
   saveDomain(model: any): Observable<any> {
-    return this.http.post(
-      `${this.apiUrl}/domain`,
-      model
-    );
+    return this.http.post(`${this.apiUrl}/domain`, model);
   }
 
   getDomains(): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.apiUrl}/domains`
-    );
+    return this.http.get<any[]>(`${this.apiUrl}/domains`);
   }
 
   getDomainById(id: number): Observable<any> {
-    return this.http.get(
-      `${this.apiUrl}/domain/${id}`
-    );
+    return this.http.get(`${this.apiUrl}/domain/${id}`);
   }
 
   // =====================================================
@@ -211,29 +148,23 @@ export class AdministrationService {
   // =====================================================
 
   saveRolePermission(model: any): Observable<any> {
-    return this.http.post(
-      `${this.apiUrl}/role-permission`,
-      model
-    );
+    return this.http.post(`${this.apiUrl}/role-permission`, model);
   }
 
-  getRolePermissions(
-    roleId: number
-  ): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.apiUrl}/role-permissions/${roleId}`
-    );
+  getRolePermissions(roleId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/role-permissions/${roleId}`);
   }
 
   // =====================================================
   // SIDEBAR
   // =====================================================
 
-  getSidebar(
-    userId: number
-  ): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.apiUrl}/sidebar/${userId}`
+  getSidebar(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/sidebar/${userId}`);
+  }
+  getSidebarWorkspaces(userId: number) {
+    return this.http.get(
+      `${this.apiUrl}/sidebar-workspaces/${userId}`,
     );
   }
 }

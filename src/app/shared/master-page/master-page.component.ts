@@ -3,9 +3,7 @@ import { Location } from '@angular/common';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule } from '@angular/forms';
-
 import { LucideAngularModule } from 'lucide-angular';
-
 import { ICONS } from '../icon.constants';
 import { ExportService } from '../services/export.service';
 

@@ -1,75 +1,145 @@
-<aside class="app-sidebar" [class.collapsed]="collapsed">
-  
-  <!--  <div class="sidebar-brand">
-  <div class="brand-logo">
-      <i class="fa-solid fa-layer-group"></i>
-    </div><div class="smart-brand-name">
-  </div>
-      SmartERP
-    </div>-->
-    
+<aside
+  class="app-sidebar"
+  [class.collapsed]="collapsed">
+
   <nav class="sidebar-nav">
+
     <ul>
+
       <!-- Dashboard -->
+
       <li class="nav-item">
+
         <a
           class="nav-link"
           routerLink="/dashboard"
           routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          (click)="navClick($event)"
-        >
-          <i class="fa-solid fa-chart-line nav-icon"></i>
-          <span class="nav-label">Dashboard</span>
+          [routerLinkActiveOptions]="{
+            exact: true
+          }"
+          (click)="navClick($event)">
+
+          <i
+            class="fa-solid fa-chart-line nav-icon">
+          </i>
+
+          <span class="nav-label">
+            Dashboard
+          </span>
+
         </a>
+
       </li>
 
-      <!-- Administration -->
-      <li>
-        <p class="nav-section-title">Administration</p>
-      </li>
+      <!-- Dynamic Workspaces -->
 
-      <li class="nav-item">
+      <li
+        *ngFor="
+          let workspace
+          of workspaces
+        "
+        class="nav-item">
+
         <a
           class="nav-link"
-          routerLink="/dashboard/administration"
+          [routerLink]="
+            workspace.routeUrl
+          "
           routerLinkActive="active"
-          (click)="navClick($event)"
-        >
-          <i class="fa-solid fa-user-shield nav-icon"></i>
-          <span class="nav-label">Administration</span>
+          (click)="navClick($event)">
+
+          <i
+            [class]="
+              workspace.workspaceIcon
+            ">
+          </i>
+
+          <span class="nav-label">
+
+            {{
+              workspace.workspaceName
+            }}
+
+          </span>
+
         </a>
+
       </li>
 
       <!-- System -->
+
       <li>
-        <p class="nav-section-title">System</p>
+
+        <p
+          class="nav-section-title">
+
+          System
+
+        </p>
+
       </li>
 
       <li class="nav-item">
+
         <a
           class="nav-link"
           routerLink="/dashboard/settings"
           routerLinkActive="active"
-          (click)="navClick($event)"
-        >
-          <i class="fa-solid fa-gear nav-icon"></i>
-          <span class="nav-label">Settings</span>
+          (click)="navClick($event)">
+
+          <i
+            class="fa-solid fa-gear nav-icon">
+          </i>
+
+          <span class="nav-label">
+
+            Settings
+
+          </span>
+
         </a>
+
       </li>
+
     </ul>
+
   </nav>
 
-  <div class="sidebar-footer">
-    <div class="footer-avatar">A</div>
+  <div
+    class="sidebar-footer">
 
-    <div class="sidebar-footer-info">
-      <div class="footer-name">Administrator</div>
+    <div
+      class="footer-avatar">
 
-      <div class="footer-status">
-        <span class="dot"></span>
-        SmartERP v1.0
-      </div>
+      {{
+        userName.charAt(0)
+      }}
+
     </div>
+
+    <div
+      class="sidebar-footer-info">
+
+      <div
+        class="footer-name">
+
+        {{ userName }}
+
+      </div>
+
+      <div
+        class="footer-status">
+
+        <span
+          class="dot">
+        </span>
+
+        SmartERP v1.0
+
+      </div>
+
+    </div>
+
   </div>
+
 </aside>
