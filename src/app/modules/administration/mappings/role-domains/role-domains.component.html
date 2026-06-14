@@ -1,1 +1,21 @@
-<p>role-domains works!</p>
+<app-master-page
+
+  [config]="config"
+
+  [data]="roleDomains"
+
+  [userModel]="roleDomainModel"
+
+  [showEntry]="showEntry"
+
+  (createClick)="createRoleDomain()"
+
+  (saveClick)="saveRoleDomain()"
+
+  (deleteClick)="deleteRoleDomain($event)"
+
+  (cancelClick)="cancel()"
+
+  (refreshClick)="loadRoleDomains()">
+
+</app-master-page>

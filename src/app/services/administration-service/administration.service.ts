@@ -167,4 +167,23 @@ export class AdministrationService {
       `${this.apiUrl}/sidebar-workspaces/${userId}`,
     );
   }
+
+  getRoleDomains(
+  roleId: number
+) {
+
+  return this.http.get<any>(
+    `${this.apiUrl}/role-domains/${roleId}`
+  );
+}
+
+  saveRoleDomain(
+    model: any
+  ) {
+
+    return this.http.post(
+      `${this.apiUrl}/role-domains`,
+      model
+    );
+  }
 }
