@@ -5,7 +5,12 @@
 .workspace-page {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
+
+  max-width: 1600px;
+  margin: 0 auto;
+
+  padding: 24px;
 }
 
 /* ==========================================================
@@ -16,6 +21,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  padding-bottom: 16px;
+
+  border-bottom: 1px solid var(--border);
 }
 
 .page-left {
@@ -33,19 +42,20 @@
   justify-content: center;
 
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 8px;
 
   background: var(--surface);
 
   cursor: pointer;
 
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 }
 
 .back-btn:hover {
-  background: var(--surface-hover);
   border-color: var(--primary);
   color: var(--primary);
+
+  background: #f8fafc;
 }
 
 .header-title {
@@ -58,13 +68,9 @@
   margin: 0;
 
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 600;
 
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  color: var(--text-primary);
 }
 
 .header-title lucide-icon {
@@ -72,7 +78,10 @@
 }
 
 .page-left p {
-  margin: 6px 0 0;
+  margin: 4px 0 0;
+
+  font-size: 14px;
+
   color: var(--text-secondary);
 }
 
@@ -82,66 +91,37 @@
 
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
 }
 
 .kpi-card {
-  position: relative;
-  overflow: hidden;
-
-  padding: 20px;
-
   background: var(--surface);
 
   border: 1px solid var(--border);
-  border-radius: 16px;
 
-  transition: all .25s ease;
-}
+  border-radius: 10px;
 
-.kpi-card::before {
-  content: '';
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 4px;
-  height: 100%;
-
-  background: linear-gradient(180deg, var(--primary), var(--primary-light, var(--primary)));
-
-  opacity: 0;
-
-  transition: opacity .25s ease;
-}
-
-.kpi-card:hover {
-  border-color: var(--primary);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, .08);
-  transform: translateY(-3px);
-}
-
-.kpi-card:hover::before {
-  opacity: 1;
+  padding: 18px;
 }
 
 .kpi-card span {
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: .02em;
+  display: block;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 
   color: var(--text-secondary);
 }
 
 .kpi-card h2 {
-  margin: 10px 0 0;
+  margin: 8px 0 0;
 
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
-  letter-spacing: -.02em;
 
   color: var(--text-primary);
 }
@@ -153,11 +133,21 @@
 .workspace-section {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+
+  gap: 20px;
+
+  padding: 20px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: 12px;
 }
 
 .section-header {
-  padding-bottom: 12px;
+  padding-bottom: 14px;
+
   border-bottom: 1px solid var(--border);
 }
 
@@ -170,8 +160,10 @@
 .section-title h2 {
   margin: 0;
 
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
+
+  color: var(--text-primary);
 }
 
 .section-title lucide-icon {
@@ -179,77 +171,38 @@
 }
 
 /* ==========================================================
-   CARD GRID
+   GRID
 ========================================================== */
 
 .workspace-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(360px, 1fr));
+
   gap: 16px;
 }
 
 /* ==========================================================
    CARD
 ========================================================== */
-
 .workspace-card {
-  position: relative;
-  overflow: hidden;
-
-  display: flex;
-  align-items: center;
-  gap: 16px;
-
-  min-height: 96px;
-
-  padding: 18px;
-
-  background: var(--surface);
-
-  border: 1px solid var(--border);
-  border-radius: 16px;
-
-  text-decoration: none;
-  color: inherit;
-
-  transition: all .25s ease;
-}
-
-.workspace-card::after {
-  content: '';
-
-  position: absolute;
-  inset: 0;
-
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .03) 100%);
-
-  opacity: 0;
-  transition: opacity .25s ease;
-
-  pointer-events: none;
+  transition: all .2s ease;
 }
 
 .workspace-card:hover {
-  transform: translateY(-3px);
+  background: #eff6ff;
 
-  border-color: var(--primary);
-
-  box-shadow: 0 12px 24px rgba(0, 0, 0, .08);
-}
-
-.workspace-card:hover::after {
-  opacity: 1;
+  border-color: #2563eb;
 }
 
 .workspace-card:hover .card-icon {
-  transform: scale(1.08);
+  background: #dbeafe;
 }
 
 .workspace-card:hover .card-arrow {
-  color: var(--primary);
-  transform: translateX(3px);
+  color: #2563eb;
 }
-
 .card-icon {
   width: 52px;
   height: 52px;
@@ -260,9 +213,7 @@
   align-items: center;
   justify-content: center;
 
-  border-radius: 14px;
-
-  transition: transform .25s ease;
+  border-radius: 10px;
 }
 
 .card-content {
@@ -273,32 +224,35 @@
 .card-content h3 {
   margin: 0;
 
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
 
-  color: var(--text-primary);
+  color: #1e293b;
 }
 
 .card-content p {
   margin-top: 4px;
 
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: 14px;
+  line-height: 1.5;
 
-  color: var(--text-secondary);
+  color: #64748b;
 
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
 }
 
 .card-arrow {
   flex-shrink: 0;
 
-  color: var(--text-muted);
+  color: #94a3b8;
 
-  transition: transform .25s ease, color .25s ease;
+  transition: color 0.2s ease;
+}
+
+.workspace-card:hover .card-arrow {
+  color: var(--primary);
 }
 
 /* ==========================================================
@@ -310,7 +264,7 @@
 .workspaces,
 .workspace {
   background: #ecfdf5;
-  color: #10b981;
+  color: #059669;
 }
 
 .domains,
@@ -330,7 +284,7 @@
 .subModules,
 .subModule {
   background: #f5f3ff;
-  color: #8b5cf6;
+  color: #7c3aed;
 }
 
 .moduleprofiles,
@@ -341,7 +295,7 @@
   color: #9333ea;
 }
 
-/* Application - Roles & Users */
+/* Security */
 
 .roles,
 .role {
@@ -361,13 +315,13 @@
 
 .finance {
   background: #fef3c7;
-  color: #d97706;
+  color: #b45309;
 }
 
 .accounts,
 .account {
   background: #ecfccb;
-  color: #65a30d;
+  color: #4d7c0f;
 }
 
 .ledger {
@@ -401,30 +355,34 @@
 /* Default */
 
 .card-icon {
-  background: #f8fafc;
-  color: #64748b;
+  background: #f1f5f9;
+  color: #475569;
 }
 
 /* ==========================================================
    RESPONSIVE
 ========================================================== */
 
+@media (max-width: 1024px) {
+
+  .workspace-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
+
+  .workspace-page {
+    padding: 16px;
+  }
+
   .page-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 12px;
   }
 
   .header-title h1 {
-    font-size: 22px;
-  }
-
-  .kpi-grid {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  }
-
-  .kpi-card h2 {
     font-size: 24px;
   }
 
@@ -432,7 +390,14 @@
     grid-template-columns: 1fr;
   }
 
-  .workspace-card {
-    padding: 14px;
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+
+  .kpi-grid {
+    grid-template-columns: 1fr;
   }
 }

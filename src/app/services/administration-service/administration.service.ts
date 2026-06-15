@@ -31,6 +31,29 @@ export class AdministrationService {
     return this.http.get(`${this.apiUrl}/role/${id}`);
   }
 
+
+  // =====================================================
+// ROLE DOMAIN
+// =====================================================
+
+saveRoleDomain(
+  model: any
+): Observable<any> {
+
+  return this.http.post(
+    `${this.apiUrl}/role-domain`,
+    model
+  );
+}
+
+getRoleDomains(
+  companyId: number
+): Observable<any[]> {
+
+  return this.http.get<any[]>(
+    `${this.apiUrl}/role-domains/${companyId}`
+  );
+}
   // =====================================================
   // USER ROLE
   // =====================================================
@@ -55,14 +78,20 @@ export class AdministrationService {
     return this.http.post(`${this.apiUrl}/role-profile`, model);
   }
 
-  getRoleProfiles(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/role-profiles`);
+  getRoleProfiles(companyId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/role-profiles/${companyId}`);
   }
 
-  getRoleProfileById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/role-profile/${id}`);
+  getRoleProfileById(companyId: number, id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/role-profile/${companyId}/${id}`);
+  }
+  saveRoleProfileRole(model: any) {
+    return this.http.post(`${this.apiUrl}/role-profile-role`, model);
   }
 
+  getRoleProfileRoles(companyId: number) {
+    return this.http.get(`${this.apiUrl}/role-profile-roles/${companyId}`);
+  }
   // =====================================================
   // MODULE
   // =====================================================
@@ -163,27 +192,8 @@ export class AdministrationService {
     return this.http.get<any[]>(`${this.apiUrl}/sidebar/${userId}`);
   }
   getSidebarWorkspaces(userId: number) {
-    return this.http.get(
-      `${this.apiUrl}/sidebar-workspaces/${userId}`,
-    );
+    return this.http.get(`${this.apiUrl}/sidebar-workspaces/${userId}`);
   }
 
-  getRoleDomains(
-  roleId: number
-) {
 
-  return this.http.get<any>(
-    `${this.apiUrl}/role-domains/${roleId}`
-  );
-}
-
-  saveRoleDomain(
-    model: any
-  ) {
-
-    return this.http.post(
-      `${this.apiUrl}/role-domains`,
-      model
-    );
-  }
 }

@@ -25,6 +25,7 @@ import { ModulesComponent } from './modules/administration/application/modules/m
 import { SubModulesComponent } from './modules/administration/application/sub-modules/sub-modules.component';
 import { ModuleProfilesComponent } from './modules/administration/application/module-profiles/module-profiles.component';
 import { RoleDomainsComponent } from './modules/administration/mappings/role-domains/role-domains.component';
+import { RoleProfileRoleComponent } from './modules/administration/security/role-profile-role/role-profile-role.component';
 
 export const routes: Routes = [
 
@@ -102,6 +103,10 @@ export const routes: Routes = [
           {
             path: 'security/role-profiles',
             component: RoleProfilesComponent
+          },
+            {
+            path: 'security/role-profile-roles',
+            component: RoleProfileRoleComponent
           },
 
                {

@@ -1,1 +1,15 @@
-<p>role-profiles works!</p>
+<app-master-page
+  [config]="config"
+  [data]="roleProfiles"
+  [userModel]="roleProfileModel"
+  [showEntry]="showEntry"
+
+  (createClick)="createRoleProfile()"
+  (editClick)="editRoleProfile($event)"
+  (deleteClick)="deleteRoleProfile($event)"
+
+  (saveClick)="saveRoleProfile()"
+  (cancelClick)="cancel()"
+
+  (refreshClick)="loadRoleProfiles()">
+</app-master-page>

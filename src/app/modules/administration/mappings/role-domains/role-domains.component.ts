@@ -1,372 +1,463 @@
 import {
-  Component,
-  OnInit
+Component,
+OnInit
 } from '@angular/core';
 
 import {
-  MasterPageComponent
+MasterPageComponent
 } from '../../../../shared/master-page/master-page.component';
 
 import {
-  AdministrationService
+AdministrationService
 } from '../../../../services/administration-service/administration.service';
 
 import {
-  AlertService
+AuthService
+} from '../../../../services/auth.service';
+
+import {
+AlertService
 } from '../../../../services/alert.service';
 
 import {
-  ICONS
+ICONS
 } from '../../../../shared/icon.constants';
 
 @Component({
-  selector: 'app-role-domains',
-  standalone: true,
-  imports: [
-    MasterPageComponent
-  ],
-  templateUrl:
-    './role-domains.component.html',
-  styleUrls: [
-    './role-domains.component.scss'
-  ]
+selector: 'app-role-domains',
+standalone: true,
+imports: [
+MasterPageComponent
+],
+templateUrl:
+'./role-domains.component.html',
+styleUrls: [
+'./role-domains.component.scss'
+]
 })
 export class RoleDomainsComponent
-  implements OnInit {
+implements OnInit {
 
-  roleDomains: any[] = [];
+companyId = Number(
+localStorage.getItem(
+'companyId'
+)
+);
 
-  roles: any[] = [];
+roleDomains: any[] = [];
 
-  domains: any[] = [];
+companies: any[] = [];
 
-  loading = false;
+roles: any[] = [];
 
-  showEntry = false;
+domains: any[] = [];
 
-  selectedRoleId = 0;
+loading = false;
 
-  roleDomainModel: any = {
-    id: 0,
-    roleId: null,
-    domainId: null,
-    isDelete: false
-  };
+showEntry = false;
 
-  constructor(
-    private administrationService:
-      AdministrationService,
-    private alert:
-      AlertService
-  ) { }
+roleDomainModel: any = {
+id: 0,
+companyId: null,
+roleId: null,
+domainId: null,
+isDelete: false
+};
 
-  config: any = {
+constructor(
+private administrationService:
+AdministrationService,
 
-    title: 'Role Domains',
+private authService:
+  AuthService,
 
-    description:
-      'Manage role domain mappings',
+private alert:
+  AlertService
 
-    icon: ICONS.roleDomains,
+) { }
 
-    createLabel:
-      'Assign Domain',
+config: any = {
 
-    stats: [],
+title:
+  'Role Domains',
 
-    columns: [
+description:
+  'Manage role domain mappings',
 
-      {
-        field: 'workspaceName',
-        header: 'Workspace'
-      },
+icon:
+  ICONS.roleDomains,
 
-      {
-        field: 'name',
-        header: 'Domain'
-      },
+createLabel:
+  'Assign Domain',
 
-      {
-        field: 'code',
-        header: 'Code'
-      }
-    ],
+stats: [],
 
-    tabs: [
-      {
-        name: 'General',
-        fields: [
-          'roleId',
-          'domainId'
-        ]
-      }
-    ],
+columns: [
+  {
+    field: 'companyName',
+    header: 'Company'
+  },
+  {
+    field: 'roleName',
+    header: 'Role'
+  },
+  {
+    field: 'workspaceName',
+    header: 'Workspace'
+  },
+  {
+    field: 'domainName',
+    header: 'Domain'
+  },
+  {
+    field: 'isActive',
+    header: 'Active'
+  }
+],
 
+tabs: [
+  {
+    name: 'General',
     fields: [
-
-      {
-        name: 'roleId',
-        label: 'Role',
-        type: 'dropdown',
-        required: true,
-        options: []
-      },
-
-      {
-        name: 'domainId',
-        label: 'Domain',
-        type: 'dropdown',
-        required: true,
-        options: []
-      }
+      'companyId',
+      'roleId',
+      'domainId'
     ]
-  };
-
-  ngOnInit(): void {
-
-    this.loadRoles();
-
-    this.loadDomains();
   }
+],
 
-  loadRoles(): void {
+fields: [
+  {
+    name: 'companyId',
+    label: 'Company',
+    type: 'dropdown',
+    required: true,
+    options: []
+  },
+  {
+    name: 'roleId',
+    label: 'Role',
+    type: 'dropdown',
+    required: true,
+    options: []
+  },
+  {
+    name: 'domainId',
+    label: 'Domain',
+    type: 'dropdown',
+    required: true,
+    options: []
+  }
+]
 
-    this.administrationService
-      .getRoles()
-      .subscribe({
-        next: (response: any) => {
+};
 
-          this.roles =
-            response.data ?? response;
+ngOnInit(): void {
 
-          const field =
-            this.config.fields.find(
-              (x: any) =>
-                x.name === 'roleId'
-            );
+this.loadCompanies();
 
-          if (field) {
+this.loadRoles();
 
-            field.options =
-              this.roles.map(
-                (x: any) => ({
-                  value: x.id,
-                  label: x.name
-                })
-              );
-          }
+this.loadDomains();
 
-          if (this.roles.length > 0) {
+this.loadRoleDomains();
 
-            this.selectedRoleId =
-              this.roles[0].id;
+}
 
-            this.roleDomainModel.roleId =
-              this.selectedRoleId;
+loadCompanies(): void {
 
-            this.loadRoleDomains();
-          }
+const userId =
+  Number(
+    localStorage.getItem(
+      'userId'
+    )
+  );
+
+this.authService
+  .getUserCompany(userId)
+  .subscribe({
+    next: (response: any) => {
+
+      this.companies = [
+        {
+          value:
+            response.companyId,
+          label:
+            response.companyName
         }
-      });
-  }
+      ];
 
-  loadDomains(): void {
-
-    this.administrationService
-      .getDomains()
-      .subscribe({
-        next: (response: any) => {
-
-          this.domains =
-            response.data ?? response;
-
-          const field =
-            this.config.fields.find(
-              (x: any) =>
-                x.name === 'domainId'
-            );
-
-          if (field) {
-
-            field.options =
-              this.domains.map(
-                (x: any) => ({
-                  value: x.id,
-                  label: x.name
-                })
-              );
-          }
-        }
-      });
-  }loadRoleDomains(): void {
-
-  if (!this.selectedRoleId) {
-    return;
-  }
-
-  this.loading = true;
-
-  this.administrationService
-    .getRoleDomains(
-      this.selectedRoleId
-    )
-    .subscribe({
-      next: (response: any) => {
-
-        this.roleDomains =
-          response.data ?? response;
-
-        this.updateStats(
-          this.roleDomains
+      const field =
+        this.config.fields.find(
+          (x: any) =>
+            x.name === 'companyId'
         );
 
-        this.loading = false;
-      },
-      error: (error) => {
+      if (field) {
 
-        console.error(error);
-
-        this.loading = false;
+        field.options =
+          this.companies;
       }
-    });
-}
-  updateStats(
-    data: any[]
-  ): void {
 
-    this.config.stats = [
-      {
-        label:
-          'Assigned Domains',
+      this.roleDomainModel.companyId =
+        response.companyId;
+    }
+  });
 
-        value:
-          data.length,
-
-        icon:
-          ICONS.roleDomains,
-
-        description:
-          'Role domain mappings'
-      }
-    ];
-  }
-
-  createRoleDomain(): void {
-
-    this.roleDomainModel = {
-
-      id: 0,
-
-      roleId:
-        this.selectedRoleId,
-
-      domainId: null,
-
-      isDelete: false
-    };
-
-    this.showEntry = true;
-  }
-saveRoleDomain(): void {
-
-  this.administrationService
-    .saveRoleDomain(
-      this.roleDomainModel
-    )
-    .subscribe({
-      next: (response: any) => {
-
-        this.alert.success(
-          response.message ??
-          'Role domain saved successfully.'
-        );
-
-        this.showEntry = false;
-
-        this.loadRoleDomains();
-      },
-      error: (error) => {
-
-        this.alert.error(
-          error?.error?.message ??
-          'Unable to save role domain.'
-        );
-      }
-    });
-}
-async deleteRoleDomain(
-  item: any
-): Promise<void> {
-
-  const confirmed =
-    await this.alert.confirm(
-      'Delete selected mapping?'
-    );
-
-  if (!confirmed) {
-    return;
-  }
-
-  const model = {
-
-    id: item.id,
-
-    roleId:
-      this.selectedRoleId,
-
-    domainId:
-      item.id,
-
-    isDelete: true
-  };
-
-  this.administrationService
-    .saveRoleDomain(
-      model
-    )
-    .subscribe({
-      next: (response: any) => {
-
-        this.alert.success(
-          response.message ??
-          'Role domain removed.'
-        );
-
-        this.loadRoleDomains();
-      },
-      error: (error) => {
-
-        this.alert.error(
-          error?.error?.message ??
-          'Unable to delete mapping.'
-        );
-      }
-    });
 }
 
+loadRoles(): void {
 
-editRoleDomain(
-  item: any
+this.administrationService
+  .getRoles()
+  .subscribe({
+    next: (response: any) => {
+
+      this.roles =
+        response.data ??
+        response;
+
+      const field =
+        this.config.fields.find(
+          (x: any) =>
+            x.name === 'roleId'
+        );
+
+      if (field) {
+
+        field.options =
+          this.roles.map(
+            (x: any) => ({
+              value: x.id,
+              label: x.name
+            })
+          );
+      }
+    }
+  });
+
+}
+
+loadDomains(): void {
+
+this.administrationService
+  .getDomains()
+  .subscribe({
+    next: (response: any) => {
+
+      this.domains =
+        response.data ??
+        response;
+
+      const field =
+        this.config.fields.find(
+          (x: any) =>
+            x.name === 'domainId'
+        );
+
+      if (field) {
+
+        field.options =
+          this.domains.map(
+            (x: any) => ({
+              value: x.id,
+              label: x.name
+            })
+          );
+      }
+    }
+  });
+
+}
+
+loadRoleDomains(): void {
+
+this.loading = true;
+
+this.administrationService
+  .getRoleDomains(
+    this.companyId
+  )
+  .subscribe({
+    next: (response: any) => {
+
+      this.roleDomains =
+        response.data ??
+        response;
+
+      this.updateStats(
+        this.roleDomains
+      );
+
+      this.loading = false;
+    },
+    error: (error) => {
+
+      console.error(error);
+
+      this.loading = false;
+    }
+  });
+
+}
+
+updateStats(
+data: any[]
 ): void {
 
-  this.roleDomainModel = {
+this.config.stats = [
+  {
+    label:
+      'Assigned Domains',
 
-    id: item.id,
+    value:
+      data.length,
 
-    roleId:
-      this.selectedRoleId,
+    icon:
+      ICONS.roleDomains,
 
-    domainId:
-      item.id,
+    description:
+      'Role domain mappings'
+  }
+];
 
-    isDelete: false
-  };
-
-  this.showEntry = true;
 }
 
-  cancel(): void {
+createRoleDomain(): void {
 
-    this.showEntry = false;
-  }
+this.roleDomainModel = {
+
+  id: 0,
+
+  companyId:
+    this.companyId,
+
+  roleId: null,
+
+  domainId: null,
+
+  isDelete: false
+};
+
+this.showEntry = true;
+
+}
+
+editRoleDomain(
+item: any
+): void {
+
+this.roleDomainModel = {
+
+  id:
+    item.id,
+
+  companyId:
+    item.companyId,
+
+  roleId:
+    item.roleId,
+
+  domainId:
+    item.domainId,
+
+  isDelete: false
+};
+
+this.showEntry = true;
+
+}
+
+saveRoleDomain(): void {
+
+this.roleDomainModel.companyId =
+  this.companyId;
+
+this.administrationService
+  .saveRoleDomain(
+    this.roleDomainModel
+  )
+  .subscribe({
+    next: (response: any) => {
+
+      this.alert.success(
+        response.message ??
+        'Role domain saved successfully.'
+      );
+
+      this.showEntry = false;
+
+      this.loadRoleDomains();
+    },
+    error: (error) => {
+
+      this.alert.error(
+        error?.error?.message ??
+        'Unable to save role domain.'
+      );
+    }
+  });
+
+}
+
+async deleteRoleDomain(
+item: any
+): Promise<void> {
+
+const confirmed =
+  await this.alert.confirm(
+    'Delete selected mapping?'
+  );
+
+if (!confirmed) {
+  return;
+}
+
+const model = {
+
+  id:
+    item.id,
+
+  companyId:
+    item.companyId,
+
+  roleId:
+    item.roleId,
+
+  domainId:
+    item.domainId,
+
+  isDelete: true
+};
+
+this.administrationService
+  .saveRoleDomain(
+    model
+  )
+  .subscribe({
+    next: (response: any) => {
+
+      this.alert.success(
+        response.message ??
+        'Role domain removed.'
+      );
+
+      this.loadRoleDomains();
+    },
+    error: (error) => {
+
+      this.alert.error(
+        error?.error?.message ??
+        'Unable to delete mapping.'
+      );
+    }
+  });
+
+}
+
+cancel(): void {
+
+this.showEntry = false;
+
+}
 }
