@@ -70,6 +70,7 @@ config: any = {
 
 title:
   'Role Profile Roles',
+   permissionName: 'Role Profile Role List',
 
 description:
   'Assign roles to role profiles',

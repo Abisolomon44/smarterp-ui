@@ -1,48 +1,24 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {
-  MasterPageComponent
-} from '../../../../shared/master-page/master-page.component';
+import { MasterPageComponent } from '../../../../shared/master-page/master-page.component';
 
-import {
-  AdministrationService
-} from '../../../../services/administration-service/administration.service';
+import { AdministrationService } from '../../../../services/administration-service/administration.service';
 
-import {
-  AuthService
-} from '../../../../services/auth.service';
+import { AuthService } from '../../../../services/auth.service';
 
-import {
-  AlertService
-} from '../../../../services/alert.service';
+import { AlertService } from '../../../../services/alert.service';
 
-import {
-  ICONS
-} from '../../../../shared/icon.constants';
+import { ICONS } from '../../../../shared/icon.constants';
 
 @Component({
   selector: 'app-role-workspaces',
   standalone: true,
-  imports: [
-    MasterPageComponent
-  ],
-  templateUrl:
-    './role-workspaces.component.html',
-  styleUrls: [
-    './role-workspaces.component.scss'
-  ]
+  imports: [MasterPageComponent],
+  templateUrl: './role-workspaces.component.html',
+  styleUrls: ['./role-workspaces.component.scss'],
 })
-export class RoleWorkspacesComponent
-  implements OnInit {
-
-  companyId = Number(
-    localStorage.getItem(
-      'companyId'
-    )
-  );
+export class RoleWorkspacesComponent implements OnInit {
+  companyId = Number(localStorage.getItem('companyId'));
 
   mappings: any[] = [];
 
@@ -61,64 +37,53 @@ export class RoleWorkspacesComponent
     companyId: null,
     roleId: null,
     workspaceId: null,
-    isDelete: false
+    isDelete: false,
   };
 
   constructor(
-    private administrationService:
-      AdministrationService,
+    private administrationService: AdministrationService,
 
-    private authService:
-      AuthService,
+    private authService: AuthService,
 
-    private alert:
-      AlertService
-  ) { }
+    private alert: AlertService,
+  ) {}
 
   config: any = {
+    title: 'Role Workspaces',
+    permissionName: 'Role Workspace List',
 
-    title:
-      'Role Workspaces',
+    description: 'Assign workspaces to roles',
 
-    description:
-      'Assign workspaces to roles',
+    icon: ICONS.workspaces,
 
-    icon:
-      ICONS.workspaces,
-
-    createLabel:
-      'Assign Workspace',
+    createLabel: 'Assign Workspace',
 
     stats: [],
 
     columns: [
       {
         field: 'companyName',
-        header: 'Company'
+        header: 'Company',
       },
       {
         field: 'roleName',
-        header: 'Role'
+        header: 'Role',
       },
       {
         field: 'workspaceName',
-        header: 'Workspace'
+        header: 'Workspace',
       },
       {
         field: 'isActive',
-        header: 'Active'
-      }
+        header: 'Active',
+      },
     ],
 
     tabs: [
       {
         name: 'General',
-        fields: [
-          'companyId',
-          'roleId',
-          'workspaceId'
-        ]
-      }
+        fields: ['companyId', 'roleId', 'workspaceId'],
+      },
     ],
 
     fields: [
@@ -127,27 +92,26 @@ export class RoleWorkspacesComponent
         label: 'Company',
         type: 'dropdown',
         required: true,
-        options: []
+        options: [],
       },
       {
         name: 'roleId',
         label: 'Role',
         type: 'dropdown',
         required: true,
-        options: []
+        options: [],
       },
       {
         name: 'workspaceId',
         label: 'Workspace',
         type: 'dropdown',
         required: true,
-        options: []
-      }
-    ]
+        options: [],
+      },
+    ],
   };
 
   ngOnInit(): void {
-
     this.loadCompanies();
 
     this.loadRoles();
@@ -158,206 +122,132 @@ export class RoleWorkspacesComponent
   }
 
   loadCompanies(): void {
+    const userId = Number(localStorage.getItem('userId'));
 
-    const userId =
-      Number(
-        localStorage.getItem(
-          'userId'
-        )
-      );
+    this.authService.getUserCompany(userId).subscribe({
+      next: (response: any) => {
+        this.companies = [
+          {
+            value: response.companyId,
+            label: response.companyName,
+          },
+        ];
 
-    this.authService
-      .getUserCompany(userId)
-      .subscribe({
-        next: (response: any) => {
+        const field = this.config.fields.find(
+          (x: any) => x.name === 'companyId',
+        );
 
-          this.companies = [
-            {
-              value:
-                response.companyId,
-              label:
-                response.companyName
-            }
-          ];
-
-          const field =
-            this.config.fields.find(
-              (x: any) =>
-                x.name === 'companyId'
-            );
-
-          if (field) {
-            field.options =
-              this.companies;
-          }
-
-          this.mappingModel.companyId =
-            response.companyId;
+        if (field) {
+          field.options = this.companies;
         }
-      });
+
+        this.mappingModel.companyId = response.companyId;
+      },
+    });
   }
 
   loadRoles(): void {
+    this.administrationService.getRoles().subscribe({
+      next: (response: any) => {
+        const data = response.data ?? response;
 
-    this.administrationService
-      .getRoles()
-      .subscribe({
-        next: (response: any) => {
+        this.roles = data;
 
-          const data =
-            response.data ??
-            response;
+        const field = this.config.fields.find((x: any) => x.name === 'roleId');
 
-          this.roles = data;
-
-          const field =
-            this.config.fields.find(
-              (x: any) =>
-                x.name === 'roleId'
-            );
-
-          if (field) {
-
-            field.options =
-              data.map(
-                (x: any) => ({
-                  value: x.id,
-                  label: x.name
-                })
-              );
-          }
+        if (field) {
+          field.options = data.map((x: any) => ({
+            value: x.id,
+            label: x.name,
+          }));
         }
-      });
+      },
+    });
   }
 
   loadWorkspaces(): void {
+    this.administrationService.getWorkspaces().subscribe({
+      next: (response: any) => {
+        const data = response.data ?? response;
 
-    this.administrationService
-      .getWorkspaces()
-      .subscribe({
-        next: (response: any) => {
+        this.workspaces = data;
 
-          const data =
-            response.data ??
-            response;
+        const field = this.config.fields.find(
+          (x: any) => x.name === 'workspaceId',
+        );
 
-          this.workspaces = data;
-
-          const field =
-            this.config.fields.find(
-              (x: any) =>
-                x.name === 'workspaceId'
-            );
-
-          if (field) {
-
-            field.options =
-              data.map(
-                (x: any) => ({
-                  value: x.id,
-                  label: x.name
-                })
-              );
-          }
+        if (field) {
+          field.options = data.map((x: any) => ({
+            value: x.id,
+            label: x.name,
+          }));
         }
-      });
+      },
+    });
   }
 
   loadMappings(): void {
+    this.administrationService.getRoleWorkspaces(this.companyId).subscribe({
+      next: (response: any) => {
+        this.mappings = response.data ?? response;
 
-    this.administrationService
-      .getRoleWorkspaces(
-        this.companyId
-      )
-      .subscribe({
-        next: (response: any) => {
-
-          this.mappings =
-            response.data ??
-            response;
-
-          this.updateStats();
-        }
-      });
+        this.updateStats();
+      },
+    });
   }
 
   updateStats(): void {
-
     this.config.stats = [
       {
-        label:
-          'Assignments',
+        label: 'Assignments',
 
-        value:
-          this.mappings.length,
+        value: this.mappings.length,
 
-        icon:
-          ICONS.workspaces,
+        icon: ICONS.workspaces,
 
-        description:
-          'Workspace assignments'
-      }
+        description: 'Workspace assignments',
+      },
     ];
   }
 
   create(): void {
-
     this.mappingModel = {
       id: 0,
-      companyId:
-        this.companyId,
+      companyId: this.companyId,
       roleId: null,
       workspaceId: null,
-      isDelete: false
+      isDelete: false,
     };
 
     this.showEntry = true;
   }
 
   edit(row: any): void {
-
     this.mappingModel = {
       id: row.id,
-      companyId:
-        row.companyId,
-      roleId:
-        row.roleId,
-      workspaceId:
-        row.workspaceId,
-      isDelete: false
+      companyId: row.companyId,
+      roleId: row.roleId,
+      workspaceId: row.workspaceId,
+      isDelete: false,
     };
 
     this.showEntry = true;
   }
 
   save(): void {
+    this.administrationService.saveRoleWorkspace(this.mappingModel).subscribe({
+      next: (response: any) => {
+        this.alert.success(response.message);
 
-    this.administrationService
-      .saveRoleWorkspace(
-        this.mappingModel
-      )
-      .subscribe({
-        next: (response: any) => {
+        this.showEntry = false;
 
-          this.alert.success(
-            response.message
-          );
-
-          this.showEntry = false;
-
-          this.loadMappings();
-        }
-      });
+        this.loadMappings();
+      },
+    });
   }
 
-  async delete(
-    row: any
-  ): Promise<void> {
-
-    const confirmed =
-      await this.alert.confirm(
-        'Delete selected assignment?'
-      );
+  async delete(row: any): Promise<void> {
+    const confirmed = await this.alert.confirm('Delete selected assignment?');
 
     if (!confirmed) {
       return;
@@ -365,23 +255,17 @@ export class RoleWorkspacesComponent
 
     const model = {
       ...row,
-      isDelete: true
+      isDelete: true,
     };
 
-    this.administrationService
-      .saveRoleWorkspace(
-        model
-      )
-      .subscribe({
-        next: () => {
-
-          this.loadMappings();
-        }
-      });
+    this.administrationService.saveRoleWorkspace(model).subscribe({
+      next: () => {
+        this.loadMappings();
+      },
+    });
   }
 
   cancel(): void {
-
     this.showEntry = false;
   }
 }

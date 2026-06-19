@@ -45,6 +45,7 @@ export class UserRolesComponent implements OnInit {
 
   config: any = {
     title: 'User Roles',
+    permissionName: 'User Role List',
 
     description: 'Assign roles to users',
 

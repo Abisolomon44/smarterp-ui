@@ -44,7 +44,7 @@ roleModel: any = {
 
 config: any = {
 title: 'Roles',
-
+permissionName: 'Role List',
 description: 'Manage application roles',
 
 icon: ICONS.roles,

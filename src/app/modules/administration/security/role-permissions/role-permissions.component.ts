@@ -75,7 +75,7 @@ export class RolePermissionsComponent
   config: any = {
 
     title: 'Role Permissions',
-
+ permissionName: 'Role Permission List',
     description:
       'Manage role based permissions',
 

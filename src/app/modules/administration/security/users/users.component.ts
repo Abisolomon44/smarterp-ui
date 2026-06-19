@@ -54,6 +54,7 @@ export class UsersComponent implements OnInit {
 
   config: any = {
     title: 'Users',
+    permissionName: 'User List',
 
     description: 'Manage system users and access',
 

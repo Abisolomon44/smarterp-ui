@@ -65,6 +65,7 @@ export class RoleProfilesComponent
   config: any = {
 
     title: 'Role Profiles',
+      permissionName: 'Role Profile List',
 
     description:
       'Manage role profiles',

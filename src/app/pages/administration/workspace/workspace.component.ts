@@ -83,52 +83,56 @@ export class WorkspaceComponent
       });
   }
 
-  loadWorkspaceMenus(): void {
+loadWorkspaceMenus(): void {
 
-    const userId =
-      Number(
-        localStorage.getItem(
-          'userId'
-        )
-      );
-
-    this.loading = true;
-
-    this.administrationService
-      .getSidebar(
-        userId
+  const userId =
+    Number(
+      localStorage.getItem(
+        'userId'
       )
-      .subscribe({
+    );
 
-        next: (response: any) => {
+  this.loading = true;
 
-          const menus =
-            response?.data ??
-            response ??
-            [];
+  this.administrationService
+    .getSidebar(userId)
+    .subscribe({
 
-          console.log(
-            'Workspace Menus',
-            menus
-          );
+      next: (response: any) => {
 
-          this.buildDomainGroups(
-            menus
-          );
+        const menus =
+          response?.data ??
+          response ??
+          [];
 
-          this.loading = false;
-        },
+        // Save permissions globally
+        localStorage.setItem(
+          'permissions',
+          JSON.stringify(menus)
+        );
 
-        error: (error) => {
+        console.log(
+          'Workspace Menus',
+          menus
+        );
 
-          console.error(
-            error
-          );
+        this.buildDomainGroups(
+          menus
+        );
 
-          this.loading = false;
-        }
-      });
-  }
+        this.loading = false;
+      },
+
+      error: (error) => {
+
+        console.error(
+          error
+        );
+
+        this.loading = false;
+      }
+    });
+}
 
   buildDomainGroups(
     menus: any[]

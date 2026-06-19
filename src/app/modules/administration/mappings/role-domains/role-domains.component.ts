@@ -80,6 +80,7 @@ config: any = {
 
 title:
   'Role Domains',
+   permissionName: 'Role Domain List',
 
 description:
   'Manage role domain mappings',

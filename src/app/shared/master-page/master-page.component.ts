@@ -25,10 +25,13 @@ export class MasterPageComponent {
   icons = ICONS;
   validationErrors: Record<string, string> = {};
   showPassword = false;
-  canView = true;
-  canCreate = true;
-  canEdit = false;
-  canDelete = false;
+canView = false;
+canCreate = false;
+canEdit = false;
+canDelete = false;
+canApprove = false;
+canPrint = false;
+canExport = false;
   passwordVisibility: Record<string, boolean> = {};
   // ==========================================
   // INPUTS
@@ -80,6 +83,12 @@ export class MasterPageComponent {
       this.canEdit = permission.canEdit;
 
       this.canDelete = permission.canDelete;
+
+      this.canApprove = permission.canApprove;
+
+      this.canPrint = permission.canPrint;
+
+      this.canExport = permission.canExport;
     }
   }
 
