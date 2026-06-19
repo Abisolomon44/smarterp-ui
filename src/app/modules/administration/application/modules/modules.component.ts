@@ -175,50 +175,68 @@ export class ModulesComponent
       }
     ]
   };
+ngOnInit(): void {
 
-  ngOnInit(): void {
+  this.loadCompany();
 
-    this.loadCompany();
+  this.loadWorkspaces();
 
-    this.loadWorkspaces();
+  this.loadDomains();
 
-    this.loadDomains();
+  this.loadModules();
+}
+loadCompany(): void {
 
-    this.loadModules();
-  }
+  const userId =
+    Number(
+      localStorage.getItem(
+        'userId'
+      )
+    );
 
-  loadCompany(): void {
+  this.authService
+    .getUserCompany(
+      userId
+    )
+    .subscribe({
+      next: (response: any) => {
 
-    const userId =
-      Number(localStorage.getItem('userId'));
+        this.companyId =
+          response.companyId;
 
-    this.authService
-      .getUserCompany(userId)
-      .subscribe({
-        next: (response: any) => {
+        const companyField =
+          this.config.fields.find(
+            (x: any) =>
+              x.name === 'companyId'
+          );
 
-          const companyField =
-            this.config.fields.find(
-              (x: any) =>
-                x.name === 'companyId'
-            );
+        if (companyField) {
 
-          if (companyField) {
-
-            companyField.options = [
-              {
-                value: response.companyId,
-                label: response.companyName
-              }
-            ];
-          }
-
-          this.moduleModel.companyId =
-            response.companyId;
+          companyField.options = [
+            {
+              value:
+                response.companyId,
+              label:
+                response.companyName
+            }
+          ];
         }
-      });
-  }
 
+        this.moduleModel.companyId =
+          response.companyId;
+
+        this.loadModules();
+      },
+      error: (error: any) => {
+
+        console.error(error);
+
+        this.alert.error(
+          'Unable to load company.'
+        );
+      }
+    });
+}
   loadWorkspaces(): void {
 
     this.administrationService
@@ -278,37 +296,36 @@ export class ModulesComponent
         }
       });
   }
+loadModules(): void {
 
-  loadModules(): void {
+  this.loading = true;
 
-    this.loading = true;
+  this.administrationService
+    .getModules()
+    .subscribe({
+      next: (response: any) => {
 
-    this.administrationService
-      .getModules()
-      .subscribe({
-        next: (response: any) => {
+        this.modules =
+          response.data ?? response;
 
-          this.modules =
-            response.data ?? response;
+        this.bindParentModules(
+          this.modules
+        );
 
-          this.bindParentModules(
-            this.modules
-          );
+        this.updateStats(
+          this.modules
+        );
 
-          this.updateStats(
-            this.modules
-          );
+        this.loading = false;
+      },
+      error: (error) => {
 
-          this.loading = false;
-        },
-        error: (error) => {
+        console.error(error);
 
-          console.error(error);
-
-          this.loading = false;
-        }
-      });
-  }
+        this.loading = false;
+      }
+    });
+}
 
   bindParentModules(
     data: any[]

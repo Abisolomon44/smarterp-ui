@@ -26,28 +26,28 @@ import { SubModulesComponent } from './modules/administration/application/sub-mo
 import { ModuleProfilesComponent } from './modules/administration/application/module-profiles/module-profiles.component';
 import { RoleDomainsComponent } from './modules/administration/mappings/role-domains/role-domains.component';
 import { RoleProfileRoleComponent } from './modules/administration/security/role-profile-role/role-profile-role.component';
+import { RoleWorkspacesComponent } from './modules/administration/security/role-workspaces/role-workspaces.component';
 
 export const routes: Routes = [
-
   {
     path: '',
     redirectTo: 'login',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
 
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
 
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
   },
 
   {
     path: 'plans',
-    component: PlansComponent
+    component: PlansComponent,
   },
 
   {
@@ -55,20 +55,18 @@ export const routes: Routes = [
     component: DefaultLayoutComponent,
 
     children: [
-
       {
         path: '',
-        component: DashboradComponent
+        component: DashboradComponent,
       },
 
       {
         path: 'administration',
 
         children: [
-
           {
             path: '',
-            component: WorkspaceComponent
+            component: WorkspaceComponent,
           },
 
           // ==========================
@@ -77,41 +75,51 @@ export const routes: Routes = [
 
           {
             path: 'security/users',
-            component: UsersComponent
+            component: UsersComponent,
           },
 
           {
             path: 'security/users/create',
-            component: CreateUserComponent
+            component: CreateUserComponent,
           },
 
           {
             path: 'security/roles',
-            component: RolesComponent
+            component: RolesComponent,
           },
 
           {
             path: 'security/user-roles',
-            component: UserRolesComponent
+            component: UserRolesComponent,
           },
 
           {
-            path: 'security/permissions',
-            component: RolePermissionsComponent
+            path: 'security/role-permissions',
+            component: RolePermissionsComponent,
           },
 
           {
             path: 'security/role-profiles',
-            component: RoleProfilesComponent
+            component: RoleProfilesComponent,
           },
-            {
+          {
             path: 'security/role-profile-roles',
-            component: RoleProfileRoleComponent
+            component: RoleProfileRoleComponent,
           },
 
-               {
+          {
             path: 'security/role-domains',
-            component: RoleDomainsComponent
+            component: RoleDomainsComponent,
+          },
+
+          {
+            path: 'security/role-workspaces',
+            component: RoleWorkspacesComponent,
+          },
+
+           {
+            path: 'security/role-permissions',
+            component: RolePermissionsComponent,
           },
 
           // ==========================
@@ -120,36 +128,35 @@ export const routes: Routes = [
 
           {
             path: 'application/workspaces',
-            component: WorkspacesComponent
+            component: WorkspacesComponent,
           },
 
           {
             path: 'application/domains',
-            component: DomainsComponent
+            component: DomainsComponent,
           },
 
           {
             path: 'application/modules',
-            component: ModulesComponent
+            component: ModulesComponent,
           },
 
           {
             path: 'application/sub-modules',
-            component: SubModulesComponent
+            component: SubModulesComponent,
           },
 
           {
             path: 'application/module-profiles',
-            component: ModuleProfilesComponent
-          }
-
-        ]
-      }
-    ]
+            component: ModuleProfilesComponent,
+          },
+        ],
+      },
+    ],
   },
 
   {
     path: '**',
-    redirectTo: 'login'
-  }
+    redirectTo: 'login',
+  },
 ];

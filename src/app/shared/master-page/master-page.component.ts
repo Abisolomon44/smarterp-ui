@@ -25,7 +25,10 @@ export class MasterPageComponent {
   icons = ICONS;
   validationErrors: Record<string, string> = {};
   showPassword = false;
-
+  canView = true;
+  canCreate = true;
+  canEdit = false;
+  canDelete = false;
   passwordVisibility: Record<string, boolean> = {};
   // ==========================================
   // INPUTS
@@ -61,6 +64,24 @@ export class MasterPageComponent {
     private exportService: ExportService,
     private location: Location,
   ) {}
+
+  ngOnInit(): void {
+    const permissions = JSON.parse(localStorage.getItem('permissions') || '[]');
+
+    const permission = permissions.find(
+      (x: any) => x.subModuleName === this.config.permissionName,
+    );
+
+    if (permission) {
+      this.canView = permission.canView;
+
+      this.canCreate = permission.canCreate;
+
+      this.canEdit = permission.canEdit;
+
+      this.canDelete = permission.canDelete;
+    }
+  }
 
   // ==========================================
   // VARIABLES

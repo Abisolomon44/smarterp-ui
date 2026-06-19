@@ -1,0 +1,23 @@
+<app-master-page
+
+  [config]="config"
+
+  [data]="mappings"
+
+  [userModel]="mappingModel"
+
+  [showEntry]="showEntry"
+
+  (createClick)="create()"
+
+  (editClick)="edit($event)"
+
+  (saveClick)="save()"
+
+  (deleteClick)="delete($event)"
+
+  (cancelClick)="cancel()"
+
+  (refreshClick)="loadMappings()">
+
+</app-master-page>

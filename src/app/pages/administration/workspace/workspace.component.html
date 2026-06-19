@@ -1,6 +1,9 @@
 <div
   class="workspace-section"
-  *ngFor="let group of domainGroups">
+  *ngFor="
+    let group of domainGroups;
+    trackBy: trackByDomain
+  ">
 
   <div class="section-header">
 
@@ -22,7 +25,10 @@
   <div class="workspace-grid">
 
     <a
-      *ngFor="let card of group.cards"
+      *ngFor="
+        let card of group.cards;
+        trackBy: trackByCard
+      "
       class="workspace-card"
       [routerLink]="card.route">
 
@@ -61,5 +67,23 @@
     </a>
 
   </div>
+
+</div>
+
+<div
+  class="empty-state"
+  *ngIf="
+    !loading &&
+    domainGroups.length === 0
+  ">
+
+  <h3>
+    No Modules Available
+  </h3>
+
+  <p>
+    You do not have access
+    to any modules.
+  </p>
 
 </div>

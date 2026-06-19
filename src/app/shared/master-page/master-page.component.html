@@ -50,7 +50,7 @@
     <!-- Create Button -->
 
     <div class="page-actions">
-      <button class="btn-primary" (click)="create()">
+      <button *ngIf="canCreate" class="btn-primary" (click)="create()">
         <lucide-icon [img]="icons.plus" [size]="16"> </lucide-icon>
 
         Create {{ config.title }}
@@ -197,11 +197,15 @@
 
               <td>
                 <div class="action-buttons">
-                  <button class="icon-btn" (click)="edit(row)">
+                  <button *ngIf="canEdit" class="icon-btn" (click)="edit(row)">
                     <lucide-icon [img]="icons.edit" [size]="16"> </lucide-icon>
                   </button>
 
-                  <button class="icon-btn danger" (click)="delete(row)">
+                  <button
+                    *ngIf="canDelete"
+                    class="icon-btn danger"
+                    (click)="delete(row)"
+                  >
                     <lucide-icon [img]="icons.delete" [size]="16">
                     </lucide-icon>
                   </button>
@@ -368,7 +372,17 @@
             </button>
           </div>
           <!-- DROPDOWN -->
+          <div *ngIf="field.type === 'checkbox'" class="checkbox-field">
+            <input
+              type="checkbox"
+              [id]="field.name"
+              [(ngModel)]="userModel[field.name]"
+            />
 
+            <label [for]="field.name">
+              {{ field.label }}
+            </label>
+          </div>
           <select
             *ngIf="field.type === 'dropdown'"
             [(ngModel)]="userModel[field.name]"
@@ -400,14 +414,6 @@
           </div>
 
           <!-- TOGGLE -->
-
-          <div *ngIf="field.type === 'toggle'" class="toggle-field">
-            <input type="checkbox" [(ngModel)]="userModel[field.name]" />
-
-            <span>
-              {{ field.label }}
-            </span>
-          </div>
         </div>
       </div>
     </div>

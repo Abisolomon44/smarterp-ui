@@ -1,1 +1,23 @@
-<p>role-permissions works!</p>
+<app-master-page
+
+  [config]="config"
+
+  [data]="rolePermissions"
+
+  [userModel]="rolePermissionModel"
+
+  [showEntry]="showEntry"
+
+  (createClick)="createPermission()"
+
+  (editClick)="editPermission($event)"
+
+  (deleteClick)="deletePermission($event)"
+
+  (saveClick)="savePermission()"
+
+  (cancelClick)="cancel()"
+
+  (refreshClick)="loadRolePermissions()">
+
+</app-master-page>

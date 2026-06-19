@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
+
 import {
   RouterLink,
   RouterLinkActive
@@ -29,22 +30,28 @@ from '../services/administration-service/administration.service';
 export class SidebarComponent
   implements OnInit {
 
-  constructor(
-    private administrationService:
-      AdministrationService
-  ) { }
+  @Input()
+  collapsed = false;
 
-  @Input() collapsed = false;
-
-  @Output() close =
+  @Output()
+  close =
     new EventEmitter<void>();
 
   workspaces: any[] = [];
+
+  userId = Number(
+    localStorage.getItem('userId')
+  );
 
   userName =
     localStorage.getItem(
       'userName'
     ) || 'Administrator';
+
+  constructor(
+    private administrationService:
+      AdministrationService
+  ) { }
 
   ngOnInit(): void {
 
@@ -53,32 +60,29 @@ export class SidebarComponent
 
   loadWorkspaces(): void {
 
-    const userId =
-      Number(
-        localStorage.getItem(
-          'userId'
-        )
-      );
-
     this.administrationService
       .getSidebarWorkspaces(
-        userId
+        this.userId
       )
       .subscribe({
+
         next: (response: any) => {
 
           this.workspaces =
-            response.data ??
-            response;
+            response?.data ??
+            response ??
+            [];
 
           console.log(
-            'Workspaces',
+            'Sidebar Workspaces',
             this.workspaces
           );
         },
+
         error: (error) => {
 
           console.error(
+            'Sidebar Error',
             error
           );
         }
@@ -95,5 +99,13 @@ export class SidebarComponent
 
       this.close.emit();
     }
+  }
+
+  trackByWorkspace(
+    index: number,
+    item: any
+  ): number {
+
+    return item.workspaceId;
   }
 }

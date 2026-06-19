@@ -31,29 +31,17 @@ export class AdministrationService {
     return this.http.get(`${this.apiUrl}/role/${id}`);
   }
 
-
   // =====================================================
-// ROLE DOMAIN
-// =====================================================
+  // ROLE DOMAIN
+  // =====================================================
 
-saveRoleDomain(
-  model: any
-): Observable<any> {
+  saveRoleDomain(model: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/role-domain`, model);
+  }
 
-  return this.http.post(
-    `${this.apiUrl}/role-domain`,
-    model
-  );
-}
-
-getRoleDomains(
-  companyId: number
-): Observable<any[]> {
-
-  return this.http.get<any[]>(
-    `${this.apiUrl}/role-domains/${companyId}`
-  );
-}
+  getRoleDomains(companyId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/role-domains/${companyId}`);
+  }
   // =====================================================
   // USER ROLE
   // =====================================================
@@ -96,32 +84,60 @@ getRoleDomains(
   // MODULE
   // =====================================================
 
-  saveModule(model: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/module`, model);
-  }
 
-  getModules(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/modules`);
-  }
+getModules(): Observable<any> {
 
-  getModuleById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/module/${id}`);
-  }
+  const companyId =
+    Number(
+      localStorage.getItem(
+        'companyId'
+      )
+    );
+
+  return this.http.get<any>(
+    `${this.apiUrl}/modules/${companyId}`
+  );
+}
+
+  getModulesByCompanyId(
+  companyId: number
+): Observable<any> {
+  return this.http.get<any>(
+    `${this.apiUrl}/modules/${companyId}`
+  );
+}
+
+getModuleById(
+  id: number
+): Observable<any> {
+  return this.http.get<any>(
+    `${this.apiUrl}/module/${id}`
+  );
+}
+
+saveModule(
+  model: any
+): Observable<any> {
+  return this.http.post(
+    `${this.apiUrl}/module`,
+    model
+  );
+}
+  
 
   // =====================================================
   // SUB MODULE
   // =====================================================
-
-  saveSubModule(model: any): Observable<any> {
+  saveSubModule(model: any) {
     return this.http.post(`${this.apiUrl}/sub-module`, model);
   }
 
-  getSubModules(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/sub-modules`);
+  getSubModuleById(id: number) {
+    return this.http.get(`${this.apiUrl}/sub-module/${id}`);
   }
 
-  getSubModuleById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/sub-module/${id}`);
+  getSubModules(companyId: number) {
+    return this.http.get<any>(`${this.apiUrl}/sub-modules/${companyId}`);
   }
 
   // =====================================================
@@ -175,14 +191,30 @@ getRoleDomains(
   // =====================================================
   // ROLE PERMISSION
   // =====================================================
+saveRolePermission(model: any) {
+  return this.http.post(
+    `${this.apiUrl}/role-permission`,
+    model
+  );
+}
 
-  saveRolePermission(model: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/role-permission`, model);
-  }
+getRolePermissions(
+  companyId: number
+) {
+  return this.http.get(
+    `${this.apiUrl}/role-permissions/${companyId}`
+  );
+}
 
-  getRolePermissions(roleId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/role-permissions/${roleId}`);
-  }
+getRolePermissionById(
+  id: number
+) {
+  return this.http.get(
+    `${this.apiUrl}/role-permission/${id}`
+  );
+}
+
+
 
   // =====================================================
   // SIDEBAR
@@ -194,6 +226,22 @@ getRoleDomains(
   getSidebarWorkspaces(userId: number) {
     return this.http.get(`${this.apiUrl}/sidebar-workspaces/${userId}`);
   }
+  // =====================================================
+  // ROLE WORKSPACE
+  // =====================================================
 
+  saveRoleWorkspace(model: any) {
+    return this.http.post(`${this.apiUrl}/role-workspace`, model);
+  }
 
+  getRoleWorkspaces(companyId: number) {
+    return this.http.get(`${this.apiUrl}/role-workspaces/${companyId}`);
+  }
+  saveModuleProfileModule(model: any) {
+    return this.http.post(`${this.apiUrl}/module-profile-module`, model);
+  }
+
+  getModuleProfileModules(companyId: number) {
+    return this.http.get(`${this.apiUrl}/module-profile-modules/${companyId}`);
+  }
 }

@@ -4,21 +4,20 @@ import {
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import {
-  getIconByName
-} from '../../../shared/icon.constants';
+import { RouterModule, Router } from '@angular/router';
+
 import {
   LucideAngularModule
 } from 'lucide-angular';
 
-import { Router } from '@angular/router';
+import {
+  ICONS,
+  getIconByName
+} from '../../../shared/icon.constants';
 
-import { ICONS }
-from '../../../shared/icon.constants';
-
-import { AdministrationService }
-from '../../../services/administration-service/administration.service';
+import {
+  AdministrationService
+} from '../../../services/administration-service/administration.service';
 
 @Component({
   selector: 'app-workspace',
@@ -39,6 +38,8 @@ export class WorkspaceComponent
   dashboard: any;
 
   domainGroups: any[] = [];
+
+  loading = false;
 
   constructor(
     private administrationService:
@@ -66,11 +67,13 @@ export class WorkspaceComponent
     this.administrationService
       .getAdminDashboard()
       .subscribe({
+
         next: (response) => {
 
           this.dashboard =
             response;
         },
+
         error: (error) => {
 
           console.error(
@@ -89,84 +92,126 @@ export class WorkspaceComponent
         )
       );
 
+    this.loading = true;
+
     this.administrationService
-      .getSidebar(userId)
+      .getSidebar(
+        userId
+      )
       .subscribe({
+
         next: (response: any) => {
 
           const menus =
-            response.data ??
-            response;
+            response?.data ??
+            response ??
+            [];
+
+          console.log(
+            'Workspace Menus',
+            menus
+          );
 
           this.buildDomainGroups(
             menus
           );
+
+          this.loading = false;
         },
+
         error: (error) => {
 
           console.error(
             error
           );
+
+          this.loading = false;
         }
       });
   }
 
-buildDomainGroups(
-  menus: any[]
-): void {
+  buildDomainGroups(
+    menus: any[]
+  ): void {
 
-  const domains =
-    [...new Set(
-      menus.map(
-        (x: any) => x.domainName
-      )
-    )];
+    const grouped =
+      menus.reduce(
+        (
+          result: any,
+          item: any
+        ) => {
 
-  this.domainGroups =
-    domains.map(
-      (domain: string) => {
+          if (
+            !result[item.domainName]
+          ) {
 
-        const domainMenus =
-          menus.filter(
-            (x: any) =>
-              x.domainName === domain
-          );
+            result[item.domainName] = {
 
-        return {
+              domainName:
+                item.domainName,
 
-          domainName:
-            domain,
+              domainIcon:
+                getIconByName(
+                  item.domainIcon
+                ),
 
-          domainIcon:
-            getIconByName(
-              domainMenus[0]
-                ?.domainIcon
-            ),
+              cards: []
+            };
+          }
 
-          cards:
-            domainMenus.map(
-              (x: any) => ({
+          result[
+            item.domainName
+          ].cards.push({
 
-                title:
-                  x.moduleName,
+            moduleId:
+              item.moduleId,
 
-                description:
-                  `Manage ${x.moduleName}`,
+            subModuleId:
+              item.subModuleId,
 
-                route:
-                  x.routeUrl,
+            title:
+              item.moduleName,
 
-                icon:
-                  getIconByName(
-                    x.moduleIcon
-                  ),
+            description:
+              `Manage ${item.moduleName}`,
 
-                iconClass:
-                  'module'
-              })
-            )
-        };
-      }
-    );
-}
+            route:
+              item.routeUrl,
+
+            icon:
+              getIconByName(
+                item.moduleIcon
+              ),
+
+            iconClass:
+              'module'
+          });
+
+          return result;
+
+        },
+        {}
+      );
+
+    this.domainGroups =
+      Object.values(
+        grouped
+      );
+  }
+
+  trackByDomain(
+    index: number,
+    item: any
+  ): string {
+
+    return item.domainName;
+  }
+
+  trackByCard(
+    index: number,
+    item: any
+  ): number {
+
+    return item.moduleId;
+  }
 }

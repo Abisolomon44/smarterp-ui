@@ -1,26 +1,57 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
 
-import { MasterPageComponent } from '../../../../shared/master-page/master-page.component';
+import {
+  MasterPageComponent
+} from '../../../../shared/master-page/master-page.component';
 
-import { AdministrationService } from '../../../../services/administration-service/administration.service';
+import {
+  AdministrationService
+} from '../../../../services/administration-service/administration.service';
 
-import { AlertService } from '../../../../services/alert.service';
+import {
+  AlertService
+} from '../../../../services/alert.service';
 
-import { ICONS } from '../../../../shared/icon.constants';
+import {
+  AuthService
+} from '../../../../services/auth.service';
+
+import {
+  ICONS
+} from '../../../../shared/icon.constants';
 
 @Component({
   selector: 'app-sub-modules',
   standalone: true,
-  imports: [MasterPageComponent],
-  templateUrl: './sub-modules.component.html',
-  styleUrls: ['./sub-modules.component.scss']
+  imports: [
+    MasterPageComponent
+  ],
+  templateUrl:
+    './sub-modules.component.html',
+  styleUrls: [
+    './sub-modules.component.scss'
+  ]
 })
-export class SubModulesComponent implements OnInit {
+export class SubModulesComponent
+  implements OnInit {
 
   constructor(
-    private administrationService: AdministrationService,
-    private alert: AlertService
+    private administrationService:
+      AdministrationService,
+
+    private authService:
+      AuthService,
+
+    private alert:
+      AlertService
   ) { }
+
+  companyId = 0;
+
+  companies: any[] = [];
 
   subModules: any[] = [];
 
@@ -28,7 +59,8 @@ export class SubModulesComponent implements OnInit {
 
   subModuleModel: any = {
     id: 0,
-    moduleId: 0,
+    companyId: null,
+    moduleId: null,
     name: '',
     code: '',
     description: '',
@@ -39,17 +71,29 @@ export class SubModulesComponent implements OnInit {
   };
 
   config: any = {
+
     title: 'Sub Modules',
 
-    description: 'Manage module screens',
+    description:
+      'Manage module screens',
 
-    icon: ICONS.module,
+    icon:
+      ICONS.module,
 
-    createLabel: 'Create Sub Module',
+    createLabel:
+      'Create Sub Module',
 
     stats: [],
 
     columns: [
+      {
+        field: 'companyName',
+        header: 'Company'
+      },
+      {
+        field: 'moduleName',
+        header: 'Module'
+      },
       {
         field: 'name',
         header: 'Sub Module'
@@ -57,10 +101,6 @@ export class SubModulesComponent implements OnInit {
       {
         field: 'code',
         header: 'Code'
-      },
-      {
-        field: 'moduleId',
-        header: 'Module'
       },
       {
         field: 'routeUrl',
@@ -72,6 +112,7 @@ export class SubModulesComponent implements OnInit {
       {
         name: 'General',
         fields: [
+          'companyId',
           'moduleId',
           'name',
           'code',
@@ -89,6 +130,13 @@ export class SubModulesComponent implements OnInit {
     ],
 
     fields: [
+      {
+        name: 'companyId',
+        label: 'Company',
+        type: 'dropdown',
+        required: true,
+        options: []
+      },
       {
         name: 'moduleId',
         label: 'Module',
@@ -132,31 +180,103 @@ export class SubModulesComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.loadSubModules();
-    this.loadModules();
+
+    this.loadCompany();
+  }
+
+  loadCompany(): void {
+
+    const userId =
+      Number(
+        localStorage.getItem(
+          'userId'
+        )
+      );
+
+    this.authService
+      .getUserCompany(userId)
+      .subscribe({
+        next: (response: any) => {
+
+          this.companyId =
+            response.companyId;
+
+          this.companies = [
+            {
+              value:
+                response.companyId,
+              label:
+                response.companyName
+            }
+          ];
+
+          const companyField =
+            this.config.fields.find(
+              (x: any) =>
+                x.name === 'companyId'
+            );
+
+          if (companyField) {
+
+            companyField.options =
+              this.companies;
+          }
+
+          this.subModuleModel.companyId =
+            this.companyId;
+
+          this.loadModules();
+
+          this.loadSubModules();
+        },
+        error: (error) => {
+
+          console.error(error);
+
+          this.alert.error(
+            'Unable to load company.'
+          );
+        }
+      });
   }
 
   loadModules(): void {
 
     this.administrationService
-      .getModules()
+      .getModulesByCompanyId(
+        this.companyId
+      )
       .subscribe({
-        next: (response) => {
+        next: (response: any) => {
 
-          const field =
+          const data =
+            response.data ??
+            response;
+
+          const moduleField =
             this.config.fields.find(
               (x: any) =>
                 x.name === 'moduleId'
             );
 
-          if (field) {
+          if (moduleField) {
 
-            field.options =
-              response.map((x: any) => ({
-                value: x.id,
-                label: x.name
-              }));
+            moduleField.options =
+              data.map(
+                (x: any) => ({
+                  value: x.id,
+                  label: x.name
+                })
+              );
           }
+        },
+        error: (error) => {
+
+          console.error(error);
+
+          this.alert.error(
+            'Unable to load modules.'
+          );
         }
       });
   }
@@ -164,56 +284,132 @@ export class SubModulesComponent implements OnInit {
   loadSubModules(): void {
 
     this.administrationService
-      .getSubModules()
+      .getSubModules(
+        this.companyId
+      )
       .subscribe({
-        next: (response) => {
+        next: (response: any) => {
 
-          this.subModules = response;
+          this.subModules =
+            response.data ??
+            response;
 
-          this.config.stats = [
-            {
-              label: 'Total Sub Modules',
-              value: response.length,
-              icon: ICONS.module,
-              description: 'Available screens'
-            }
-          ];
+          this.updateStats();
+        },
+        error: (error) => {
+
+          console.error(error);
+
+          this.alert.error(
+            'Unable to load sub modules.'
+          );
         }
       });
   }
 
+  updateStats(): void {
+
+    this.config.stats = [
+      {
+        label:
+          'Total Sub Modules',
+
+        value:
+          this.subModules.length,
+
+        icon:
+          ICONS.module,
+
+        description:
+          'Available screens'
+      }
+    ];
+  }
+
   createSubModule(): void {
+
+    this.subModuleModel = {
+
+      id: 0,
+
+      companyId:
+        this.companyId,
+
+      moduleId: null,
+
+      name: '',
+
+      code: '',
+
+      description: '',
+
+      icon: '',
+
+      routeUrl: '',
+
+      sortOrder: 1,
+
+      isDelete: false
+    };
+
     this.showEntry = true;
   }
 
-  editSubModule(item: any): void {
+  editSubModule(
+    item: any
+  ): void {
 
     this.administrationService
-      .getSubModuleById(item.id)
+      .getSubModuleById(
+        item.id
+      )
       .subscribe({
-        next: (response) => {
+        next: (response: any) => {
 
-          this.subModuleModel = response;
+          this.subModuleModel =
+            response.data ??
+            response;
 
           this.showEntry = true;
+        },
+        error: (error) => {
+
+          console.error(error);
+
+          this.alert.error(
+            'Unable to load sub module.'
+          );
         }
       });
   }
 
   saveSubModule(): void {
 
+    this.subModuleModel.companyId =
+      this.companyId;
+
     this.administrationService
-      .saveSubModule(this.subModuleModel)
+      .saveSubModule(
+        this.subModuleModel
+      )
       .subscribe({
-        next: () => {
+        next: (response: any) => {
 
           this.alert.success(
+            response.message ??
             'Sub Module saved successfully.'
           );
 
           this.showEntry = false;
 
           this.loadSubModules();
+        },
+        error: (error) => {
+
+          this.alert.error(
+            error?.error?.message ??
+            'Unable to save sub module.'
+          );
         }
       });
   }
@@ -234,21 +430,32 @@ export class SubModulesComponent implements OnInit {
     this.administrationService
       .saveSubModule({
         ...item,
+        companyId:
+          this.companyId,
         isDelete: true
       })
       .subscribe({
-        next: () => {
+        next: (response: any) => {
 
           this.alert.success(
+            response.message ??
             'Sub Module deleted successfully.'
           );
 
           this.loadSubModules();
+        },
+        error: (error) => {
+
+          this.alert.error(
+            error?.error?.message ??
+            'Unable to delete sub module.'
+          );
         }
       });
   }
 
   cancel(): void {
+
     this.showEntry = false;
   }
 }

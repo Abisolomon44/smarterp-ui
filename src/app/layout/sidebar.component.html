@@ -1,58 +1,138 @@
-<aside class="app-sidebar" [class.collapsed]="collapsed">
+<aside
+  class="app-sidebar"
+  [class.collapsed]="collapsed">
+
+  <!-- Logo -->
+
+  <div class="sidebar-brand">
+
+    <div class="brand-icon">
+      <i class="fa-solid fa-cubes"></i>
+    </div>
+
+    <div
+      class="brand-text"
+      *ngIf="!collapsed">
+
+      SmartERP
+
+    </div>
+
+  </div>
+
+  <!-- Navigation -->
+
   <nav class="sidebar-nav">
+
     <ul>
+
       <!-- Dashboard -->
 
       <li class="nav-item">
+
         <a
           class="nav-link"
           routerLink="/dashboard"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{
-            exact: true,
+            exact: true
           }"
-          (click)="navClick($event)"
-        >
-          <i class="fa-solid fa-chart-line nav-icon"> </i>
+          (click)="navClick($event)">
 
-          <span class="nav-label"> Dashboard </span>
+          <i
+            class="fa-solid fa-chart-line nav-icon">
+          </i>
+
+          <span
+            class="nav-label"
+            *ngIf="!collapsed">
+
+            Dashboard
+
+          </span>
+
         </a>
+
       </li>
 
       <!-- Dynamic Workspaces -->
 
-      <li *ngFor="let workspace of workspaces" class="nav-item">
+      <li
+        class="nav-item"
+        *ngFor="
+          let workspace
+          of workspaces;
+          trackBy:
+          trackByWorkspace
+        ">
+
         <a
           class="nav-link"
-          [routerLink]="workspace.routeUrl"
+          [routerLink]="
+            workspace.routeUrl
+          "
           routerLinkActive="active"
-          (click)="navClick($event)"
-        >
-          <i [class]="workspace.workspaceIcon"> </i>
+          (click)="navClick($event)">
 
-          <span class="nav-label">
-            {{ workspace.workspaceName }}
+          <i
+            [class]="
+              workspace.workspaceIcon
+            ">
+          </i>
+
+          <span
+            class="nav-label"
+            *ngIf="!collapsed">
+
+            {{
+              workspace.workspaceName
+            }}
+
           </span>
+
         </a>
+
       </li>
+
     </ul>
+
   </nav>
 
-  <div class="sidebar-footer">
-    <div class="footer-avatar">
-      {{ userName.charAt(0) }}
-    </div>
+  <!-- Footer -->
 
-    <div class="sidebar-footer-info">
+  <div class="sidebar-footer">
+
+<div class="footer-avatar">
+
+  {{
+    userName
+      .charAt(0)
+      .toUpperCase()
+  }}
+
+</div>
+
+    <div
+      class="sidebar-footer-info"
+      *ngIf="!collapsed">
+
       <div class="footer-name">
+
         {{ userName }}
+
       </div>
 
       <div class="footer-status">
-        <span class="dot"> </span>
 
-        SmartERP v1.0
+        <span class="dot">
+        </span>
+
+        Online
+
       </div>
+
     </div>
+
   </div>
+
 </aside>
