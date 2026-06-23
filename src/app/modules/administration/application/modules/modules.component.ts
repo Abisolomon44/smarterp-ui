@@ -55,6 +55,9 @@ export class ModulesComponent
   config: any = {
 
     title: 'Modules',
+    permissionName: 'Module List',
+
+    
 
     description:
       'Manage application modules',

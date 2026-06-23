@@ -73,6 +73,7 @@ export class SubModulesComponent
   config: any = {
 
     title: 'Sub Modules',
+    permissionName: 'Sub Module List',
 
     description:
       'Manage module screens',

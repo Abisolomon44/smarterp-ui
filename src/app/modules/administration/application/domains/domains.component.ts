@@ -50,6 +50,8 @@ export class DomainsComponent implements OnInit {
   config: any = {
 
     title: 'Domains',
+    permissionName: 'Domain List',
+
 
     description:
       'Manage business domains',

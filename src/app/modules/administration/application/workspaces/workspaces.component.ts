@@ -54,6 +54,7 @@ export class WorkspacesComponent
   config: any = {
 
     title: 'Workspaces',
+    permissionName: 'Workspace List',
 
     description:
       'Manage application workspaces',
