@@ -343,9 +343,11 @@
             (keypress)="allowKeyPress($event, field.keyType)"
             [class.input-error]="validationErrors[field.name]"
           />
+
+          <!--
           <div class="field-error" *ngIf="validationErrors[field.name]">
             {{ validationErrors[field.name] }}
-          </div>
+          </div>-->
           <!-- PASSWORD -->
 
           <div class="password-field" *ngIf="field.type === 'password'">

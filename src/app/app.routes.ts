@@ -11,6 +11,7 @@ import { WorkspaceComponent } from './pages/administration/workspace/workspace.c
 
 import { CreateUserComponent } from './pages/users/create-user.component';
 
+import { CompanyMasterComponent } from '../../src/app/modules/organization/company-master/company-master.component';
 // Security
 import { UsersComponent } from './modules/administration/security/users/users.component';
 import { RolesComponent } from './modules/administration/security/roles/roles.component';
@@ -117,7 +118,7 @@ export const routes: Routes = [
             component: RoleWorkspacesComponent,
           },
 
-           {
+          {
             path: 'security/role-permissions',
             component: RolePermissionsComponent,
           },
@@ -149,6 +150,17 @@ export const routes: Routes = [
           {
             path: 'application/module-profiles',
             component: ModuleProfilesComponent,
+          },
+        ],
+      },
+
+      {
+        path: 'oraganization',
+
+        children: [
+          {
+            path: '',
+            component: CompanyMasterComponent,
           },
         ],
       },
