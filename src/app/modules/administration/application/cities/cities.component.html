@@ -1,0 +1,23 @@
+<app-master-page
+
+  [config]="config"
+
+  [data]="cities"
+
+  [userModel]="cityModel"
+
+  [showEntry]="showEntry"
+
+  (createClick)="createCity()"
+
+  (editClick)="editCity($event)"
+
+  (deleteClick)="deleteCity($event)"
+
+  (saveClick)="saveCity()"
+
+  (cancelClick)="cancel()"
+
+  (refreshClick)="loadCities()">
+
+</app-master-page>

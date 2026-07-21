@@ -1,0 +1,23 @@
+<app-master-page
+
+  [config]="config"
+
+  [data]="states"
+
+  [userModel]="stateModel"
+
+  [showEntry]="showEntry"
+
+  (createClick)="createState()"
+
+  (editClick)="editState($event)"
+
+  (deleteClick)="deleteState($event)"
+
+  (saveClick)="saveState()"
+
+  (cancelClick)="cancel()"
+
+  (refreshClick)="loadStates()">
+
+</app-master-page>

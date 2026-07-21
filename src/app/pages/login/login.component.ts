@@ -9,21 +9,20 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-
-  email      = '';
-  password   = '';
+  email = '';
+  password = '';
   rememberMe = false;
 
   showPassword = false;
-  isLoading    = false;
-  loginError   = '';
+  isLoading = false;
+  loginError = '';
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   /* ── Toggle password visibility ── */
@@ -35,93 +34,57 @@ export class LoginComponent {
   clearError(): void {
     this.loginError = '';
   }
-/* ── Main Login ── */
-login(): void {
+  /* ── Main Login ── */
+  login(): void {
+    this.loginError = '';
 
-  this.loginError = '';
+    if (!this.email || !this.password) {
+      this.loginError = 'Please enter your email and password.';
 
-  if (!this.email || !this.password) {
-
-    this.loginError =
-      'Please enter your email and password.';
-
-    return;
-
-  }
-
-  this.isLoading = true;
-
-  this.authService.login({
-
-    email: this.email,
-    password: this.password
-
-  }).subscribe({
-
-    next: (res: any) => {
-
-      localStorage.setItem(
-        'token',
-        res.token
-      );
-
-      localStorage.setItem(
-        'userId',
-        res.userId.toString()
-      );
-
-      localStorage.setItem(
-        'companyId',
-        res.companyId.toString()
-      );
-
-      localStorage.setItem(
-        'userName',
-        res.userName
-      );
-
-      if (this.rememberMe) {
-
-        localStorage.setItem(
-          'rememberMe',
-          'true'
-        );
-
-      } else {
-
-        sessionStorage.setItem(
-          'userId',
-          res.userId.toString()
-        );
-
-        sessionStorage.setItem(
-          'companyId',
-          res.companyId.toString()
-        );
-
-      }
-
-      this.isLoading = false;
-
-      this.router.navigate([
-        '/dashboard'
-      ]);
-
-    },
-
-    error: (err: any) => {
-
-      this.isLoading = false;
-
-      this.loginError =
-        err?.error?.message ||
-        'Invalid email or password. Please try again.';
-
+      return;
     }
 
-  });
+    this.isLoading = true;
 
-}
+    this.authService
+      .login({
+        email: this.email,
+        password: this.password,
+      })
+      .subscribe({
+        next: (res: any) => {
+          localStorage.setItem('token', res.token);
+
+          localStorage.setItem('userId', res.userId.toString());
+
+          localStorage.setItem('isDeveloper', res.isDeveloper.toString());
+
+          localStorage.setItem('companyId', res.companyId.toString());
+
+          localStorage.setItem('userName', res.userName);
+
+          if (this.rememberMe) {
+            localStorage.setItem('rememberMe', 'true');
+          } else {
+            sessionStorage.setItem('userId', res.userId.toString());
+
+            sessionStorage.setItem('companyId', res.companyId.toString());
+          }
+
+          this.isLoading = false;
+
+          this.router.navigate(['/dashboard']);
+        },
+
+        error: (err: any) => {
+          this.isLoading = false;
+
+          this.loginError =
+            err?.error?.message ||
+            'Invalid email or password. Please try again.';
+        },
+      });
+  }
 
   /* ── Google OAuth (wire up real flow here) ── */
   googleLogin(): void {
@@ -143,8 +106,6 @@ login(): void {
     this.router.navigate(['/plans']);
   }
 
-
-
   forgotPassword(): void {
     this.router.navigate(['/forgot-password']);
   }
@@ -160,5 +121,4 @@ login(): void {
   openSupport(): void {
     window.open('/support', '_blank');
   }
-
 }

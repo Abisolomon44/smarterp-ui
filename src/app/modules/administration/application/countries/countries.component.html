@@ -1,0 +1,11 @@
+<app-master-page
+  [config]="config"
+  [data]="countries"
+  [userModel]="countryModel"
+  [showEntry]="showEntry"
+  (createClick)="createCountry()"
+  (editClick)="editCountry($event)"
+  (deleteClick)="deleteCountry($event)"
+  (saveClick)="saveCountry()"
+  (cancelClick)="cancel()">
+</app-master-page>

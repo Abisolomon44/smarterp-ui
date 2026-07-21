@@ -1,0 +1,23 @@
+<app-master-page
+
+  [config]="config"
+
+  [data]="languages"
+
+  [userModel]="languageModel"
+
+  [showEntry]="showEntry"
+
+  (createClick)="createLanguage()"
+
+  (editClick)="editLanguage($event)"
+
+  (deleteClick)="deleteLanguage($event)"
+
+  (saveClick)="saveLanguage()"
+
+  (cancelClick)="cancel()"
+
+  (refreshClick)="loadLanguages()">
+
+</app-master-page>

@@ -1,0 +1,11 @@
+<app-master-page
+  [config]="config"
+  [data]="businessTypes"
+  [userModel]="businessTypeModel"
+  [showEntry]="showEntry"
+  (createClick)="createBusinessType()"
+  (editClick)="editBusinessType($event)"
+  (deleteClick)="deleteBusinessType($event)"
+  (saveClick)="saveBusinessType()"
+  (cancelClick)="cancel()">
+</app-master-page>

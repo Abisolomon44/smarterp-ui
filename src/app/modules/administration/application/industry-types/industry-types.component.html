@@ -1,0 +1,11 @@
+<app-master-page
+  [config]="config"
+  [data]="industryTypes"
+  [userModel]="industryTypeModel"
+  [showEntry]="showEntry"
+  (createClick)="createIndustryType()"
+  (editClick)="editIndustryType($event)"
+  (deleteClick)="deleteIndustryType($event)"
+  (saveClick)="saveIndustryType()"
+  (cancelClick)="cancel()">
+</app-master-page>

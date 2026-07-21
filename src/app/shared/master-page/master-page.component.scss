@@ -1,30 +1,69 @@
+/* ====================================
+   DESIGN SYSTEM - ENTERPRISE SaaS
+   ==================================== */
+
+/* Color Tokens - Primary Palette */
 $primary: #4f46e5;
 $primary-dark: #3730a3;
 $primary-soft: rgba(79, 70, 229, 0.08);
+$primary-lighter: rgba(79, 70, 229, 0.04);
+
+/* Semantic Colors */
 $success: #16a34a;
 $success-soft: #dcfce7;
 $danger: #dc2626;
 $danger-soft: rgba(220, 38, 38, 0.08);
 $warning: #d97706;
 $warning-soft: #fef3c7;
+
+/* Typography Colors */
 $text: #0f172a;
 $text-secondary: #334155;
 $muted: #64748b;
 $muted-light: #94a3b8;
+
+/* Surface & Border Colors */
 $border: #e2e8f0;
 $border-light: #f1f5f9;
 $bg: #f1f4f8;
 $bg-surface: #f8fafc;
 $white: #ffffff;
-$card-radius: 6px;
-$input-radius: 4px;
-$btn-radius: 4px;
-$badge-radius: 3px;
+
+/* Border Radius Scale (4px system) */
+$radius-sm: 4px;
+$radius-md: 6px;
+$radius-lg: 8px;
+
+/* Shadow System - Enterprise Grade */
+$shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
 $shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
 $shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
 $shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.04);
+$shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.12), 0 6px 12px rgba(0, 0, 0, 0.06);
+
+/* Typography */
 $font: 'Plus Jakarta Sans', 'Inter', sans-serif;
-$font-mono: 'Plus Jakarta Sans', 'Inter', sans-serif;
+$font-mono: 'Fira Code', 'Courier New', monospace;
+
+/* Spacing Scale (8px system) */
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-5: 20px;
+$space-6: 24px;
+$space-8: 32px;
+$space-10: 40px;
+
+/* Transitions */
+$transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+$transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+$transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+
+/* ====================================
+   GLOBAL STYLES
+   ==================================== */
 
 *,
 *::before,
@@ -34,6 +73,7 @@ $font-mono: 'Plus Jakarta Sans', 'Inter', sans-serif;
 
 html {
   font-size: 14px;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -44,6 +84,8 @@ body {
   background: $bg;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -59,11 +101,28 @@ h3 { font-size: 15px; font-weight: 600; }
 
 p { margin: 0; }
 
+/* Focus visible state for accessibility */
 :focus-visible {
   outline: 2px solid $primary;
   outline-offset: 2px;
   border-radius: 2px;
 }
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ====================================
+   PAGE LAYOUT
+   ==================================== */
 
 .master-page {
   display: flex;
@@ -71,35 +130,51 @@ p { margin: 0; }
   gap: 0;
   padding: 0;
   min-height: 100vh;
+  background: $bg;
 }
 
-/* ============================
-   HEADER
-   ============================ */
+/* ====================================
+   HEADER - MODULE HEADER
+   ==================================== */
+
 .module-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 24px;
+  padding: $space-5 $space-6;
+  
   background: $white;
-  border-bottom: 1px solid $border;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm;
+  
+  gap: $space-4;
+  margin-bottom: $space-6;
   position: sticky;
   top: 0;
   z-index: 50;
-  box-shadow: $shadow-sm;
-  gap: 14px;
+  transition: all $transition-base;
 }
 
+.module-header:hover {
+  box-shadow: $shadow-md;
+}
+
+/* Module info section */
 .module-info {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: $space-4;
+  flex: 1;
+  min-width: 0;
 }
 
+/* Module icon container */
 .module-icon {
   width: 42px;
   height: 42px;
-  border-radius: $card-radius;
+  min-width: 42px;
+  border-radius: $radius-md;
   background: $primary-soft;
   color: $primary;
   display: flex;
@@ -107,16 +182,27 @@ p { margin: 0; }
   justify-content: center;
   flex-shrink: 0;
   border: 1px solid rgba(79, 70, 229, 0.15);
+  transition: all $transition-base;
 
-  svg { width: 18px; height: 18px; }
+  svg { 
+    width: 18px; 
+    height: 18px;
+    pointer-events: none;
+  }
 }
 
+.module-header:hover .module-icon {
+  background: rgba(79, 70, 229, 0.12);
+  transform: scale(1.05);
+}
+
+/* Breadcrumb navigation */
 .breadcrumb {
   display: flex;
-  gap: 6px;
+  gap: $space-2;
   font-size: 11px;
   color: $muted-light;
-  margin-bottom: 2px;
+  margin-bottom: $space-1;
   align-items: center;
   text-transform: uppercase;
   letter-spacing: 0.4px;
@@ -126,6 +212,7 @@ p { margin: 0; }
   span:last-child { color: $muted; }
 }
 
+/* Module title area */
 .module-info h1 {
   font-size: 18px;
   font-weight: 700;
@@ -133,13 +220,15 @@ p { margin: 0; }
   margin: 0;
   letter-spacing: -0.2px;
   line-height: 1.25;
+  word-break: break-word;
 }
 
 .module-info p {
   margin: 0;
   color: $muted;
   font-size: 12px;
-  margin-top: 1px;
+  margin-top: $space-1;
+  line-height: 1.4;
 }
 
 .module-info small {
@@ -147,20 +236,22 @@ p { margin: 0; }
   font-size: 11px;
 }
 
-/* ============================
+/* ====================================
    PAGE ACTIONS
-   ============================ */
+   ==================================== */
+
 .page-actions {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 8px;
-  padding: 14px 20px 0;
+  gap: $space-2;
+  padding: $space-4 $space-5 0;
 }
 
-/* ============================
-   KPI CARDS
-   ============================ */
+/* ====================================
+   KPI CARDS / STATS GRID
+   ==================================== */
+
 .stats-grid {
   display: grid;
   gap: 1px;
@@ -168,20 +259,41 @@ p { margin: 0; }
   background: $border;
   border-top: 1px solid $border;
   border-bottom: 1px solid $border;
+  border-radius: $radius-md;
+  overflow: hidden;
 }
 
 .stat-card {
   background: $white;
-  padding: 18px 22px;
-  transition: background 0.15s ease;
+  padding: $space-5 $space-6;
+  transition: all $transition-base;
   border: none;
   border-radius: 0;
   cursor: default;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $primary, rgba(79, 70, 229, 0.5));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform $transition-base;
+  }
 
   &:hover {
     background: $bg-surface;
     transform: none;
     box-shadow: none;
+
+    &::before {
+      transform: scaleX(1);
+    }
   }
 }
 
@@ -189,30 +301,46 @@ p { margin: 0; }
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 10px;
+  margin-bottom: $space-3;
 }
 
 .stat-icon {
   width: 32px;
   height: 32px;
-  border-radius: $input-radius;
+  min-width: 32px;
+  border-radius: $radius-sm;
   background: $primary-soft;
   color: $primary;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(79, 70, 229, 0.12);
+  transition: all $transition-base;
 
-  svg { width: 15px; height: 15px; }
+  svg { 
+    width: 15px; 
+    height: 15px;
+    pointer-events: none;
+  }
+}
+
+.stat-card:hover .stat-icon {
+  transform: scale(1.1);
+  background: rgba(79, 70, 229, 0.15);
 }
 
 .stat-card h2 {
-  margin: 2px 0 4px;
+  margin: $space-1 0 $space-2;
   font-size: 26px;
   font-weight: 700;
   color: $text;
   letter-spacing: -0.5px;
   line-height: 1;
+  transition: color $transition-base;
+}
+
+.stat-card:hover h2 {
+  color: $primary;
 }
 
 .stat-card small {
@@ -225,35 +353,45 @@ p { margin: 0; }
   letter-spacing: 0.3px;
 }
 
-/* ============================
-   GENERIC TOOLBAR (if used elsewhere)
-   ============================ */
+/* ====================================
+   TOOLBAR - SEARCH & ACTIONS
+   ==================================== */
+
 .toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  padding: 10px 20px;
+  gap: $space-3;
+  padding: $space-3 $space-5;
   background: $white;
   border-bottom: 1px solid $border;
   position: sticky;
   top: 73px;
   z-index: 40;
+  box-shadow: $shadow-xs;
+  transition: all $transition-base;
 }
 
+/* Search box */
 .search-box {
   width: 320px;
   height: 34px;
-  padding: 0 10px;
+  padding: 0 $space-3;
   border: 1px solid $border;
-  border-radius: $input-radius;
+  border-radius: $radius-sm;
   background: $bg-surface;
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  gap: $space-2;
+  transition: all $transition-base;
 
-  svg { color: $muted-light; width: 14px; height: 14px; flex-shrink: 0; }
+  svg { 
+    color: $muted-light; 
+    width: 14px; 
+    height: 14px; 
+    flex-shrink: 0;
+    pointer-events: none;
+  }
 
   input {
     border: none;
@@ -277,131 +415,199 @@ p { margin: 0; }
 
 .toolbar-actions {
   display: flex;
-  gap: 8px;
+  gap: $space-2;
   align-items: center;
+  flex-shrink: 0;
 }
 
-/* ============================
-   BUTTONS
-   ============================ */
+/* ====================================
+   BUTTONS - ALL BUTTON STYLES
+   ==================================== */
+
 button {
   font-family: $font;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: all $transition-base;
 }
 
+/* Primary button - Main action */
 .btn-primary {
   height: 34px;
-  border: none;
-  padding: 0 14px;
-  border-radius: $btn-radius;
+  padding: 0 $space-4;
+  border-radius: $radius-sm;
   background: $primary;
   color: $white;
-  cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: $space-2;
   font-size: 13px;
   font-weight: 500;
   font-family: $font;
-  transition: background 0.15s, box-shadow 0.15s;
+  box-shadow: $shadow-xs;
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
 
-  svg { width: 14px; height: 14px; }
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent);
+    opacity: 0;
+    transition: opacity $transition-base;
+    pointer-events: none;
+  }
+
+  svg { 
+    width: 14px; 
+    height: 14px;
+    pointer-events: none;
+  }
 
   &:hover {
     background: $primary-dark;
-    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+    box-shadow: $shadow-md;
+    transform: translateY(-1px);
+
+    &::before { opacity: 1; }
   }
 
-  &:active { background: darken($primary-dark, 4%); }
+  &:active {
+    transform: translateY(0);
+    box-shadow: $shadow-sm;
+  }
 
   &:focus-visible {
     outline: 2px solid $primary;
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+    box-shadow: $shadow-md;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
   }
 }
 
+/* Outline button - Secondary action */
 .btn-outline {
   height: 34px;
+  padding: 0 $space-3;
   border: 1px solid $border;
   background: $white;
-  border-radius: $btn-radius;
-  padding: 0 12px;
+  border-radius: $radius-sm;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: $space-2;
   font-size: 13px;
   font-weight: 500;
   color: $text-secondary;
   font-family: $font;
-  transition: background 0.15s, border-color 0.15s;
   white-space: nowrap;
+  box-shadow: $shadow-xs;
 
-  svg { width: 14px; height: 14px; color: $muted; }
+  svg { 
+    width: 14px; 
+    height: 14px; 
+    color: $muted;
+    pointer-events: none;
+  }
 
   &:hover {
     background: $bg-surface;
     border-color: darken($border, 6%);
     color: $text;
+    box-shadow: $shadow-sm;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 
   &:focus-visible {
     outline: 2px solid $primary;
     outline-offset: 2px;
   }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
+/* Danger button - Destructive action */
 .btn-danger {
   height: 34px;
+  padding: 0 $space-3;
   border: 1px solid rgba(220, 38, 38, 0.3);
   background: $white;
   color: $danger;
-  border-radius: $btn-radius;
-  padding: 0 12px;
-  cursor: pointer;
+  border-radius: $radius-sm;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: $space-2;
   font-size: 13px;
   font-weight: 500;
   font-family: $font;
-  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+  box-shadow: $shadow-xs;
 
   &:hover {
     background: $danger-soft;
     border-color: $danger;
+    box-shadow: $shadow-sm;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 
   &:focus-visible {
     outline: 2px solid $danger;
     outline-offset: 2px;
   }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
-/* ============================
-   TABLE CARD / TOOLBAR
-   ============================ */
+/* ====================================
+   TABLE CARD - TABLE CONTAINER
+   ==================================== */
+
 .table-card {
   background: $white;
   border: 1px solid $border;
-  border-radius: $card-radius;
+  border-radius: $radius-md;
   overflow: hidden;
-  margin: 16px 20px;
+  margin: $space-4 $space-5;
   box-shadow: $shadow-sm;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
 }
 
+/* Table toolbar */
 .table-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 16px;
+  padding: $space-3 $space-4;
   border-bottom: 1px solid $border;
   background: $bg-surface;
-  gap: 12px;
+  gap: $space-3;
   flex-wrap: wrap;
 
   .search-box {
@@ -430,17 +636,35 @@ button {
   }
 }
 
+/* Table wrapper with scrolling */
 .table-wrapper {
   max-height: 520px;
   overflow-y: auto;
   overflow-x: auto;
+  flex: 1;
 
-  &::-webkit-scrollbar { width: 6px; height: 6px; }
-  &::-webkit-scrollbar-track { background: $bg-surface; }
-  &::-webkit-scrollbar-thumb { background: $border; border-radius: 3px; }
-  &::-webkit-scrollbar-thumb:hover { background: darken($border, 10%); }
+  /* Scrollbar styling */
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $bg-surface;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $border;
+    border-radius: 3px;
+    transition: background $transition-base;
+
+    &:hover {
+      background: darken($border, 10%);
+    }
+  }
 }
 
+/* Table styling */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -450,14 +674,13 @@ table {
 
 thead {
   background: $bg-surface;
-}
-
-thead th {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: $bg-surface;
-  padding: 8px 14px;
+}
+
+thead th {
+  padding: $space-2 $space-4;
   text-align: left;
   font-size: 11px;
   font-weight: 600;
@@ -467,45 +690,58 @@ thead th {
   letter-spacing: 0.4px;
   white-space: nowrap;
   user-select: none;
+  background: $bg-surface;
 
-  &:first-child { padding-left: 16px; }
+  &:first-child { padding-left: $space-4; }
 }
 
 td {
-  padding: 8px 14px;
+  padding: $space-2 $space-4;
   border-bottom: 1px solid $border-light;
   vertical-align: middle;
   font-size: 13px;
   color: $text;
+  transition: background $transition-fast;
 
-  &:first-child { padding-left: 16px; }
+  &:first-child { padding-left: $space-4; }
 }
 
 tbody tr {
-  transition: background 0.1s;
+  transition: background $transition-fast;
 
-  &:nth-child(even) { background: rgba(248, 250, 252, 0.5); }
-  &:last-child td { border-bottom: none; }
+  &:nth-child(even) {
+    background: rgba(248, 250, 252, 0.5);
+  }
+
+  &:last-child td {
+    border-bottom: none;
+  }
 
   &:hover {
-    background: rgba(79, 70, 229, 0.03) !important;
+    background: rgba(79, 70, 229, 0.04) !important;
 
-    td { border-bottom-color: rgba(79, 70, 229, 0.08); }
+    td {
+      border-bottom-color: rgba(79, 70, 229, 0.1);
+    }
   }
 }
 
-/* ============================
-   USER CELL / STATUS / ACTIONS
-   ============================ */
+/* ====================================
+   TABLE CELL COMPONENTS
+   ==================================== */
+
+/* User cell with avatar */
 .user-cell {
   display: flex;
-  gap: 10px;
+  gap: $space-3;
   align-items: center;
+  min-height: 40px;
 }
 
 .avatar {
   width: 30px;
   height: 30px;
+  min-width: 30px;
   border-radius: 50%;
   background: $primary-soft;
   color: $primary;
@@ -517,6 +753,13 @@ tbody tr {
   flex-shrink: 0;
   border: 1px solid rgba(79, 70, 229, 0.15);
   letter-spacing: 0.3px;
+  transition: all $transition-base;
+  text-transform: uppercase;
+}
+
+.user-cell:hover .avatar {
+  background: rgba(79, 70, 229, 0.15);
+  transform: scale(1.05);
 }
 
 .name {
@@ -524,26 +767,35 @@ tbody tr {
   font-size: 13px;
   color: $text;
   line-height: 1.35;
+  transition: color $transition-base;
+}
+
+.user-cell:hover .name {
+  color: $primary;
 }
 
 .email {
   font-size: 11px;
   color: $muted;
   line-height: 1.35;
+  margin-top: $space-1;
 }
 
+/* Status badge */
 .status {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  border-radius: $badge-radius;
+  gap: $space-1;
+  padding: $space-1 $space-2;
+  border-radius: $radius-sm;
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.3px;
   line-height: 1.6;
   vertical-align: middle;
+  border: 1px solid transparent;
+  transition: all $transition-base;
 
   &::before {
     content: '';
@@ -551,6 +803,7 @@ tbody tr {
     height: 5px;
     border-radius: 50%;
     flex-shrink: 0;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   &.active {
@@ -566,28 +819,39 @@ tbody tr {
     color: $danger;
     border: 1px solid rgba(220, 38, 38, 0.2);
 
-    &::before { background: $danger; }
+    &::before { 
+      background: $danger;
+      animation: none;
+    }
   }
 }
 
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Action buttons in table */
 .action-buttons {
   display: flex;
-  gap: 6px;
+  gap: $space-2;
   align-items: center;
 }
 
 .icon-btn {
   width: 28px;
   height: 28px;
+  min-width: 28px;
   border: 1px solid $border;
-  border-radius: $input-radius;
+  border-radius: $radius-sm;
   background: $white;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition: all $transition-base;
   color: $muted;
+  padding: 0;
 
   svg {
     width: 13px;
@@ -599,15 +863,202 @@ tbody tr {
     background: $bg-surface;
     border-color: darken($border, 8%);
     color: $text;
+    box-shadow: $shadow-sm;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 
   &.danger {
     color: $danger;
+    border-color: rgba(220, 38, 38, 0.2);
 
     &:hover {
       background: $danger-soft;
       border-color: rgba(220, 38, 38, 0.3);
+      color: $danger;
     }
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* ====================================
+   PAGINATION
+   ==================================== */
+
+.pagination-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $space-3 $space-4;
+  border-top: 1px solid $border;
+  background: $bg-surface;
+  flex-wrap: wrap;
+  gap: $space-3;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0;
+  gap: $space-3;
+}
+
+.pagination-info {
+  color: $muted;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.pagination-buttons {
+  display: flex;
+  gap: $space-1;
+}
+
+.pagination-actions {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.page-size {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: 12px;
+  color: $muted;
+  white-space: nowrap;
+
+  select {
+    height: 32px;
+    border: 1px solid $border;
+    border-radius: $radius-sm;
+    padding: 0 $space-2;
+    font-size: 12px;
+    background: $white;
+    color: $text;
+    font-family: $font;
+    cursor: pointer;
+    transition: all $transition-base;
+
+    &:hover {
+      border-color: darken($border, 6%);
+    }
+
+    &:focus {
+      border-color: $primary;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.12);
+    }
+  }
+}
+
+/* ====================================
+   ENTRY HEADER - CREATE/EDIT PAGE HEADER
+   ==================================== */
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $space-4 $space-6;
+  background: $white;
+  border-bottom: 1px solid $border;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: $shadow-sm;
+  margin-bottom: 0;
+  gap: $space-4;
+}
+
+.entry-left {
+  display: flex;
+  gap: $space-3;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.entry-title h2 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  color: $text;
+  line-height: 1.3;
+}
+
+.entry-title p {
+  color: $muted;
+  font-size: 12px;
+  margin-top: $space-1;
+}
+
+.entry-actions,
+.entry-header .form-actions {
+  display: flex;
+  gap: $space-3;
+  align-items: center;
+  flex-shrink: 0;
+
+  button {
+    min-width: 88px;
+    justify-content: center;
+  }
+}
+
+/* Back button */
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  min-width: 80px;
+  height: 42px;
+  padding: 0 $space-4;
+  border: 1px solid $border;
+  border-radius: $radius-sm;
+  background: $white;
+  color: $muted;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all $transition-base;
+  box-shadow: $shadow-xs;
+
+  span {
+    line-height: 1;
+  }
+
+  lucide-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: $white;
+    border-color: $primary;
+    color: $primary;
+    box-shadow: $shadow-sm;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 
   &:focus-visible {
@@ -616,132 +1067,37 @@ tbody tr {
   }
 }
 
-/* ============================
-   PAGINATION
-   ============================ */
-.pagination-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 16px;
-  border-top: 1px solid $border;
-  background: $bg-surface;
-  flex-wrap: wrap;
-  gap: 12px;
-}
+/* ====================================
+   TABS - TAB NAVIGATION
+   ==================================== */
 
-.pagination {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 0;
-}
-
-.pagination-info {
-  color: $muted;
-  font-size: 12px;
-}
-
-.pagination-buttons {
-  display: flex;
-  gap: 4px;
-}
-
-.pagination-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.page-size {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: $muted;
-
-  select {
-    height: 32px;
-    border: 1px solid $border;
-    border-radius: $input-radius;
-    padding: 0 8px;
-    font-size: 12px;
-    background: $white;
-    color: $text;
-    font-family: $font;
-    cursor: pointer;
-
-    &:focus { border-color: $primary; outline: none; }
-  }
-}
-
-/* ============================
-   ENTRY HEADER (Create/Edit)
-   ============================ */
-.entry-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  background: $white;
-  border-bottom: 1px solid $border;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  box-shadow: $shadow-sm;
-  margin-bottom: 0;
-}
-
-.entry-left {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-
-.entry-title h2 {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0;
-  color: $text;
-}
-
-.entry-title p {
-  color: $muted;
-  font-size: 12px;
-}
-
-.entry-actions,
-.entry-header .form-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-
-  button {
-    min-width: 88px;
-    justify-content: center;
-  }
-}
-
-/* ============================
-   TABS
-   ============================ */
 .tabs {
   display: flex;
   gap: 0;
   border-bottom: 1px solid $border;
   background: $white;
-  padding: 0 24px;
+  padding: 0 $space-6;
   margin-bottom: 0;
   position: sticky;
   top: 67px;
   z-index: 30;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $border;
+    border-radius: 2px;
+  }
 }
 
 .tab {
   border: none;
   background: transparent;
-  padding: 10px 14px;
+  padding: $space-3 $space-4;
   cursor: pointer;
   color: $muted;
   font-size: 13px;
@@ -749,10 +1105,14 @@ tbody tr {
   font-family: $font;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
-  transition: color 0.15s, border-color 0.15s;
+  transition: all $transition-base;
   white-space: nowrap;
+  position: relative;
 
-  &:hover { color: $text; }
+  &:hover {
+    color: $text;
+    border-bottom-color: darken($border, 6%);
+  }
 
   &.active {
     color: $primary;
@@ -760,29 +1120,39 @@ tbody tr {
     font-weight: 600;
   }
 
-  &:focus-visible { outline: 2px solid $primary; outline-offset: -2px; }
+  &:focus-visible {
+    outline: 2px solid $primary;
+    outline-offset: -2px;
+  }
 }
 
-/* ============================
-   FORM / ENTRY GRID
-   ============================ */
+/* ====================================
+   FORMS - FORM LAYOUT & FIELDS
+   ==================================== */
+
 .entry-grid {
   display: grid;
-  gap: 16px;
+  gap: $space-5;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  padding: 16px 20px;
+  padding: $space-4 $space-5;
 }
 
 .form-card {
   background: $white;
   border: 1px solid $border;
-  border-radius: $card-radius;
-  padding: 20px 24px;
-  margin: 16px 20px;
+  border-radius: $radius-md;
+  padding: $space-6;
+  margin: $space-4 $space-5;
   box-shadow: $shadow-sm;
+  transition: all $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    border-color: $primary-lighter;
+  }
 
   h3 {
-    margin-bottom: 14px;
+    margin-bottom: $space-3;
     font-size: 13px;
     font-weight: 600;
     color: $text;
@@ -792,8 +1162,8 @@ tbody tr {
 .section-title {
   font-size: 12px;
   font-weight: 700;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
+  margin-bottom: $space-3;
+  padding-bottom: $space-2;
   border-bottom: 1px solid $border;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -802,19 +1172,19 @@ tbody tr {
 
 .form-grid {
   display: grid;
-  gap: 20px 24px;
+  gap: $space-5 $space-6;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .form-field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: $space-2;
 
   label {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: $space-1;
     font-size: 11px;
     font-weight: 600;
     color: $muted;
@@ -827,36 +1197,50 @@ tbody tr {
   textarea {
     height: 34px;
     border: 1px solid $border;
-    border-radius: $input-radius;
-    padding: 0 10px;
+    border-radius: $radius-sm;
+    padding: 0 $space-3;
     font-size: 13px;
     color: $text;
     background: $white;
     font-family: $font;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition: all $transition-base;
     width: 100%;
     margin-bottom: 0;
 
-    &::placeholder { color: $muted-light; }
+    &::placeholder {
+      color: $muted-light;
+    }
 
-    &:hover { border-color: darken($border, 8%); }
+    &:hover {
+      border-color: darken($border, 8%);
+    }
 
     &:focus {
       border-color: $primary;
       box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.12);
       outline: none;
     }
+
+    &:disabled {
+      background: $bg-surface;
+      color: $muted;
+      cursor: not-allowed;
+    }
   }
 
   textarea {
     height: auto;
     min-height: 80px;
-    padding: 8px 10px;
+    padding: $space-2 $space-3;
     resize: vertical;
     line-height: 1.5;
   }
 
-  select { cursor: pointer; appearance: auto; }
+  select {
+    cursor: pointer;
+    appearance: auto;
+    padding-right: $space-6;
+  }
 }
 
 .required {
@@ -864,7 +1248,7 @@ tbody tr {
   vertical-align: middle;
   color: $danger;
   font-weight: 700;
-  margin-left: 2px;
+  margin-left: $space-1;
 }
 
 .input-error {
@@ -873,23 +1257,21 @@ tbody tr {
   box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1) !important;
 }
 
-/* Reserve space so the layout doesn't jump when a validation
-   error appears under a field */
 .field-error {
-  margin-top: 4px;
+  margin-top: $space-1;
   min-height: 14px;
   font-size: 11.5px;
   font-weight: 500;
   color: $danger;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: $space-1;
 }
 
 .toggle-container {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: $space-2;
   font-size: 13px;
   color: $text-secondary;
 }
@@ -897,16 +1279,16 @@ tbody tr {
 .toggle-field {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: $space-2;
   height: 34px;
 }
 
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 16px;
-  padding-top: 14px;
+  gap: $space-3;
+  margin-top: $space-4;
+  padding-top: $space-4;
   border-top: 1px solid $border;
 
   button {
@@ -920,107 +1302,12 @@ tbody tr {
   bottom: 0;
   background: $white;
   border-top: 1px solid $border;
-  padding: 10px 20px;
+  padding: $space-3 $space-5;
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
+  gap: $space-2;
   z-index: 10;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
-}
-
-/* ============================
-   LOADING / EMPTY STATES
-   ============================ */
-.loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-  flex-direction: column;
-  gap: 12px;
-  color: $muted;
-  font-size: 13px;
-}
-
-.spinner {
-  width: 28px;
-  height: 28px;
-  border: 3px solid $border;
-  border-top-color: $primary;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.empty-state {
-  text-align: center;
-  padding: 48px 20px;
-  color: $muted-light;
-
-  svg { opacity: 0.3; }
-
-  h3 {
-    margin-top: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    color: $muted;
-  }
-
-  p {
-    font-size: 12px;
-    color: $muted-light;
-    margin-top: 4px;
-  }
-}
-
-.empty-grid {
-  text-align: center;
-  padding: 32px 20px;
-  color: $muted-light;
-  font-size: 13px;
-}
-
-/* ============================
-   EXPORT MENU
-   ============================ */
-.export-menu {
-  position: relative;
-}
-
-.export-dropdown {
-  position: absolute;
-  top: 40px;
-  right: 0;
-  min-width: 160px;
-  background: $white;
-  border: 1px solid $border;
-  border-radius: $card-radius;
-  overflow: hidden;
-  z-index: 1000;
-  box-shadow: $shadow-lg;
-
-  button {
-    width: 100%;
-    border: none;
-    background: $white;
-    text-align: left;
-    padding: 8px 14px;
-    cursor: pointer;
-    font-size: 13px;
-    color: $text;
-    font-family: $font;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: background 0.1s;
-
-    svg { width: 13px; height: 13px; color: $muted; }
-
-    &:hover { background: $bg-surface; }
-  }
 }
 
 input[type="checkbox"] {
@@ -1029,13 +1316,78 @@ input[type="checkbox"] {
   cursor: pointer;
   accent-color: $primary;
   border-radius: 2px;
+  transition: all $transition-base;
 }
 
-/* ============================
-   RESPONSIVE
-   ============================ */
+.permission-checkbox,
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  min-height: 42px;
+
+  input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  label {
+    margin: 0;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 13px;
+    color: $text;
+  }
+}
+
+.password-field {
+  position: relative;
+
+  input {
+    width: 100%;
+    padding-right: $space-10;
+  }
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: $space-3;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $muted;
+  transition: all $transition-base;
+  padding: $space-2;
+
+  &:hover {
+    color: $primary;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary;
+    outline-offset: 2px;
+  }
+}
+
+/* ====================================
+   RESPONSIVE DESIGN
+   ==================================== */
+
 @media (max-width: 1024px) {
-  .entry-grid { grid-template-columns: 1fr; }
+  .entry-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 
   .toolbar {
     flex-direction: column;
@@ -1043,15 +1395,28 @@ input[type="checkbox"] {
     top: 0;
   }
 
-  .search-box { width: 100%; }
+  .search-box {
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
+  :root {
+    --space-6: 16px;
+    --space-4: 12px;
+  }
+
   .module-header,
   .toolbar,
   .entry-header {
     flex-direction: column;
     align-items: stretch;
+    padding: $space-4;
+    gap: $space-3;
   }
 
   .stats-grid {
@@ -1059,38 +1424,189 @@ input[type="checkbox"] {
     gap: 1px;
   }
 
-  .form-grid { grid-template-columns: 1fr; }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 
-  .toolbar-actions { flex-wrap: wrap; }
+  .toolbar-actions {
+    flex-wrap: wrap;
+  }
 
-  .search-box { width: 100%; }
+  .search-box {
+    width: 100%;
+    height: 36px;
+  }
 
   .module-info {
     flex-direction: row;
     align-items: center;
   }
 
-  .entry-grid { padding: 12px; }
+  .entry-grid {
+    padding: $space-3;
+  }
 
-  .table-card { margin: 8px 12px; }
+  .table-card {
+    margin: $space-3;
+  }
 
-  .form-card { margin: 8px 12px; padding: 16px; }
+  .form-card {
+    margin: $space-3;
+    padding: $space-4;
+  }
 
-  .tabs { padding: 0 12px; }
+  .tabs {
+    padding: 0 $space-4;
+    top: 0;
+  }
 
-  .entry-header { padding: 12px 16px; }
+  .entry-header {
+    padding: $space-4;
+  }
+
+  thead th {
+    padding: $space-2 $space-3;
+    font-size: 10px;
+  }
+
+  td {
+    padding: $space-2 $space-3;
+
+    &:first-child {
+      padding-left: $space-3;
+    }
+  }
+
+  .pagination-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .table-wrapper {
+    max-height: 400px;
+  }
 }
 
 @media (max-width: 480px) {
-  .stats-grid { grid-template-columns: 1fr; }
-}
+  :root {
+    --space-6: 12px;
+    --space-5: 12px;
+    --space-4: 8px;
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .module-header {
+    margin-bottom: $space-4;
+  }
+
+  .module-info {
+    gap: $space-2;
+  }
+
+  .module-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .module-info h1 {
+    font-size: 16px;
+  }
+
+  .entry-grid {
+    grid-template-columns: 1fr;
+    padding: $space-3;
+    gap: $space-3;
+  }
+
+  .form-grid {
+    gap: $space-3 $space-4;
+  }
+
+  .tabs {
+    padding: 0 $space-3;
+    overflow-x: auto;
+  }
+
+  .table-wrapper {
+    max-height: 300px;
+    min-width: 100%;
+  }
+
+  table {
+    min-width: auto;
+    font-size: 12px;
+  }
+
+  thead th {
+    padding: $space-1 $space-2;
+    font-size: 9px;
+  }
+
+  td {
+    padding: $space-1 $space-2;
+  }
+
+  .pagination-bar {
+    flex-direction: column;
+    padding: $space-2;
+  }
+
+  .pagination {
+    width: 100%;
+    flex-direction: column;
+    gap: $space-2;
+  }
+
+  .pagination-info {
+    width: 100%;
+    text-align: center;
+  }
+
+  .page-size {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .btn-primary,
+  .btn-outline,
+  .btn-danger {
+    width: 100%;
+  }
+
+  .entry-header {
+    flex-direction: column;
+  }
+
+  .entry-actions {
+    width: 100%;
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .form-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .save-bar {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
   }
 }
 
