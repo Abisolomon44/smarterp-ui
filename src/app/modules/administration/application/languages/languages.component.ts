@@ -7,6 +7,7 @@ import { MasterService } from '../../../../services/master-service/master.servic
 import { AlertService } from '../../../../services/alert.service';
 
 import { ICONS } from '../../../../shared/icon.constants';
+import { Globe } from 'lucide-angular';
 
 @Component({
   selector: 'app-languages',
@@ -44,7 +45,7 @@ export class LanguagesComponent implements OnInit {
     description:
       'Manage supported languages',
 
-    icon: ICONS.globe || 'globe',
+  globe: Globe,
 
     createLabel:
       'Create Language',
@@ -153,7 +154,7 @@ export class LanguagesComponent implements OnInit {
       {
         label: 'Total Languages',
         value: data.length,
-        icon: ICONS.globe || 'globe',
+      globe: Globe,
         description:
           'All supported languages'
       },

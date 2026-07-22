@@ -7,6 +7,7 @@ import { MasterService } from '../../../../services/master-service/master.servic
 import { AlertService } from '../../../../services/alert.service';
 
 import { ICONS } from '../../../../shared/icon.constants';
+import { Briefcase } from 'lucide-angular';
 
 @Component({
   selector: 'app-business-types',
@@ -44,7 +45,7 @@ export class BusinessTypesComponent implements OnInit {
     description:
       'Manage business types and classifications',
 
-    icon: ICONS.briefcase || 'briefcase',
+  briefcase: Briefcase,
 
     createLabel:
       'Create Business Type',
@@ -154,7 +155,7 @@ export class BusinessTypesComponent implements OnInit {
       {
         label: 'Total Business Types',
         value: data.length,
-        icon: ICONS.briefcase || 'briefcase',
+      briefcase: Briefcase,
         description:
           'All business type classifications'
       },

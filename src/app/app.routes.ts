@@ -28,6 +28,11 @@ import { ModuleProfilesComponent } from './modules/administration/application/mo
 import { RoleDomainsComponent } from './modules/administration/mappings/role-domains/role-domains.component';
 import { RoleProfileRoleComponent } from './modules/administration/security/role-profile-role/role-profile-role.component';
 import { RoleWorkspacesComponent } from './modules/administration/security/role-workspaces/role-workspaces.component';
+import { CountriesComponent } from './modules/administration/application/countries/countries.component';
+import { BusinessTypesComponent } from './modules/administration/application/business-types/business-types.component';
+import { StatesComponent } from './modules/administration/application/states/states.component';
+import { LanguagesComponent } from './modules/administration/application/languages/languages.component';
+import { CitiesComponent } from './modules/administration/application/cities/cities.component';
 
 export const routes: Routes = [
   {
@@ -151,11 +156,33 @@ export const routes: Routes = [
             path: 'application/module-profiles',
             component: ModuleProfilesComponent,
           },
+          {
+            path: 'application/countries',
+            component: CountriesComponent,
+          },
+          {
+            path: 'application/states',
+
+            component: StatesComponent,
+          },
+          {
+            path: 'application/cities',
+            component: CitiesComponent,
+          },
+          {
+            path: 'application/languages',
+            component: LanguagesComponent,
+          },
+          
+          {
+            path: 'application/business-types',
+            component: BusinessTypesComponent,
+          },
         ],
       },
 
       {
-        path: 'oraganization',
+        path: 'organization',
 
         children: [
           {
