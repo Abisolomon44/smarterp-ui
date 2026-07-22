@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { TenantModel } from './models/administration';
 import { environment } from '../../../config';
 
 @Injectable({
@@ -243,5 +243,18 @@ getRolePermissionById(
 
   getModuleProfileModules(companyId: number) {
     return this.http.get(`${this.apiUrl}/module-profile-modules/${companyId}`);
+  }
+
+  saveTenant(model: TenantModel): Observable<number> {
+    return this.http.post<number>(
+      `${this.apiUrl}/tenant`,
+      model
+    );
+  }
+
+  getTenants(): Observable<TenantModel[]> {
+    return this.http.get<TenantModel[]>(
+      `${this.apiUrl}/tenants`
+    );
   }
 }
